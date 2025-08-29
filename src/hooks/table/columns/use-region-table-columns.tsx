@@ -1,5 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
+import { useTranslation } from "react-i18next"
 
 import {
   CountriesCell,
@@ -18,6 +19,7 @@ import { HttpTypes } from "@medusajs/types"
 const columnHelper = createColumnHelper<HttpTypes.AdminRegion>()
 
 export const useRegionTableColumns = () => {
+  const { t } = useTranslation()
   return useMemo(
     () => [
       columnHelper.accessor("name", {
@@ -34,7 +36,19 @@ export const useRegionTableColumns = () => {
           <PaymentProvidersCell paymentProviders={getValue()} />
         ),
       }),
+      columnHelper.accessor("city_id", {
+        header: () => (
+          <div className="flex h-full w-full items-center">
+            <span className="truncate">{t("fields.city")}</span>
+          </div>
+        ),
+        cell: ({ getValue }) => (
+          <div className="flex h-full w-full items-center">
+            <span className="truncate">{getValue() ?? "—"}</span>
+          </div>
+        ),
+      }),
     ],
-    []
+    [t]
   )
 }

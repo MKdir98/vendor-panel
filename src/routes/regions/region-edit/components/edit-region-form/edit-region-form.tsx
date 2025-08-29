@@ -28,6 +28,7 @@ const EditRegionSchema = zod.object({
   payment_providers: zod.array(zod.string()),
   automatic_taxes: zod.boolean(),
   is_tax_inclusive: zod.boolean(),
+  city_id: zod.string().optional(),
 })
 
 export const EditRegionForm = ({
@@ -47,6 +48,7 @@ export const EditRegionForm = ({
     defaultValues: {
       name: region.name,
       currency_code: region.currency_code.toUpperCase(),
+      city_id: region.city_id || "",
       payment_providers: region.payment_providers?.map((pp) => pp.id) || [],
       automatic_taxes: region.automatic_taxes,
       is_tax_inclusive: pricePreferenceForRegion?.is_tax_inclusive || false,
@@ -63,6 +65,7 @@ export const EditRegionForm = ({
         automatic_taxes: values.automatic_taxes,
         currency_code: values.currency_code.toLowerCase(),
         payment_providers: values.payment_providers,
+        city_id: values.city_id || undefined,
         is_tax_inclusive: values.is_tax_inclusive,
       },
       {
@@ -118,6 +121,22 @@ export const EditRegionForm = ({
                             ))}
                           </Select.Content>
                         </Select>
+                      </Form.Control>
+                      <Form.ErrorMessage />
+                    </Form.Item>
+                  )
+                }}
+              />
+
+              <Form.Field
+                control={form.control}
+                name="city_id"
+                render={({ field }) => {
+                  return (
+                    <Form.Item>
+                      <Form.Label>{t("fields.city")}</Form.Label>
+                      <Form.Control>
+                        <Input {...field} />
                       </Form.Control>
                       <Form.ErrorMessage />
                     </Form.Item>
