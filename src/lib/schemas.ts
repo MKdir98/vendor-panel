@@ -12,6 +12,8 @@ export const AddressSchema = z.object({
   province: z.string().optional(),
   country_code: z.string().min(1),
   phone: z.string().optional(),
+  latitude: z.number().nullable().optional(),
+  longitude: z.number().nullable().optional(),
 })
 
 export const EmailSchema = z.object({

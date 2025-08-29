@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { HttpTypes } from "@medusajs/types"
 import { Button, ProgressStatus, ProgressTabs, toast } from "@medusajs/ui"
-import { useForm, useWatch } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { useState } from "react"
@@ -54,8 +54,8 @@ export function CreateShippingOptionsForm({
       price_type: ShippingOptionPriceType.FlatRate,
       enabled_in_store: true,
       shipping_profile_id: "",
-      provider_id: "manual_manual",
-      fulfillment_option_id: "",
+      provider_id: "",
+      service_zone_id: "",
       region_prices: {},
       currency_prices: {},
       conditional_region_prices: {},
@@ -64,15 +64,7 @@ export function CreateShippingOptionsForm({
     resolver: zodResolver(CreateShippingOptionSchema),
   })
 
-  const selectedProviderId = useWatch({
-    control: form.control,
-    name: "provider_id",
-  })
 
-  const { fulfillment_options: fulfillmentProviderOptions } =
-    useFulfillmentProviderOptions(selectedProviderId, {
-      enabled: !!selectedProviderId,
-    })
 
   const isCalculatedPriceType =
     form.watch("price_type") === ShippingOptionPriceType.Calculated
@@ -93,18 +85,14 @@ export function CreateShippingOptionsForm({
       })
       .filter((p): p is { currency_code: string; amount: number } => !!p)
 
-    const fulfillmentOptionData = fulfillmentProviderOptions?.find(
-      (fo) => fo.id === data.fulfillment_option_id
-    )!
-
     await mutateAsync(
       {
         name: data.name,
-        service_zone_id: zone.id,
+        service_zone_id: data.service_zone_id,
         shipping_profile_id: data.shipping_profile_id,
         provider_id: data.provider_id,
         prices: currencyPrices,
-        data: fulfillmentOptionData as unknown as Record<string, unknown>,
+        data: {},
         rules: [
           {
             value: isReturn ? "true" : "false",
@@ -266,8 +254,6 @@ export function CreateShippingOptionsForm({
                 isReturn={isReturn}
                 type={type}
                 locationId={locationId}
-                fulfillmentProviderOptions={fulfillmentProviderOptions || []}
-                selectedProviderId={selectedProviderId}
               />
             </ProgressTabs.Content>
             <ProgressTabs.Content value={Tab.PRICING} className="size-full">
