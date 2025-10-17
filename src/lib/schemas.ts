@@ -8,7 +8,7 @@ export const AddressSchema = z.object({
   address_1: z.string().min(1),
   address_2: z.string().optional(),
   city: z.string().min(1),
-  postal_code: z.string().min(1),
+  postal_code: z.string().min(1).regex(/^\d{10}$/, "کد پستی باید دقیقاً ۱۰ رقم باشد"),
   province: z.string().optional(),
   country_code: z.string().min(1),
   phone: z.string().optional(),

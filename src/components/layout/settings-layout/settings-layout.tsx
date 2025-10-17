@@ -142,6 +142,16 @@ const SettingsSidebar = () => {
         </div>
         <div className="bg-ui-bg-subtle sticky bottom-0">
           <UserSection />
+          <div className="px-3 py-2">
+            <Link
+              to="/terms"
+              className="text-ui-fg-subtle hover:text-ui-fg-base flex items-center justify-center gap-x-2 transition-colors"
+            >
+              <Text size="xsmall" className="text-center">
+                Terms & Conditions
+              </Text>
+            </Link>
+          </div>
         </div>
       </div>
     </aside>

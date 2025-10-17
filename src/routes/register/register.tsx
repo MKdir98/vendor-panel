@@ -11,18 +11,20 @@ import { useSignUpWithEmailPass } from "../../hooks/api"
 import { isFetchError } from "../../lib/is-fetch-error"
 import { useState } from "react"
 
-const RegisterSchema = z.object({
-  name: z.string().min(2, { message: "Name should be a string" }),
-  email: z.string().email({ message: "Invalid email" }),
-  password: z.string().min(2, { message: "Password should be a string" }),
+const createRegisterSchema = (t: any) => z.object({
+  name: z.string().min(2, { message: t("validation.nameRequired") }),
+  email: z.string().email({ message: t("validation.emailInvalid") }),
+  password: z.string().min(2, { message: t("validation.passwordRequired") }),
   confirmPassword: z.string().min(2, {
-    message: "Confirm Password should be a string",
+    message: t("validation.confirmPasswordRequired"),
   }),
 })
 
 export const Register = () => {
   const [success, setSuccess] = useState(false)
   const { t } = useTranslation()
+
+  const RegisterSchema = createRegisterSchema(t)
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -41,11 +43,11 @@ export const Register = () => {
       if (password !== confirmPassword) {
         form.setError("password", {
           type: "manual",
-          message: "Password and Confirm Password not matched",
+          message: t("validation.passwordMismatch"),
         })
         form.setError("confirmPassword", {
           type: "manual",
-          message: "Password and Confirm Password not matched",
+          message: t("validation.passwordMismatch"),
         })
 
         return null
@@ -95,17 +97,16 @@ export const Register = () => {
     return (
       <div className="bg-ui-bg-subtle flex min-h-dvh w-dvw items-center justify-center">
         <div className="mb-4 flex flex-col items-center">
-          <Heading>Thank You for registering!</Heading>
+          <Heading>{t("register.successTitle")}</Heading>
           <Text
             size="small"
             className="text-ui-fg-subtle text-center mt-2 max-w-[320px]"
           >
-            You may need to wait for admin authorization before logging in. A
-            confirmation email will be sent to you shortly.
+            {t("register.successHint")}
           </Text>
 
           <Link to="/login">
-            <Button className="mt-8">Back to login page</Button>
+            <Button className="mt-8">{t("register.backToLogin")}</Button>
           </Link>
         </div>
       </div>
@@ -138,7 +139,7 @@ export const Register = () => {
                           <Input
                             {...field}
                             className="bg-ui-bg-field-component mb-2"
-                            placeholder="Company name"
+                            placeholder={t("register.companyName")}
                           />
                         </Form.Control>
                       </Form.Item>
@@ -193,7 +194,7 @@ export const Register = () => {
                             type="password"
                             {...field}
                             className="bg-ui-bg-field-component"
-                            placeholder="Confirm Password"
+                            placeholder={t("fields.confirmPassword")}
                           />
                         </Form.Control>
                       </Form.Item>
@@ -218,7 +219,7 @@ export const Register = () => {
                 </Alert>
               )}
               <Button className="w-full" type="submit" isLoading={isPending}>
-                Sign up
+                {t("actions.continue")}
               </Button>
             </form>
           </Form>
@@ -233,6 +234,14 @@ export const Register = () => {
               />,
             ]}
           />
+        </span>
+        <span className="text-ui-fg-muted txt-small">
+          <Link
+            to="/terms"
+            className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
+          >
+            {t("register.termsAndConditions")}
+          </Link>
         </span>
       </div>
     </div>

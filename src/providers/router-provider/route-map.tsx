@@ -1895,6 +1895,13 @@ export const RouteMap: RouteObject[] = [
             lazy: () => import("../../routes/invite"),
           },
           {
+            path: "/terms",
+            handle: {
+              breadcrumb: () => "Terms and Conditions",
+            },
+            lazy: () => import("../../routes/terms"),
+          },
+          {
             path: "*",
             lazy: () => import("../../routes/no-match"),
           },

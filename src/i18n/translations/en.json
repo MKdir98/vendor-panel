@@ -93,7 +93,12 @@
   },
   "validation": {
     "mustBeInt": "The value must be a whole number.",
-    "mustBePositive": "The value must be a positive number."
+    "mustBePositive": "The value must be a positive number.",
+    "nameRequired": "Name should be a string",
+    "emailInvalid": "Invalid email",
+    "passwordRequired": "Password should be a string",
+    "confirmPasswordRequired": "Confirm Password should be a string",
+    "passwordMismatch": "Password and Confirm Password not matched"
   },
   "actions": {
     "save": "Save",
@@ -2645,7 +2650,12 @@
   "register": {
     "title": "Join Mercur Seller Panel",
     "hint": "Sign up to start selling",
-    "alreadySeller": "Already have an account? - <0>Sign In</0>"
+    "alreadySeller": "Already have an account? - <0>Sign In</0>",
+    "successTitle": "Thank You for registering!",
+    "successHint": "You may need to wait for admin authorization before logging in. A confirmation email will be sent to you shortly.",
+    "backToLogin": "Back to login page",
+    "companyName": "Company name",
+    "termsAndConditions": "Terms & Conditions"
   },
   "invite": {
     "title": "Welcome to Mercur Seller Panel",
