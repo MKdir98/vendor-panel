@@ -57,17 +57,24 @@ export default function AvatarBox({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <rect width="44" height="44" rx="10" fill="#FAFAFA" />
-        <g clipPath="url(#clip0_11_175)">
-          <path d="M8 7V20.7349L19.821 13.8675L8 7Z" fill="#4C24DD" />
-          <path
-            d="M36.0002 37.0001V23.2651L24.1792 30.1326L36.0002 37.0001Z"
-            fill="#4C24DD"
-          />
-          <path d="M8 23.2651V37L36 20.7349V7L8 23.2651Z" fill="#4C24DD" />
+        <rect width="44" height="44" rx="10" fill="#1E293B" />
+        <g clipPath="url(#clip0_door_festival)">
+          {/* Door Frame */}
+          <rect x="10" y="8" width="24" height="28" rx="1" fill="#F59E0B" />
+          <rect x="12" y="10" width="20" height="24" rx="1" fill="#1E293B" />
+          
+          {/* Door Details/Panels */}
+          <rect x="14" y="12" width="8" height="9" rx="0.5" fill="#F59E0B" opacity="0.3" />
+          <rect x="14" y="23" width="8" height="9" rx="0.5" fill="#F59E0B" opacity="0.3" />
+          <rect x="24" y="12" width="6" height="9" rx="0.5" fill="#F59E0B" opacity="0.3" />
+          <rect x="24" y="23" width="6" height="9" rx="0.5" fill="#F59E0B" opacity="0.3" />
+          
+          {/* Door Handle */}
+          <circle cx="27" cy="22" r="1.5" fill="#F59E0B" />
+          <rect x="26.5" y="21" width="1" height="2" fill="#FCD34D" />
         </g>
         <defs>
-          <clipPath id="clip0_11_175">
+          <clipPath id="clip0_door_festival">
             <rect
               width="28"
               height="30"
