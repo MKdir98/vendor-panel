@@ -18,6 +18,7 @@ import {
 } from "../../../../../components/modals"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
+import { VisuallyHidden } from "../../../../../components/utilities/visually-hidden"
 import { useFulfillmentProviders } from "../../../../../hooks/api/fulfillment-providers"
 import { useUpdateStockLocationFulfillmentProviders } from "../../../../../hooks/api/stock-locations"
 import { useFulfillmentProviderTableColumns } from "../../../../../hooks/table/columns/use-fulfillment-provider-table-columns"
@@ -125,7 +126,18 @@ export const LocationEditFulfillmentProvidersForm = ({
   return (
     <RouteFocusModal.Form form={form}>
       <KeyboundForm onSubmit={handleSubmit} className="flex size-full flex-col">
-        <RouteFocusModal.Header />
+        <RouteFocusModal.Header>
+          <RouteFocusModal.Title asChild>
+            <VisuallyHidden>
+              {t("stockLocations.fulfillmentProviders.header")}
+            </VisuallyHidden>
+          </RouteFocusModal.Title>
+          <RouteFocusModal.Description asChild>
+            <VisuallyHidden>
+              {t("stockLocations.fulfillmentProviders.label")}
+            </VisuallyHidden>
+          </RouteFocusModal.Description>
+        </RouteFocusModal.Header>
         <RouteFocusModal.Body className="flex flex-1 flex-col overflow-auto">
           <_DataTable
             table={table}
