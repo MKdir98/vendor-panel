@@ -3,14 +3,17 @@ import { Button, Heading, Input, Text, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
+import { useEffect } from "react"
 import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
+import { StateSelect, CitySelect } from "../../../../../components/inputs/location-select"
 import {
   RouteFocusModal,
   useRouteModal,
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useCreateStockLocation } from "../../../../../hooks/api/stock-locations"
+import { useStates, useCities } from "../../../../../hooks/api/cities"
 
 const CreateLocationSchema = zod.object({
   name: zod.string().min(1),
@@ -18,9 +21,9 @@ const CreateLocationSchema = zod.object({
     address_1: zod.string().min(1),
     address_2: zod.string().optional(),
     country_code: zod.string().min(2).max(2),
-    city: zod.string().optional(),
+    city_id: zod.string().min(1, "انتخاب شهر الزامی است"),
+    state_id: zod.string().min(1, "انتخاب استان الزامی است"),
     postal_code: zod.string().optional(),
-    province: zod.string().optional(),
     company: zod.string().optional(),
     phone: zod.string().optional(),
   }),
@@ -36,24 +39,43 @@ export const CreateLocationForm = () => {
       address: {
         address_1: "",
         address_2: "",
-        city: "",
+        city_id: "",
+        state_id: "",
         company: "",
-        country_code: "",
+        country_code: "ir",
         phone: "",
         postal_code: "",
-        province: "",
       },
     },
     resolver: zodResolver(CreateLocationSchema),
   })
 
   const { mutateAsync, isPending } = useCreateStockLocation()
+  
+  const stateId = form.watch("address.state_id")
+  const { states } = useStates("ir")
+  const { cities } = useCities(stateId)
+
+  useEffect(() => {
+    if (stateId) {
+      form.setValue("address.city_id", "")
+    }
+  }, [stateId, form])
 
   const handleSubmit = form.handleSubmit(async (values) => {
+    const selectedState = states.find(s => s.id === values.address.state_id)
+    const selectedCity = cities.find(c => c.id === values.address.city_id)
+    
+    const { state_id, ...addressWithoutStateId } = values.address
+    
     await mutateAsync(
       {
         name: values.name,
-        address: values.address,
+        address: {
+          ...addressWithoutStateId,
+          province: selectedState?.name,
+          city: selectedCity?.name,
+        },
       },
       {
         onSuccess: ({ stock_location }) => {
@@ -153,13 +175,28 @@ export const CreateLocationForm = () => {
                 />
                 <Form.Field
                   control={form.control}
-                  name="address.city"
+                  name="address.state_id"
                   render={({ field }) => {
                     return (
                       <Form.Item>
-                        <Form.Label optional>{t("fields.city")}</Form.Label>
+                        <Form.Label>{t("fields.state")}</Form.Label>
                         <Form.Control>
-                          <Input size="small" {...field} />
+                          <StateSelect {...field} countryCode="ir" />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )
+                  }}
+                />
+                <Form.Field
+                  control={form.control}
+                  name="address.city_id"
+                  render={({ field }) => {
+                    return (
+                      <Form.Item>
+                        <Form.Label>{t("fields.city")}</Form.Label>
+                        <Form.Control>
+                          <CitySelect {...field} stateId={stateId} />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>
@@ -175,21 +212,6 @@ export const CreateLocationForm = () => {
                         <Form.Label>{t("fields.country")}</Form.Label>
                         <Form.Control>
                           <CountrySelect {...field} />
-                        </Form.Control>
-                        <Form.ErrorMessage />
-                      </Form.Item>
-                    )
-                  }}
-                />
-                <Form.Field
-                  control={form.control}
-                  name="address.province"
-                  render={({ field }) => {
-                    return (
-                      <Form.Item>
-                        <Form.Label optional>{t("fields.state")}</Form.Label>
-                        <Form.Control>
-                          <Input size="small" {...field} />
                         </Form.Control>
                         <Form.ErrorMessage />
                       </Form.Item>

@@ -7,9 +7,10 @@ import { ProductEditVariantForm } from "./components/product-edit-variant-form"
 
 export const ProductVariantEdit = () => {
   const { t } = useTranslation()
-  const { id } = useParams()
+  const { id, variant_id: paramVariantId } = useParams()
   const [searchParams] = useSearchParams()
-  const variant_id = searchParams.get("variant_id")
+  const searchVariantId = searchParams.get("variant_id")
+  const variant_id = paramVariantId || searchVariantId
 
   const {
     product,
@@ -24,10 +25,38 @@ export const ProductVariantEdit = () => {
     (variant) => variant.id === variant_id
   )
 
-  const ready = !isProductPending && !!product
-
   if (isProductError) {
     throw productError
+  }
+
+  if (isProductPending) {
+    return (
+      <RouteDrawer>
+        <RouteDrawer.Header>
+          <Heading>{t("products.variant.edit.header")}</Heading>
+        </RouteDrawer.Header>
+        <RouteDrawer.Body>
+          <div className="flex items-center justify-center py-8">
+            Loading...
+          </div>
+        </RouteDrawer.Body>
+      </RouteDrawer>
+    )
+  }
+
+  if (!variant) {
+    return (
+      <RouteDrawer>
+        <RouteDrawer.Header>
+          <Heading>{t("products.variant.edit.header")}</Heading>
+        </RouteDrawer.Header>
+        <RouteDrawer.Body>
+          <div className="flex items-center justify-center py-8">
+            Variant not found
+          </div>
+        </RouteDrawer.Body>
+      </RouteDrawer>
+    )
   }
 
   return (
@@ -35,7 +64,7 @@ export const ProductVariantEdit = () => {
       <RouteDrawer.Header>
         <Heading>{t("products.variant.edit.header")}</Heading>
       </RouteDrawer.Header>
-      {ready && <ProductEditVariantForm variant={variant} product={product} />}
+      <ProductEditVariantForm variant={variant} product={product!} />
     </RouteDrawer>
   )
 }

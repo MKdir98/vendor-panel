@@ -19,7 +19,7 @@ import { optionalInt } from "../../../../../lib/validation"
 
 type ProductEditVariantFormProps = {
   product: HttpTypes.AdminProduct
-  variant?: HttpTypes.AdminProductVariant
+  variant: HttpTypes.AdminProductVariant
 }
 
 const ProductEditVariantSchema = z.object({
@@ -49,36 +49,36 @@ export const ProductEditVariantForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const defaultOptions = product.options?.reduce((acc: any, option: any) => {
-    const varOpt = variant?.options?.find((o: any) => o.option_id === option.id)
+    const varOpt = variant.options?.find((o: any) => o.option_id === option.id)
     acc[option.title] = varOpt?.value
     return acc
   }, {})
 
   const form = useForm<z.infer<typeof ProductEditVariantSchema>>({
     defaultValues: {
-      title: variant?.title || "",
-      material: variant?.material || "",
-      sku: variant?.sku || undefined,
-      ean: variant?.ean || "",
-      upc: variant?.upc || "",
-      barcode: variant?.barcode || "",
+      title: variant.title || "",
+      material: variant.material || "",
+      sku: variant.sku || undefined,
+      ean: variant.ean || "",
+      upc: variant.upc || "",
+      barcode: variant.barcode || "",
       manage_inventory: true,
       allow_backorder: true,
-      weight: variant?.weight || "",
-      height: variant?.height || "",
-      width: variant?.width || "",
-      length: variant?.length || "",
-      mid_code: variant?.mid_code || "",
-      hs_code: variant?.hs_code || "",
-      origin_country: variant?.origin_country || "",
+      weight: variant.weight || "",
+      height: variant.height || "",
+      width: variant.width || "",
+      length: variant.length || "",
+      mid_code: variant.mid_code || "",
+      hs_code: variant.hs_code || "",
+      origin_country: variant.origin_country || "",
       options: defaultOptions,
     },
     resolver: zodResolver(ProductEditVariantSchema),
   })
 
   const { mutateAsync, isPending } = useUpdateProductVariant(
-    variant?.product_id!,
-    variant?.id!
+    product.id,
+    variant.id
   )
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -98,7 +98,7 @@ export const ProductEditVariantForm = ({
 
     await mutateAsync(
       {
-        id: variant?.id!,
+        id: variant.id,
         weight: transformNullableFormNumber(weight),
         height: transformNullableFormNumber(height),
         width: transformNullableFormNumber(width),

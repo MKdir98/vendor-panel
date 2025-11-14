@@ -153,7 +153,7 @@ const useColumns = (product: HttpTypes.AdminProduct) => {
           icon: <PencilSquare />,
           label: t("actions.edit"),
           onClick: (row) => {
-            navigate(`edit-variant?variant_id=${row.row.original.id}`)
+            navigate(`variants/${row.row.original.id}/edit`)
           },
         },
       ]
