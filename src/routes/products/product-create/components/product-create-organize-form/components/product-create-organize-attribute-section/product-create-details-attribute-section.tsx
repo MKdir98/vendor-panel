@@ -63,7 +63,7 @@ export const ProductCreateAttributeSection = ({
                   {t("products.fields.width.label")} (cm)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} placeholder="0" />
+                  <Input {...field} type="number" min={0} step="0.1" placeholder="0" />
                 </Form.Control>
                 <Form.ErrorMessage />
               </Form.Item>
@@ -80,7 +80,7 @@ export const ProductCreateAttributeSection = ({
                   {t("products.fields.length.label")} (cm)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} placeholder="0" />
+                  <Input {...field} type="number" min={0} step="0.1" placeholder="0" />
                 </Form.Control>
                 <Form.ErrorMessage />
               </Form.Item>
@@ -111,10 +111,10 @@ export const ProductCreateAttributeSection = ({
             return (
               <Form.Item>
                 <Form.Label>
-                  {t("products.fields.weight.label")} (g)
+                  {t("products.fields.weight.label")} (kg)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} placeholder="0" />
+                  <Input {...field} type="number" min={0} step="0.001" placeholder="0" />
                 </Form.Control>
                 <Form.ErrorMessage />
               </Form.Item>
