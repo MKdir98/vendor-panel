@@ -200,22 +200,39 @@ export const ProductCreateForm = ({
   })
 
   const onNext = async (currentTab: Tab) => {
-    const valid = await form.trigger()
-
-    if (!valid) {
-      return
-    }
+    let valid = false
 
     if (currentTab === Tab.DETAILS) {
-      setTab(Tab.ORGANIZE)
-    }
-
-    if (currentTab === Tab.ORGANIZE) {
-      setTab(Tab.VARIANTS)
-    }
-
-    if (currentTab === Tab.VARIANTS) {
-      setTab(Tab.INVENTORY)
+      valid = await form.trigger([
+        "title",
+        "subtitle",
+        "handle",
+        "description",
+        "media",
+      ])
+      if (valid) {
+        setTab(Tab.ORGANIZE)
+      }
+    } else if (currentTab === Tab.ORGANIZE) {
+      valid = await form.trigger([
+        "categories",
+        "tags",
+        "type_id",
+        "collection_id",
+        "discountable",
+        "width",
+        "length",
+        "height",
+        "weight",
+      ])
+      if (valid) {
+        setTab(Tab.VARIANTS)
+      }
+    } else if (currentTab === Tab.VARIANTS) {
+      valid = await form.trigger(["variants", "options", "enable_variants"])
+      if (valid) {
+        setTab(Tab.INVENTORY)
+      }
     }
   }
 

@@ -59,12 +59,13 @@ export const ProductCreateAttributeSection = ({
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.width.label")}
+                <Form.Label>
+                  {t("products.fields.width.label")} (cm)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} />
+                  <Input {...field} type="number" min={0} placeholder="0" />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -75,12 +76,13 @@ export const ProductCreateAttributeSection = ({
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.length.label")}
+                <Form.Label>
+                  {t("products.fields.length.label")} (cm)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} />
+                  <Input {...field} type="number" min={0} placeholder="0" />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -91,12 +93,13 @@ export const ProductCreateAttributeSection = ({
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.height.label")}
+                <Form.Label>
+                  {t("products.fields.height.label")} (cm)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} />
+                  <Input {...field} type="number" min={0} placeholder="0" />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}
@@ -107,12 +110,13 @@ export const ProductCreateAttributeSection = ({
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.weight.label")}
+                <Form.Label>
+                  {t("products.fields.weight.label")} (g)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} />
+                  <Input {...field} type="number" min={0} placeholder="0" />
                 </Form.Control>
+                <Form.ErrorMessage />
               </Form.Item>
             )
           }}

@@ -65,7 +65,7 @@ export const ProductCreateSchema = z
     type_id: z.string().optional(),
     collection_id: z.string().optional(),
     shipping_profile_id: z.string().optional(),
-    categories: z.array(z.string()),
+    categories: z.array(z.string()).min(1),
     tags: z.array(z.string()).optional(),
     sales_channels: z
       .array(
@@ -77,10 +77,18 @@ export const ProductCreateSchema = z
       .optional(),
     origin_country: z.string().optional(),
     material: z.string().optional(),
-    width: z.string().optional(),
-    length: z.string().optional(),
-    height: z.string().optional(),
-    weight: z.string().optional(),
+    width: z.string().refine((val) => val !== "" && val !== undefined && val !== null, {
+      message: "Width is required",
+    }),
+    length: z.string().refine((val) => val !== "" && val !== undefined && val !== null, {
+      message: "Length is required",
+    }),
+    height: z.string().refine((val) => val !== "" && val !== undefined && val !== null, {
+      message: "Height is required",
+    }),
+    weight: z.string().refine((val) => val !== "" && val !== undefined && val !== null, {
+      message: "Weight is required",
+    }),
     mid_code: z.string().optional(),
     hs_code: z.string().optional(),
     options: z.array(ProductCreateOptionSchema).min(1),

@@ -126,7 +126,7 @@ export const ProductCreateOrganizationSection = ({
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label optional>
+                <Form.Label>
                   {t("products.fields.categories.label")}
                 </Form.Label>
                 <Form.Control>
