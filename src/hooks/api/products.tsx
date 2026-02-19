@@ -460,10 +460,18 @@ export const useProducts = (
     }
   }
 
+  const hasClientSideFilters =
+    filter?.q ||
+    filter?.categoryId ||
+    filter?.tagId ||
+    filter?.collectionId ||
+    filter?.typeId ||
+    filter?.status
+
   return {
     ...data,
     products: productsImagesFormatter(products?.slice(0, filter?.limit)) || [],
-    count: products?.length || 0,
+    count: hasClientSideFilters ? (products?.length || 0) : (data?.count ?? 0),
     ...rest,
   }
 }
