@@ -2643,12 +2643,12 @@
   },
   "login": {
     "forgotPassword": "Forgot password? - <0>Reset</0>",
-    "title": "Welcome to Mercur Seller Panel",
+    "title": "Welcome to Door Festival Seller Panel",
     "hint": "Sign in to access the account area",
     "notSellerYet": "Not a seller yet? - <0>Create an account</0>"
   },
   "register": {
-    "title": "Join Mercur Seller Panel",
+    "title": "Join Door Festival Seller Panel",
     "hint": "Sign up to start selling",
     "alreadySeller": "Already have an account? - <0>Sign In</0>",
     "successTitle": "Thank You for registering!",
@@ -2658,7 +2658,7 @@
     "termsAndConditions": "Terms & Conditions"
   },
   "invite": {
-    "title": "Welcome to Mercur Seller Panel",
+    "title": "Welcome to Door Festival Seller Panel",
     "hint": "Create your account below",
     "backToLogin": "Back to login",
     "createAccount": "Create account",
