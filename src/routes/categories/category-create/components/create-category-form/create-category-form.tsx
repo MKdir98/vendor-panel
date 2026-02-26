@@ -9,6 +9,7 @@ import {
 } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { transformNullableFormData } from "../../../../../lib/form-helpers"
+import { uploadFilesQuery } from "../../../../../lib/client"
 import { CreateCategoryDetails } from "./create-category-details"
 import { CreateCategorySchema } from "./schema"
 import { useCreateVendorRequest } from "../../../../../hooks/api"
@@ -37,13 +38,14 @@ export const CreateCategoryForm = ({
       visibility: "public",
       rank: parentCategoryId ? 0 : null,
       parent_category_id: parentCategoryId,
+      media: [],
     },
     resolver: zodResolver(CreateCategorySchema),
   })
 
   const { mutateAsync, isPending } = useCreateVendorRequest()
 
-  const handleSubmit = form.handleSubmit((data) => {
+  const handleSubmit = form.handleSubmit(async (data) => {
     const {
       visibility,
       status,
@@ -51,9 +53,18 @@ export const CreateCategoryForm = ({
       rank,
       name,
       handle,
+      media,
       ...rest
     } = data
     const parsedData = transformNullableFormData(rest, false)
+
+    let thumbnailUrl: string | undefined
+    if (media?.length && media[0].file) {
+      const { files } = await uploadFilesQuery([{ file: media[0].file }])
+      thumbnailUrl = files?.[0]?.url
+    }
+
+    const metadata = thumbnailUrl ? { thumbnail: thumbnailUrl } : undefined
 
     mutateAsync(
       {
@@ -66,7 +77,8 @@ export const CreateCategoryForm = ({
             is_active: "active",
             is_internal: true,
             rank: rank ?? undefined,
-            parent_category_id: null,
+            parent_category_id: parent_category_id ?? null,
+            metadata,
           },
         },
       },

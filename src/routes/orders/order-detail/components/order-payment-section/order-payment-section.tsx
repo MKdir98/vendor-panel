@@ -43,9 +43,12 @@ const Header = ({ order }: { order: any }) => {
 
 const Total = ({ order }: { order: AdminOrder }) => {
   const { t } = useTranslation()
+  const splitPayment = order.split_order_payment
+  if (!splitPayment) {
+    return null
+  }
   const totalPending =
-    order.split_order_payment.authorized_amount -
-    order.split_order_payment.captured_amount
+    splitPayment.authorized_amount - splitPayment.captured_amount
 
   return (
     <div>
@@ -56,14 +59,14 @@ const Total = ({ order }: { order: AdminOrder }) => {
 
         <Text size="small" weight="plus" leading="compact">
           {getStylizedAmount(
-            order.split_order_payment.captured_amount,
-            order.split_order_payment.currency_code
+            splitPayment.captured_amount,
+            splitPayment.currency_code
           )}
         </Text>
       </div>
 
-      {(order.split_order_payment.status === "refunded" ||
-        order.split_order_payment.status === "partially_refunded") && (
+      {(splitPayment.status === "refunded" ||
+        splitPayment.status === "partially_refunded") && (
         <div className="flex items-center justify-between px-6 py-4">
           <Text size="small" weight="plus" leading="compact">
             Refunded
@@ -71,8 +74,8 @@ const Total = ({ order }: { order: AdminOrder }) => {
 
           <Text size="small" weight="plus" leading="compact">
             {getStylizedAmount(
-              order.split_order_payment.refunded_amount,
-              order.split_order_payment.currency_code
+              splitPayment.refunded_amount,
+              splitPayment.currency_code
             )}
           </Text>
         </div>
@@ -87,7 +90,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
           <Text size="small" weight="plus" leading="compact">
             {getStylizedAmount(
               totalPending,
-              order.split_order_payment.currency_code
+              splitPayment.currency_code
             )}
           </Text>
         </div>

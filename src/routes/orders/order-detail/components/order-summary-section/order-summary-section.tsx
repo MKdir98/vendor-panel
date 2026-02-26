@@ -66,7 +66,7 @@ export const OrderSummarySection = ({
   const { order: orderPreview } = useOrderPreview(order.id!)
 
   const receivableReturns = useMemo(
-    () => order.returns.filter((r) => !r.canceled_at),
+    () => (order.returns ?? []).filter((r) => !r.canceled_at),
     [order]
   )
 
@@ -84,7 +84,7 @@ export const OrderSummarySection = ({
       reservations.map((r) => [r.line_item_id, r.id])
     )
 
-    for (const item of order.items) {
+    for (const item of order.items ?? []) {
       // Inventory is managed
       if (item.variant?.manage_inventory) {
         // There are items that are unfulfilled
@@ -101,7 +101,7 @@ export const OrderSummarySection = ({
   }, [reservations])
 
   const unpaidPaymentCollection =
-    order.split_order_payment.status !== "captured"
+    order.split_order_payment && order.split_order_payment.status !== "captured"
       ? {
           id: order.split_order_payment.payment_collection_id,
           amount: order.split_order_payment.authorized_amount,
@@ -276,7 +276,7 @@ const Header = ({
   const { t } = useTranslation()
 
   // is ture if there is no shipped items ATM
-  const shouldDisableReturn = order.items.every(
+  const shouldDisableReturn = (order.items ?? []).every(
     (i) => !(getReturnableQuantity(i) > 0)
   )
 
@@ -496,31 +496,35 @@ const CostBreakdown = ({
   const [isShippingOpen, setIsShippingOpen] = useState(false)
 
   const discountCodes = useMemo(() => {
-    const codes = new Set()
-    order.items.forEach((item) =>
-      item.adjustments?.forEach((adj) => {
-        codes.add(adj.code)
-      })
-    )
-
+    const codes = new Set<string>()
+    const items = Array.isArray(order.items) ? order.items : []
+    for (const item of items) {
+      const adjustments = Array.isArray(item.adjustments) ? item.adjustments : []
+      for (const adj of adjustments) {
+        if (adj?.code) codes.add(adj.code)
+      }
+    }
     return Array.from(codes).sort()
   }, [order])
 
   const taxCodes = useMemo(() => {
     const taxCodeMap: Record<string, number> = {}
-
-    order.items.forEach((item) => {
-      item.tax_lines?.forEach((line) => {
+    const items = Array.isArray(order.items) ? order.items : []
+    for (const item of items) {
+      const taxLines = Array.isArray(item.tax_lines) ? item.tax_lines : []
+      for (const line of taxLines) {
         taxCodeMap[line.code] = (taxCodeMap[line.code] || 0) + line.total
-      })
-    })
-
-    order.shipping_methods.forEach((sm) => {
-      sm.tax_lines?.forEach((line) => {
+      }
+    }
+    const shippingMethods = Array.isArray(order.shipping_methods)
+      ? order.shipping_methods
+      : []
+    for (const sm of shippingMethods) {
+      const taxLines = Array.isArray(sm.tax_lines) ? sm.tax_lines : []
+      for (const line of taxLines) {
         taxCodeMap[line.code] = (taxCodeMap[line.code] || 0) + line.total
-      })
-    })
-
+      }
+    }
     return taxCodeMap
   }, [order])
 
@@ -569,7 +573,10 @@ const CostBreakdown = ({
 
       {isShippingOpen && (
         <div className="flex flex-col gap-1 pl-5">
-          {(order.shipping_methods || [])
+          {(Array.isArray(order.shipping_methods)
+            ? order.shipping_methods
+            : []
+          )
             .sort((m1, m2) =>
               (m1.created_at as string).localeCompare(m2.created_at as string)
             )
@@ -671,13 +678,15 @@ const CostBreakdown = ({
           </div>
         )}
       </>
-      <Cost
-        label={"Commission"}
-        value={getLocaleAmount(
-          order.commission_value.amount,
-          order.commission_value.currency_code
-        )}
-      />
+      {order.commission_value && (
+        <Cost
+          label={"Commission"}
+          value={getLocaleAmount(
+            order.commission_value.amount,
+            order.commission_value.currency_code
+          )}
+        />
+      )}
     </div>
   )
 }

@@ -132,6 +132,34 @@ export const useDeleteProductCategory = (
   })
 }
 
+export const useUpdateProductCategoryMetadata = (
+  id: string,
+  options?: UseMutationOptions<
+    { product_category: HttpTypes.AdminProductCategory },
+    FetchError,
+    { metadata: Record<string, unknown> }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload) =>
+      fetchQuery(`/vendor/product-categories/${id}`, {
+        method: "PATCH",
+        body: payload,
+      }),
+    onSuccess: (data, variables, context) => {
+      queryClient.invalidateQueries({
+        queryKey: categoriesQueryKeys.lists(),
+      })
+      queryClient.invalidateQueries({
+        queryKey: categoriesQueryKeys.detail(id),
+      })
+
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useUpdateProductCategoryProducts = (
   id: string,
   options?: UseMutationOptions<

@@ -192,6 +192,7 @@ export function OrderCreateFulfillmentForm({
 
     setFulfillableItems(itemsToFulfill)
 
+    console.log("itemsToFulfill", itemsToFulfill.length)
     if (itemsToFulfill.length) {
       form.clearErrors("root")
     } else {

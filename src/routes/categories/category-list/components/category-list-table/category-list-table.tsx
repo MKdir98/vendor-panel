@@ -1,9 +1,11 @@
 import { Button, Container, Heading, Text } from "@medusajs/ui"
 import { keepPreviousData } from "@tanstack/react-query"
+import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 
 import { Link } from "react-router-dom"
+import { AdminProductCategoryResponse } from "@medusajs/types"
 import { _DataTable } from "../../../../../components/table/data-table"
 import { useProductCategories } from "../../../../../hooks/api/categories"
 import { useDataTable } from "../../../../../hooks/use-data-table"
@@ -88,8 +90,27 @@ export const CategoryListTable = () => {
   )
 }
 
+const columnHelper =
+  createColumnHelper<AdminProductCategoryResponse["product_category"]>()
+
 const useColumns = () => {
+  const { t } = useTranslation()
   const base = useCategoryTableColumns()
 
-  return useMemo(() => [...base], [base])
+  return useMemo(
+    () => [
+      ...base,
+      columnHelper.display({
+        id: "actions",
+        cell: ({ row }) => (
+          <Button size="small" variant="transparent" asChild>
+            <Link to={`create?parent_category_id=${row.original.id}`}>
+              {t("categories.actions.addSubcategory")}
+            </Link>
+          </Button>
+        ),
+      }),
+    ],
+    [base, t]
+  )
 }

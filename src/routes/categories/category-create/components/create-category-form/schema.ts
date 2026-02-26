@@ -1,11 +1,14 @@
 import { z } from "zod"
 
+import { MediaSchema } from "../../../../products/product-create/constants"
+
 export const CreateCategoryDetailsSchema = z.object({
   name: z.string().min(1),
   description: z.string().optional(),
   handle: z.string().optional(),
   status: z.enum(["active", "inactive"]),
   visibility: z.enum(["public", "internal"]),
+  media: z.array(MediaSchema).optional(),
 })
 
 export type CreateCategorySchema = z.infer<typeof CreateCategorySchema>

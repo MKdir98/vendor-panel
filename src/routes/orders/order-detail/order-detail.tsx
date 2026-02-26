@@ -10,7 +10,6 @@ import { ActiveOrderReturnSection } from "./components/active-order-return-secti
 import { OrderCustomerSection } from "./components/order-customer-section"
 import { OrderFulfillmentSection } from "./components/order-fulfillment-section"
 import { OrderGeneralSection } from "./components/order-general-section"
-import { OrderPaymentSection } from "./components/order-payment-section"
 import { OrderSummarySection } from "./components/order-summary-section"
 import { DEFAULT_FIELDS } from "./constants"
 import { orderLoader } from "./loader"
@@ -33,7 +32,7 @@ export const OrderDetail = () => {
 
   // TODO: Retrieve endpoints don't have an order ability, so a JS sort until this is available
   if (order) {
-    order.items = order.items.sort((itemA: any, itemB: any) => {
+    order.items = (order.items ?? []).sort((itemA: any, itemB: any) => {
       if (itemA.created_at > itemB.created_at) {
         return 1
       }
@@ -78,7 +77,6 @@ export const OrderDetail = () => {
         <ActiveOrderReturnSection orderPreview={orderPreview!} />
         <OrderGeneralSection order={order} />
         <OrderSummarySection order={order} />
-        <OrderPaymentSection order={order} />
         <OrderFulfillmentSection order={order} />
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>

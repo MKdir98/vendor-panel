@@ -29,9 +29,9 @@ export const getOrderStatus = (
 
 export const getOrderPaymentStatus = (
   t: TFunction<"translation">,
-  status: string
+  status?: string
 ) => {
-  const [label, color] = {
+  const statusMap: Record<string, [string, "red" | "orange" | "green"]> = {
     pending: [t("orders.status.pending"), "red"],
     authorized: [t("orders.payment.status.authorized"), "orange"],
     partially_authorized: [
@@ -51,16 +51,33 @@ export const getOrderPaymentStatus = (
     ],
     canceled: [t("orders.payment.status.canceled"), "red"],
     requires_action: [t("orders.payment.status.requiresAction"), "orange"],
-  }[status] as [string, "red" | "orange" | "green"]
-
+  }
+  const [label = "-", color = "orange"] =
+    (status && statusMap[status]) ?? ["-", "orange"]
   return { label, color }
+}
+
+export const hasUnfulfilledItems = (order: {
+  items?: Array<{
+    quantity?: number
+    raw_quantity?: number | string
+    detail?: { fulfilled_quantity?: number; raw_fulfilled_quantity?: number | string }
+  }>
+}) => {
+  const items = order.items ?? []
+  return items.some((item) => {
+    const fulfilled =
+      item.detail?.fulfilled_quantity ?? item.detail?.raw_fulfilled_quantity ?? 0
+    const quantity = item.quantity ?? item.raw_quantity ?? 0
+    return Number(fulfilled) < Number(quantity)
+  })
 }
 
 export const getOrderFulfillmentStatus = (
   t: TFunction<"translation">,
-  status: string
+  status?: string
 ) => {
-  const [label, color] = {
+  const statusMap: Record<string, [string, "red" | "orange" | "green"]> = {
     not_fulfilled: [t("orders.fulfillment.status.notFulfilled"), "red"],
     partially_fulfilled: [
       t("orders.fulfillment.status.partiallyFulfilled"),
@@ -84,7 +101,8 @@ export const getOrderFulfillmentStatus = (
     returned: [t("orders.fulfillment.status.returned"), "green"],
     canceled: [t("orders.fulfillment.status.canceled"), "red"],
     requires_action: [t("orders.fulfillment.status.requiresAction"), "orange"],
-  }[status] as [string, "red" | "orange" | "green"]
-
+  }
+  const [label = "-", color = "orange"] =
+    (status && statusMap[status]) ?? ["-", "orange"]
   return { label, color }
 }

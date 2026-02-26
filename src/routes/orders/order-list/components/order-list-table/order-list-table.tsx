@@ -1,5 +1,6 @@
 import { Container, Heading } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
+import { Link } from "react-router-dom"
 
 import { _DataTable } from "../../../../../components/table/data-table/data-table"
 import { useOrders } from "../../../../../hooks/api/orders"
@@ -57,6 +58,11 @@ export const OrderListTable = () => {
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>{t("orders.domain")}</Heading>
+        <Link to="/orders/postex-collection">
+          <span className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover text-sm">
+            {t("orders.postexCollection.title")}
+          </span>
+        </Link>
       </div>
       <_DataTable
         columns={columns}

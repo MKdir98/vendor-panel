@@ -19,7 +19,7 @@ import { useDate } from "../../../../../hooks/use-date"
 import {
   getCanceledOrderStatus,
   getOrderFulfillmentStatus,
-  getOrderPaymentStatus,
+  hasUnfulfilledItems,
 } from "../../../../../lib/order-helpers"
 
 type OrderGeneralSectionProps = {
@@ -83,12 +83,11 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
           })}
         </Text>
       </div>
-      <div className="flex items-center gap-x-4">
-        <div className="flex items-center gap-x-1.5">
-          <OrderBadge order={order} />
-          <PaymentBadge order={order} />
-          <FulfillmentBadge order={order} />
-        </div>
+        <div className="flex items-center gap-x-4">
+          <div className="flex items-center gap-x-1.5">
+            <OrderBadge order={order} />
+            <FulfillmentBadge order={order} />
+          </div>
         <ActionMenu
           groups={[
             {
@@ -96,7 +95,11 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
                 {
                   label: t("actions.complete"),
                   onClick: handleComplete,
-                  disabled: order.status !== "pending",
+                  disabled:
+                    order.status !== "pending" || hasUnfulfilledItems(order),
+                  disabledTooltip: hasUnfulfilledItems(order)
+                    ? t("orders.fulfillment.completeDisabledUnfulfilled")
+                    : undefined,
                   icon: <CheckCircle />,
                 },
                 {
@@ -122,18 +125,6 @@ const FulfillmentBadge = ({ order }: { order: HttpTypes.AdminOrder }) => {
     t,
     order.fulfillment_status
   )
-
-  return (
-    <StatusBadge color={color} className="text-nowrap">
-      {label}
-    </StatusBadge>
-  )
-}
-
-const PaymentBadge = ({ order }: { order: HttpTypes.AdminOrder }) => {
-  const { t } = useTranslation()
-
-  const { label, color } = getOrderPaymentStatus(t, order.payment_status)
 
   return (
     <StatusBadge color={color} className="text-nowrap">

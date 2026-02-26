@@ -293,6 +293,29 @@ export const useCreateOrderShipment = (
   })
 }
 
+export const usePostexCollection = (
+  options?: UseMutationOptions<
+    { shipments: Array<{ order_id: string; fulfillment_id: string; tracking_number: string; label_url: string }>; errors?: Array<{ order_id: string; message: string }> },
+    FetchError,
+    { order_ids: string[] }
+  >
+) => {
+  return useMutation({
+    mutationFn: (payload: { order_ids: string[] }) =>
+      fetchQuery("/vendor/orders/postex-collection", {
+        method: "POST",
+        body: payload,
+      }),
+    onSuccess: (data: any, variables: any, context: any) => {
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.all,
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useMarkOrderFulfillmentAsDelivered = (
   orderId: string,
   fulfillmentId: string,

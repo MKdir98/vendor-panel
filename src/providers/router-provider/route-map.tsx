@@ -481,6 +481,11 @@ export const RouteMap: RouteObject[] = [
                 lazy: () => import("../../routes/orders/order-list"),
               },
               {
+                path: "postex-collection",
+                lazy: () =>
+                  import("../../routes/orders/postex-collection"),
+              },
+              {
                 path: ":id",
                 lazy: async () => {
                   const { Component, Breadcrumb, loader } = await import(

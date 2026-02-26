@@ -58,7 +58,7 @@ export const fetchQuery = async (
     query,
     headers,
   }: {
-    method: "GET" | "POST" | "DELETE"
+    method: "GET" | "POST" | "PATCH" | "DELETE"
     body?: object
     query?: Record<string, string | number>
     headers?: { [key: string]: string }

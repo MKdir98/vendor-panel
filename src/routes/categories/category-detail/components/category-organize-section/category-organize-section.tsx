@@ -1,6 +1,6 @@
 import { FolderIllustration, TriangleRightMini } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Badge, Container, Heading, Text, Tooltip } from "@medusajs/ui"
+import { Badge, Button, Container, Heading, Text, Tooltip } from "@medusajs/ui"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Link } from "react-router-dom"
@@ -33,7 +33,14 @@ export const CategoryOrganizeSection = ({
         <Text size="small" leading="compact" weight="plus">
           {t("categories.fields.children.label")}
         </Text>
-        <ChildrenDisplay category={category} />
+        <div className="flex flex-col gap-2">
+          <ChildrenDisplay category={category} />
+          <Button size="small" variant="secondary" asChild>
+            <Link to={`/categories/create?parent_category_id=${category.id}`}>
+              {t("categories.actions.addSubcategory")}
+            </Link>
+          </Button>
+        </div>
       </div>
     </Container>
   )
