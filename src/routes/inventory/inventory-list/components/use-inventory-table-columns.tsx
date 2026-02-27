@@ -5,6 +5,7 @@ import { createColumnHelper } from "@tanstack/react-table"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../../../../components/table/table-cells/common/placeholder-cell"
+import { getInventoryItemDisplayTitle } from "../../common/constants"
 import { InventoryActions } from "./inventory-actions"
 
 /**
@@ -51,10 +52,11 @@ export const useInventoryTableColumns = () => {
           )
         },
       }),
-      columnHelper.accessor("title", {
+      columnHelper.display({
+        id: "title",
         header: t("fields.title"),
-        cell: ({ getValue }) => {
-          const title = getValue()
+        cell: ({ row }) => {
+          const title = getInventoryItemDisplayTitle(row.original)
 
           if (!title) {
             return <PlaceholderCell />

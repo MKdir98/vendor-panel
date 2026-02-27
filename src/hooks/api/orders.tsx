@@ -293,6 +293,45 @@ export const useCreateOrderShipment = (
   })
 }
 
+export const usePostexCollectionOrders = (
+  options?: Omit<
+    UseQueryOptions<
+      {
+        orders: Array<{
+          id: string
+          display_id?: number
+          email?: string
+          total?: number | { value: string }
+          currency_code?: string
+          items_summary?: string
+        }>
+      },
+      FetchError,
+      {
+        orders: Array<{
+          id: string
+          display_id?: number
+          email?: string
+          total?: number | { value: string }
+          currency_code?: string
+          items_summary?: string
+        }>
+      },
+      QueryKey
+    >,
+    "queryFn" | "queryKey"
+  >
+) => {
+  return useQuery({
+    queryFn: () =>
+      fetchQuery("/vendor/postex-collection/orders", {
+        method: "GET",
+      }),
+    queryKey: [...ordersQueryKeys.all, "postex-collection"],
+    ...options,
+  })
+}
+
 export const usePostexCollection = (
   options?: UseMutationOptions<
     { shipments: Array<{ order_id: string; fulfillment_id: string; tracking_number: string; label_url: string }>; errors?: Array<{ order_id: string; message: string }> },
@@ -302,13 +341,16 @@ export const usePostexCollection = (
 ) => {
   return useMutation({
     mutationFn: (payload: { order_ids: string[] }) =>
-      fetchQuery("/vendor/orders/postex-collection", {
+      fetchQuery("/vendor/postex-collection/orders", {
         method: "POST",
         body: payload,
       }),
     onSuccess: (data: any, variables: any, context: any) => {
       queryClient.invalidateQueries({
         queryKey: ordersQueryKeys.all,
+      })
+      queryClient.invalidateQueries({
+        queryKey: [...ordersQueryKeys.all, "postex-collection"],
       })
       options?.onSuccess?.(data, variables, context)
     },

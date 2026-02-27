@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../components/common/action-menu"
 import { SectionRow } from "../../../../components/common/section"
+import { getInventoryItemDisplayTitle } from "../../common/constants"
 
 type InventoryItemGeneralSectionProps = {
   inventoryItem: HttpTypes.AdminInventoryItemResponse["inventory_item"]
@@ -30,7 +31,7 @@ export const InventoryItemGeneralSection = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <Heading>
-          {inventoryItem.title ?? inventoryItem.sku} {t("fields.details")}
+          {getInventoryItemDisplayTitle(inventoryItem)} {t("fields.details")}
         </Heading>
         <ActionMenu
           groups={[

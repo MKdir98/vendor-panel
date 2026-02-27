@@ -77,7 +77,8 @@ export const fetchQuery = async (
     },
     ""
   )
-  const response = await fetch(`${backendUrl}${url}${params && `?${params}`}`, {
+  const fullUrl = `${backendUrl}${url}${params && `?${params}`}`
+  const response = await fetch(fullUrl, {
     method: method,
     headers: {
       authorization: `Bearer ${bearer}`,
@@ -94,4 +95,24 @@ export const fetchQuery = async (
   }
 
   return response.json()
+}
+
+export const fetchPdfWithAuth = async (path: string): Promise<Blob> => {
+  const bearer =
+    (typeof window !== "undefined" &&
+      window.localStorage.getItem("medusa_auth_token")) ||
+    ""
+  const fullUrl = `${backendUrl.replace(/\/$/, "")}${path}`
+  const response = await fetch(fullUrl, {
+    method: "GET",
+    headers: {
+      authorization: `Bearer ${bearer}`,
+      "x-publishable-api-key": publishableApiKey,
+    },
+  })
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}))
+    throw new Error(err.message || "Failed to fetch PDF")
+  }
+  return response.blob()
 }

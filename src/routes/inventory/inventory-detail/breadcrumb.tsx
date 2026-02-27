@@ -2,6 +2,7 @@ import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 
 import { useInventoryItem } from "../../../hooks/api"
+import { getInventoryItemDisplayTitle } from "../common/constants"
 import { INVENTORY_DETAIL_FIELDS } from "./constants"
 
 type InventoryDetailBreadcrumbProps =
@@ -27,5 +28,9 @@ export const InventoryDetailBreadcrumb = (
     return null
   }
 
-  return <span>{inventory_item.title ?? inventory_item.sku ?? id}</span>
+  return (
+    <span>
+      {getInventoryItemDisplayTitle(inventory_item) || id}
+    </span>
+  )
 }

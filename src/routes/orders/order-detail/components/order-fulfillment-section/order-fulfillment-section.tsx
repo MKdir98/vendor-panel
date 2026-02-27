@@ -17,6 +17,7 @@ import {
   toast,
   usePrompt,
 } from "@medusajs/ui"
+import { useState } from "react"
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
@@ -28,9 +29,11 @@ import {
   useMarkOrderFulfillmentAsDelivered,
 } from "../../../../../hooks/api/orders"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
+import {
+  fetchPdfWithAuth,
+} from "../../../../../lib/client/client"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
-import { FulfillmentSetType } from "../../../../locations/common/constants"
 
 type OrderFulfillmentSectionProps = {
   order: AdminOrder
@@ -194,6 +197,52 @@ const UnfulfilledItemDisplay = ({
   )
 }
 
+const PrintLabelButton = ({
+  orderId,
+  fulfillmentId,
+  label,
+}: {
+  orderId: string
+  fulfillmentId: string
+  label: string
+}) => {
+  const [loading, setLoading] = useState(false)
+
+  const handleClick = async () => {
+    setLoading(true)
+    try {
+      const blob = await fetchPdfWithAuth(
+        `/vendor/orders/${orderId}/fulfillments/${fulfillmentId}/postex-label`
+      )
+      const url = URL.createObjectURL(blob)
+      window.open(url, "_blank")
+      setTimeout(() => URL.revokeObjectURL(url), 60000)
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to fetch label")
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Button
+      variant="secondary"
+      size="small"
+      onClick={handleClick}
+      disabled={loading}
+      isLoading={loading}
+    >
+      {label}
+    </Button>
+  )
+}
+
+type FulfillmentWithItems = AdminOrderFulfillment & {
+  items?: Array<{ line_item_id: string; quantity: number; title: string }>
+  fulfillment_items?: Array<{ line_item_id: string; quantity: number; title: string }>
+  labels?: Array<{ url?: string; label_url?: string; tracking_number: string }>
+}
+
 const Fulfillment = ({
   fulfillment,
   order,
@@ -204,14 +253,36 @@ const Fulfillment = ({
   index: number
 }) => {
   const { t } = useTranslation()
+  const f = fulfillment as FulfillmentWithItems
+  const fulfillmentItems = Array.isArray(f.items) ? f.items : Array.isArray(f.fulfillment_items) ? f.fulfillment_items : []
+  const fulfillmentLabels = Array.isArray(f.labels) ? f.labels : []
   const prompt = usePrompt()
   const navigate = useNavigate()
 
   const showLocation = !!fulfillment.location_id
 
-  const isPickUpFulfillment =
-    fulfillment.shipping_option?.service_zone.fulfillment_set.type ===
-    FulfillmentSetType.Pickup
+  const fulfillmentExt = fulfillment as { shipping_option_type_id?: string }
+  const shippingOptionType = fulfillmentExt.shipping_option_type_id
+  const isPostexCollection =
+    fulfillment.provider_id?.includes("postex") &&
+    shippingOptionType === "postex-pickup"
+  const isPickUpFulfillment = isPostexCollection
+
+  if (process.env.NODE_ENV === "development") {
+    console.log("[Fulfillment] debug", {
+      fulfillmentId: fulfillment.id,
+      provider_id: fulfillment.provider_id,
+      labels: f.labels,
+      fulfillmentLabelsLength: fulfillmentLabels.length,
+      shipping_option: fulfillment.shipping_option,
+      isPickUpFulfillment,
+      shippingOptionType,
+      isPostexCollection,
+      showPrintButton:
+        fulfillment.provider_id?.includes("postex") &&
+        fulfillmentLabels.length > 0,
+    })
+  }
 
   const { stock_location, isError, error } = useStockLocation(
     fulfillment.location_id!,
@@ -221,24 +292,26 @@ const Fulfillment = ({
     }
   )
 
-  let statusText = fulfillment.requires_shipping
-    ? isPickUpFulfillment
-      ? "Awaiting pickup"
-      : "Awaiting shipping"
-    : "Awaiting delivery"
+  let statusKey = fulfillment.requires_shipping
+    ? isPostexCollection
+      ? "orders.fulfillment.status.awaitingCollection"
+      : isPickUpFulfillment
+        ? "orders.fulfillment.status.awaitingPickup"
+        : "orders.fulfillment.status.awaitingShipping"
+    : "orders.fulfillment.status.awaitingDelivery"
   let statusColor: "blue" | "green" | "red" = "blue"
   let statusTimestamp = fulfillment.created_at
 
   if (fulfillment.canceled_at) {
-    statusText = "Canceled"
+    statusKey = "orders.fulfillment.status.canceled"
     statusColor = "red"
     statusTimestamp = fulfillment.canceled_at
   } else if (fulfillment.delivered_at) {
-    statusText = "Delivered"
+    statusKey = "orders.fulfillment.status.delivered"
     statusColor = "green"
     statusTimestamp = fulfillment.delivered_at
   } else if (fulfillment.shipped_at) {
-    statusText = "Shipped"
+    statusKey = "orders.fulfillment.status.shipped"
     statusColor = "green"
     statusTimestamp = fulfillment.shipped_at
   }
@@ -331,7 +404,7 @@ const Fulfillment = ({
             )}
           >
             <StatusBadge color={statusColor} className="text-nowrap">
-              {statusText}
+              {t(statusKey)}
             </StatusBadge>
           </Tooltip>
           <ActionMenu
@@ -355,7 +428,7 @@ const Fulfillment = ({
           {t("orders.fulfillment.itemsLabel")}
         </Text>
         <ul>
-          {fulfillment.items.map((f_item) => (
+          {fulfillmentItems.map((f_item) => (
             <li key={f_item.line_item_id}>
               <Text size="small" leading="compact">
                 {f_item.quantity}x {f_item.title}
@@ -396,18 +469,23 @@ const Fulfillment = ({
         <Text size="small" leading="compact" weight="plus">
           {t("orders.fulfillment.trackingLabel")}
         </Text>
-        <div>
-          {fulfillment.labels && fulfillment.labels.length > 0 ? (
+        <div className="flex flex-col gap-2">
+          {fulfillmentLabels.length > 0 ? (
             <ul>
-              {fulfillment.labels.map((tlink) => {
-                const hasUrl =
-                  tlink.url && tlink.url.length > 0 && tlink.url !== "#"
+              {fulfillmentLabels.map((tlink) => {
+                const trackingUrl =
+                  (tlink as { tracking_url?: string }).tracking_url ||
+                  tlink.url
+                const hasTrackingUrl =
+                  trackingUrl &&
+                  trackingUrl.length > 0 &&
+                  trackingUrl !== "#"
 
-                if (hasUrl) {
+                if (hasTrackingUrl) {
                   return (
                     <li key={tlink.tracking_number}>
                       <a
-                        href={tlink.url}
+                        href={trackingUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
@@ -434,6 +512,13 @@ const Fulfillment = ({
               -
             </Text>
           )}
+          {fulfillment.provider_id?.includes("postex") && (
+              <PrintLabelButton
+                orderId={order.id}
+                fulfillmentId={fulfillment.id}
+                label={t("orders.fulfillment.printLabel")}
+              />
+            )}
         </div>
       </div>
 

@@ -482,8 +482,10 @@ export const RouteMap: RouteObject[] = [
               },
               {
                 path: "postex-collection",
-                lazy: () =>
-                  import("../../routes/orders/postex-collection"),
+                lazy: async () => {
+                  const mod = await import("../../routes/orders/postex-collection")
+                  return { Component: mod.default ?? mod.Component }
+                },
               },
               {
                 path: ":id",
