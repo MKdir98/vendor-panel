@@ -1,5 +1,4 @@
 import { Container, Heading, Text } from "@medusajs/ui"
-import { Inbox } from "@talkjs/react"
 
 export const Messages = () => {
   return (
@@ -11,16 +10,12 @@ export const Messages = () => {
       </div>
 
       <div className="px-6 py-4 h-[655px]">
-        {__TALK_JS_APP_ID__ ? (
-          <Inbox className="h-full" />
-        ) : (
-          <div className="flex flex-col items-center w-full h-full justify-center">
-            <Heading>No TalkJS App ID</Heading>
-            <Text className="text-ui-fg-subtle mt-4" size="small">
-              Connect TalkJS to manage your messages
-            </Text>
-          </div>
-        )}
+        <div className="flex flex-col items-center w-full h-full justify-center">
+          <Heading>Messages are disabled</Heading>
+          <Text className="text-ui-fg-subtle mt-4" size="small">
+            TalkJS is currently disabled.
+          </Text>
+        </div>
       </div>
     </Container>
   )

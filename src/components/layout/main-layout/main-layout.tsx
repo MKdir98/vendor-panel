@@ -29,7 +29,6 @@ import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
 import { StripeIcon } from "../../../assets/icons/Stripe"
 import { ImageAvatar } from "../../common/image-avatar"
-import { useUnreads } from "@talkjs/react"
 
 export const MainLayout = () => {
   return (
@@ -99,8 +98,7 @@ const Header = () => {
 
 const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { t } = useTranslation()
-
-  const unreadMessages = useUnreads()
+  const unreadMessages = 0
 
   return [
     {
@@ -185,7 +183,7 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
     },
     {
       icon: <ChatBubbleLeftRight />,
-      label: `Messages ${unreadMessages?.length && unreadMessages?.length > 0 ? `(${unreadMessages?.length})` : ""}`,
+      label: `Messages ${unreadMessages > 0 ? `(${unreadMessages})` : ""}`,
       to: "/messages",
     },
     {
