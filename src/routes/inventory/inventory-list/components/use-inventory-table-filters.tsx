@@ -46,25 +46,25 @@ export const useInventoryTableFilters = () => {
   filters.push({
     type: "number",
     key: "height",
-    label: t("fields.height"),
+    label: `${t("fields.height")} (cm)`,
   })
 
   filters.push({
     type: "number",
     key: "width",
-    label: t("fields.width"),
+    label: `${t("fields.width")} (cm)`,
   })
 
   filters.push({
     type: "number",
     key: "length",
-    label: t("fields.length"),
+    label: `${t("fields.length")} (cm)`,
   })
 
   filters.push({
     type: "number",
     key: "weight",
-    label: t("fields.weight"),
+    label: `${t("fields.weight")} (g)`,
   })
 
   filters.push({

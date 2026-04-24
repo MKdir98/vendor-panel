@@ -111,7 +111,7 @@ export const ProductCreateAttributeSection = ({
             return (
               <Form.Item>
                 <Form.Label>
-                  {t("products.fields.weight.label")} (kg)
+                  {t("products.fields.weight.label")} (g)
                 </Form.Label>
                 <Form.Control>
                   <Input {...field} type="number" min={0} step="0.001" placeholder="0" />

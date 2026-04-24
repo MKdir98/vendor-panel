@@ -34,10 +34,10 @@ export const InventoryItemAttributeSection = ({
           ]}
         />
       </div>
-      <SectionRow title={t("fields.height")} value={inventoryItem.height} />
-      <SectionRow title={t("fields.width")} value={inventoryItem.width} />
-      <SectionRow title={t("fields.length")} value={inventoryItem.length} />
-      <SectionRow title={t("fields.weight")} value={inventoryItem.weight} />
+      <SectionRow title={`${t("fields.height")} (cm)`} value={inventoryItem.height} />
+      <SectionRow title={`${t("fields.width")} (cm)`} value={inventoryItem.width} />
+      <SectionRow title={`${t("fields.length")} (cm)`} value={inventoryItem.length} />
+      <SectionRow title={`${t("fields.weight")} (g)`} value={inventoryItem.weight} />
       <SectionRow title={t("fields.midCode")} value={inventoryItem.mid_code} />
       <SectionRow title={t("fields.hsCode")} value={inventoryItem.hs_code} />
       <SectionRow

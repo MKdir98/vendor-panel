@@ -35,10 +35,10 @@ export const ProductAttributeSection = ({
           ]}
         />
       </div>
-      <SectionRow title={t("fields.height")} value={product.height} />
-      <SectionRow title={t("fields.width")} value={product.width} />
-      <SectionRow title={t("fields.length")} value={product.length} />
-      <SectionRow title={t("fields.weight")} value={product.weight} />
+      <SectionRow title={`${t("fields.height")} (cm)`} value={product.height} />
+      <SectionRow title={`${t("fields.width")} (cm)`} value={product.width} />
+      <SectionRow title={`${t("fields.length")} (cm)`} value={product.length} />
+      <SectionRow title={`${t("fields.weight")} (g)`} value={product.weight} />
       <SectionRow title={t("fields.midCode")} value={product.mid_code} />
       <SectionRow title={t("fields.hsCode")} value={product.hs_code} />
       <SectionRow

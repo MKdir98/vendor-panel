@@ -266,7 +266,7 @@ export const ProductEditVariantForm = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label optional>{t("fields.weight")}</Form.Label>
+                    <Form.Label optional>{t("fields.weight")} (g)</Form.Label>
                     <Form.Control>
                       <Input type="number" {...field} />
                     </Form.Control>
@@ -281,7 +281,7 @@ export const ProductEditVariantForm = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label optional>{t("fields.width")}</Form.Label>
+                    <Form.Label optional>{t("fields.width")} (cm)</Form.Label>
                     <Form.Control>
                       <Input type="number" {...field} />
                     </Form.Control>
@@ -296,7 +296,7 @@ export const ProductEditVariantForm = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label optional>{t("fields.length")}</Form.Label>
+                    <Form.Label optional>{t("fields.length")} (cm)</Form.Label>
                     <Form.Control>
                       <Input type="number" {...field} />
                     </Form.Control>
@@ -311,7 +311,7 @@ export const ProductEditVariantForm = ({
               render={({ field }) => {
                 return (
                   <Form.Item>
-                    <Form.Label optional>{t("fields.height")}</Form.Label>
+                    <Form.Label optional>{t("fields.height")} (cm)</Form.Label>
                     <Form.Control>
                       <Input type="number" {...field} />
                     </Form.Control>

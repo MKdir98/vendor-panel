@@ -327,7 +327,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                         return (
                           <Form.Item>
                             <Form.Label optional>
-                              {t("products.fields.width.label")}
+                              {t("products.fields.width.label")} (cm)
                             </Form.Label>
                             <Form.Control>
                               <Input
@@ -349,7 +349,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                         return (
                           <Form.Item>
                             <Form.Label optional>
-                              {t("products.fields.length.label")}
+                              {t("products.fields.length.label")} (cm)
                             </Form.Label>
                             <Form.Control>
                               <Input
@@ -371,7 +371,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                         return (
                           <Form.Item>
                             <Form.Label optional>
-                              {t("products.fields.height.label")}
+                              {t("products.fields.height.label")} (cm)
                             </Form.Label>
                             <Form.Control>
                               <Input
@@ -393,7 +393,7 @@ export function InventoryCreateForm({ locations }: InventoryCreateFormProps) {
                         return (
                           <Form.Item>
                             <Form.Label optional>
-                              {t("products.fields.weight.label")}
+                              {t("products.fields.weight.label")} (g)
                             </Form.Label>
                             <Form.Control>
                               <Input
