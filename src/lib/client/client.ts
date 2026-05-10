@@ -1,13 +1,30 @@
-import Medusa from "@medusajs/js-sdk"
+import Medusa, { type Config } from "@medusajs/js-sdk"
+import { getBackendUrl, getPublishableApiKey } from "../app-config"
 
-export const backendUrl = __BACKEND_URL__ ?? "/"
-export const publishableApiKey = __PUBLISHABLE_API_KEY__ ?? ""
+export { getBackendUrl, getPublishableApiKey } from "../app-config"
 
-const token = window.localStorage.getItem("medusa_auth_token") || ""
+const token = () => window.localStorage.getItem("medusa_auth_token") || ""
 
-export const sdk = new Medusa({
-  baseUrl: backendUrl,
-  publishableKey: publishableApiKey,
+let _sdk: Medusa | null = null
+
+function getOrCreateSdk(): Medusa {
+  if (!_sdk) {
+    const config: Config = {
+      baseUrl: getBackendUrl() || "/",
+      publishableKey: getPublishableApiKey(),
+      debug: import.meta.env.DEV,
+    }
+    _sdk = new Medusa(config)
+  }
+  return _sdk
+}
+
+export const sdk = new Proxy({} as Medusa, {
+  get(_, prop) {
+    return (getOrCreateSdk() as unknown as Record<string | symbol, unknown>)[
+      prop
+    ]
+  },
 })
 
 // useful when you want to call the BE from the console and try things out quickly
@@ -18,14 +35,16 @@ if (typeof window !== "undefined") {
 export const importProductsQuery = async (file: File) => {
   const formData = new FormData()
   formData.append("file", file)
+  const backendUrl = getBackendUrl()
+  const publishableApiKey = getPublishableApiKey()
 
   return await fetch(`${backendUrl}/vendor/products/import`, {
     method: "POST",
-    body: formData,
     headers: {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token()}`,
       "x-publishable-api-key": publishableApiKey,
     },
+    body: formData,
   })
     .then((res) => res.json())
     .catch(() => null)
@@ -33,6 +52,8 @@ export const importProductsQuery = async (file: File) => {
 
 export const uploadFilesQuery = async (files: any[]) => {
   const formData = new FormData()
+  const backendUrl = getBackendUrl()
+  const publishableApiKey = getPublishableApiKey()
 
   for (const { file } of files) {
     formData.append("files", file)
@@ -40,11 +61,11 @@ export const uploadFilesQuery = async (files: any[]) => {
 
   return await fetch(`${backendUrl}/vendor/uploads`, {
     method: "POST",
-    body: formData,
     headers: {
-      authorization: `Bearer ${token}`,
+      authorization: `Bearer ${token()}`,
       "x-publishable-api-key": publishableApiKey,
     },
+    body: formData,
   })
     .then((res) => res.json())
     .catch(() => null)
@@ -64,6 +85,8 @@ export const fetchQuery = async (
     headers?: { [key: string]: string }
   }
 ) => {
+  const backendUrl = getBackendUrl()
+  const publishableApiKey = getPublishableApiKey()
   const bearer = (await window.localStorage.getItem("medusa_auth_token")) || ""
   const params = Object.entries(query || {}).reduce(
     (acc, [key, value], index) => {
@@ -98,6 +121,8 @@ export const fetchQuery = async (
 }
 
 export const fetchPdfWithAuth = async (path: string): Promise<Blob> => {
+  const backendUrl = getBackendUrl()
+  const publishableApiKey = getPublishableApiKey()
   const bearer =
     (typeof window !== "undefined" &&
       window.localStorage.getItem("medusa_auth_token")) ||

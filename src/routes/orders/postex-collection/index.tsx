@@ -14,7 +14,7 @@ import {
   usePostexCollection,
   usePostexCollectionOrders,
 } from "../../../hooks/api/orders"
-import { backendUrl } from "../../../lib/client/client"
+import { getBackendUrl } from "../../../lib/client/client"
 import { getLocaleAmount } from "../../../lib/money-amount-helpers"
 
 const PostexCollection = () => {
@@ -82,7 +82,7 @@ const PostexCollection = () => {
   }
 
   const getLabelFullUrl = (path: string) =>
-    `${backendUrl.replace(/\/$/, "")}${path}`
+    `${getBackendUrl().replace(/\/$/, "")}${path}`
 
   if (isError) throw error
 

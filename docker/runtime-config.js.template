@@ -1,0 +1,8 @@
+window.__VENDOR_RUNTIME__={
+  "base":"${VITE_MEDUSA_BASE}",
+  "backendUrl":"${VITE_MEDUSA_BACKEND_URL}",
+  "storefrontUrl":"${VITE_MEDUSA_STOREFRONT_URL}",
+  "publishableApiKey":"${VITE_PUBLISHABLE_API_KEY}",
+  "talkJsAppId":"${VITE_TALK_JS_APP_ID}",
+  "disableSellersRegistration":"${VITE_DISABLE_SELLERS_REGISTRATION}"
+};

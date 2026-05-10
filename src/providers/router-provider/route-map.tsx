@@ -12,7 +12,8 @@ import { taxRegionLoader } from "../../routes/tax-regions/tax-region-detail/load
 import { RouteExtensions } from "./route-extensions"
 import { SettingsExtensions } from "./settings-extensions"
 
-export const RouteMap: RouteObject[] = [
+export function getRouteMap(): RouteObject[] {
+  return [
   {
     element: <ProtectedRoute />,
     errorElement: <ErrorBoundary />,
@@ -1888,10 +1889,7 @@ export const RouteMap: RouteObject[] = [
           },
           {
             path: "/register",
-            lazy:
-              __DISABLE_SELLERS_REGISTRATION__ === "false"
-                ? () => import("../../routes/register")
-                : undefined,
+            lazy: () => import("../../routes/register"),
           },
           {
             path: "/reset-password",
@@ -1917,3 +1915,4 @@ export const RouteMap: RouteObject[] = [
     ],
   },
 ]
+}

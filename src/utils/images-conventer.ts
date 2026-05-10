@@ -1,4 +1,4 @@
-import { backendUrl } from "../lib/client"
+import { getBackendUrl } from "../lib/client"
 
 export default function imagesConverter(images: string) {
   const isLocalhost =
@@ -7,8 +7,8 @@ export default function imagesConverter(images: string) {
 
   if (isLocalhost) {
     return images
-      .replace("http://localhost:9000", backendUrl)
-      .replace("https://localhost:9000", backendUrl)
+      .replace("http://localhost:9000", getBackendUrl())
+      .replace("https://localhost:9000", getBackendUrl())
   }
 
   return images

@@ -9,6 +9,7 @@ import AvatarBox from "../../components/common/logo-box/avatar-box"
 import { useDashboardExtension } from "../../extensions"
 import { useSignInWithEmailPass } from "../../hooks/api"
 import { isFetchError } from "../../lib/is-fetch-error"
+import { getDisableSellersRegistration } from "../../lib/app-config"
 
 const LoginSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -160,7 +161,7 @@ export const Login = () => {
             return <Component key={i} />
           })}
         </div>
-        {__DISABLE_SELLERS_REGISTRATION__ === "false" && (
+        {getDisableSellersRegistration() === "false" && (
           <span className="text-ui-fg-muted txt-small my-6">
             Don't have an account yet?{" "}
             <Link

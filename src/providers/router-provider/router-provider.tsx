@@ -2,13 +2,19 @@ import {
   RouterProvider as Provider,
   createBrowserRouter,
 } from "react-router-dom"
+import { useMemo } from "react"
 
-import { RouteMap } from "./route-map"
-
-const router = createBrowserRouter(RouteMap, {
-  basename: __BASE__ || "/",
-})
+import { getAppBase } from "../../lib/app-config"
+import { getRouteMap } from "./route-map"
 
 export const RouterProvider = () => {
+  const router = useMemo(
+    () =>
+      createBrowserRouter(getRouteMap(), {
+        basename: getAppBase() || "/",
+      }),
+    []
+  )
+
   return <Provider router={router} />
 }

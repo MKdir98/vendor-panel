@@ -2,7 +2,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Alert, Button, Heading, Hint, Input, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Trans, useTranslation } from "react-i18next"
-import { Link } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
+import { getDisableSellersRegistration } from "../../lib/app-config"
 import * as z from "zod"
 
 import { Form } from "../../components/common/form"
@@ -21,6 +22,10 @@ const createRegisterSchema = (t: any) => z.object({
 })
 
 export const Register = () => {
+  if (getDisableSellersRegistration() !== "false") {
+    return <Navigate to="/login" replace />
+  }
+
   const [success, setSuccess] = useState(false)
   const { t } = useTranslation()
 

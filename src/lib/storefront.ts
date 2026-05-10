@@ -1,2 +1,5 @@
-export const MEDUSA_STOREFRONT_URL =
-  __STOREFRONT_URL__ ?? "http://localhost:8000"
+import { getStorefrontUrl } from "./app-config"
+
+export function getMedusaStorefrontUrl(): string {
+  return getStorefrontUrl()
+}
