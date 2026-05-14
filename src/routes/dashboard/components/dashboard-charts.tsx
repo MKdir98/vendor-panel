@@ -84,17 +84,13 @@ const generateChartData = ({
 export const DashboardCharts = ({
   notFulfilledOrders,
   fulfilledOrders,
-  reviewsToReply,
 }: {
   notFulfilledOrders: number
   fulfilledOrders: number
-  reviewsToReply: any[]
 }) => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [filters, setFilters] = useState(["customers", "orders"])
-
-  const unreadMessagesCount = 0
 
   const from = (searchParams.get("from") ||
     format(addDays(new Date(), -7), "yyyy-MM-dd")) as unknown as Date
@@ -149,7 +145,7 @@ export const DashboardCharts = ({
             </Text>
           </div>
         </div>
-        <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Link to="/orders?order_status=not_fulfilled">
             <Button
               variant="secondary"
@@ -174,29 +170,7 @@ export const DashboardCharts = ({
               <TriangleRightMini color="grey" />
             </Button>
           </Link>
-          <Link to="/reviews?seller_note=false">
-            <Button
-              variant="secondary"
-              className="w-full justify-between py-4 h-full"
-            >
-              <div className="flex gap-4 items-center">
-                <Badge>{reviewsToReply}</Badge>
-                Reviews to reply
-              </div>
-              <TriangleRightMini color="grey" />
-            </Button>
-          </Link>
-          <Link to="/messages">
-            <Button
-              variant="secondary"
-              className="w-full justify-between py-4 h-full h-full"
-            >
-              <div className="flex gap-4 items-center">
-                <Badge>{unreadMessagesCount}</Badge>Unread messages
-              </div>
-              <TriangleRightMini color="grey" />
-            </Button>
-          </Link>
+
         </div>
       </Container>
       <Container className="divide-y p-0 mt-2">

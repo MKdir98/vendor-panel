@@ -1,5 +1,6 @@
 import { Photo } from "@medusajs/icons"
 import { clx } from "@medusajs/ui"
+import imagesConverter from "../../../utils/images-conventer"
 
 type ThumbnailProps = {
   src?: string | null
@@ -8,6 +9,7 @@ type ThumbnailProps = {
 }
 
 export const Thumbnail = ({ src, alt, size = "base" }: ThumbnailProps) => {
+  const convertedSrc = src ? imagesConverter(src) : src
   return (
     <div
       className={clx(
@@ -19,9 +21,9 @@ export const Thumbnail = ({ src, alt, size = "base" }: ThumbnailProps) => {
         }
       )}
     >
-      {src ? (
+      {convertedSrc ? (
         <img
-          src={src}
+          src={convertedSrc}
           alt={alt}
           className="h-full w-full object-cover object-center"
         />

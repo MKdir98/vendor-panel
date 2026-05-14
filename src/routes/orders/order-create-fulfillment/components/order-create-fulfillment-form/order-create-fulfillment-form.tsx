@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 
 import { AdminOrder, HttpTypes } from "@medusajs/types"
-import { Alert, Button, Select, Switch, toast } from "@medusajs/ui"
+import { Alert, Button, Select, toast } from "@medusajs/ui"
 import { useForm, useWatch } from "react-hook-form"
 
 import { OrderLineItemDTO } from "@medusajs/types"
@@ -68,7 +68,6 @@ export function OrderCreateFulfillmentForm({
         },
         {} as Record<string, number>
       ),
-      send_notification: true,
     },
     resolver: zodResolver(CreateFulfillmentSchema),
   })
@@ -379,36 +378,6 @@ export function OrderCreateFulfillmentForm({
                   )}
                 </div>
 
-                <div className="mt-8 pt-8 ">
-                  <Form.Field
-                    control={form.control}
-                    name="send_notification"
-                    render={({ field: { onChange, value, ...field } }) => {
-                      return (
-                        <Form.Item>
-                          <div className="flex items-center justify-between">
-                            <Form.Label>
-                              {t("orders.returns.sendNotification")}
-                            </Form.Label>
-                            <Form.Control>
-                              <Form.Control>
-                                <Switch
-                                  checked={!!value}
-                                  onCheckedChange={onChange}
-                                  {...field}
-                                />
-                              </Form.Control>
-                            </Form.Control>
-                          </div>
-                          <Form.Hint className="!mt-1">
-                            {t("orders.fulfillment.sendNotificationHint")}
-                          </Form.Hint>
-                          <Form.ErrorMessage />
-                        </Form.Item>
-                      )
-                    }}
-                  />
-                </div>
               </div>
             </div>
           </div>

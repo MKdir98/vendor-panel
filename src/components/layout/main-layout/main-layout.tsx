@@ -2,17 +2,12 @@ import {
   Buildings,
   ChevronDownMini,
   CogSixTooth,
-  CurrencyDollar,
   MagnifyingGlass,
   MinusMini,
-  ReceiptPercent,
   ShoppingCart,
   Tag,
-  Users,
   Component,
-  Star,
   ListCheckbox,
-  ChatBubbleLeftRight,
 } from "@medusajs/icons"
 import { Avatar, Divider, Text, clx } from "@medusajs/ui"
 import { Collapsible as RadixCollapsible } from "radix-ui"
@@ -27,7 +22,6 @@ import { useMe } from "../../../hooks/api"
 
 import { useSearch } from "../../../providers/search-provider"
 import { UserMenu } from "../user-menu"
-import { StripeIcon } from "../../../assets/icons/Stripe"
 import { ImageAvatar } from "../../common/image-avatar"
 
 export const MainLayout = () => {
@@ -98,7 +92,6 @@ const Header = () => {
 
 const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   const { t } = useTranslation()
-  const unreadMessages = 0
 
   return [
     {
@@ -150,43 +143,6 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
       ],
     },
     {
-      icon: <Users />,
-      label: t("customers.domain"),
-      to: "/customers",
-      items: [
-        {
-          label: t("customerGroups.domain"),
-          to: "/customer-groups",
-        },
-      ],
-    },
-    {
-      icon: <ReceiptPercent />,
-      label: t("promotions.domain"),
-      to: "/promotions",
-      items: [
-        {
-          label: t("campaigns.domain"),
-          to: "/campaigns",
-        },
-      ],
-    },
-    {
-      icon: <CurrencyDollar />,
-      label: t("priceLists.domain"),
-      to: "/price-lists",
-    },
-    {
-      icon: <Star />,
-      label: "Reviews",
-      to: "/reviews",
-    },
-    {
-      icon: <ChatBubbleLeftRight />,
-      label: `Messages ${unreadMessages > 0 ? `(${unreadMessages})` : ""}`,
-      to: "/messages",
-    },
-    {
       icon: <ListCheckbox />,
       label: "Requests",
       to: "/requests",
@@ -213,13 +169,7 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
 }
 
 const useExtensionRoutes = (): Omit<INavItem, "pathname">[] => {
-  return [
-    {
-      icon: <StripeIcon />,
-      label: "Stripe Connect",
-      to: "/stripe-connect",
-    },
-  ]
+  return []
 }
 
 const Searchbar = () => {

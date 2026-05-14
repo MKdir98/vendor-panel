@@ -9,6 +9,7 @@ import {
 } from "../../../../../components/common/file-upload"
 import { useUpdateProductCategoryMetadata } from "../../../../../hooks/api/categories"
 import { uploadFilesQuery } from "../../../../../lib/client"
+import imagesConverter from "../../../../../utils/images-conventer"
 
 const SUPPORTED_FORMATS = [
   "image/jpeg",
@@ -34,7 +35,7 @@ export const CategoryGeneralSection = ({
 
   const thumbnailUrl =
     uploadedImage ||
-    (category.metadata as Record<string, string> | undefined)?.thumbnail ||
+    imagesConverter((category.metadata as Record<string, string> | undefined)?.thumbnail || "") ||
     ""
 
   const hasInvalidFiles = useCallback((fileList: FileType[]) => {

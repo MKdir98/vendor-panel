@@ -7,7 +7,6 @@ import { HttpTypes } from "@medusajs/types"
 
 import { Form } from "../../../../../components/common/form/index"
 import { Thumbnail } from "../../../../../components/common/thumbnail/index"
-import { useProductVariant } from "../../../../../hooks/api/products"
 import { getFulfillableQuantity } from "../../../../../lib/order-item"
 import { CreateFulfillmentSchema } from "./constants"
 import { InformationCircleSolid } from "@medusajs/icons"
@@ -31,23 +30,12 @@ export function OrderCreateFulfillmentItem({
 }: OrderEditItemProps) {
   const { t } = useTranslation()
 
-  const { variant } = useProductVariant(
-    item.product_id!,
-    item.variant_id!,
-    {
-      fields: "*inventory,*inventory.location_levels",
-    },
-    {
-      enabled: !!item.variant,
-    }
-  )
-
   const { availableQuantity, inStockQuantity } = useMemo(() => {
-    if (!variant || !locationId) {
+    if (!item.variant || !locationId) {
       return {}
     }
 
-    const { inventory } = variant as any
+    const inventory = (item.variant as any).inventory as any[]
 
     const locationInventory = inventory?.[0]?.location_levels?.find(
       (inv: any) => inv.location_id === locationId
@@ -64,7 +52,7 @@ export function OrderCreateFulfillmentItem({
         locationInventory.available_quantity + reservedQuantityForItem,
       inStockQuantity: locationInventory.stocked_quantity,
     }
-  }, [variant, locationId, itemReservedQuantitiesMap])
+  }, [item.variant, locationId, itemReservedQuantitiesMap])
 
   const minValue = 0
   const maxValue = Math.min(

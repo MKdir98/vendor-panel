@@ -351,7 +351,7 @@ const Item = ({
   const isInventoryManaged = item.variant?.manage_inventory
   const hasUnfulfilledItems = item.quantity - item.detail.fulfilled_quantity > 0
 
-  const original_price = item.variant?.prices?.[0].amount || 0
+  const original_price = (item as any).original_unit_price ?? item.unit_price
   const price = item.unit_price
 
   return (
@@ -419,7 +419,7 @@ const Item = ({
 
           <div className="flex items-center justify-end">
             <Text size="small" className="pt-[1px]">
-              {getLocaleAmount(item.original_total || 0, currencyCode)}
+              {getLocaleAmount(item.subtotal || 0, currencyCode)}
             </Text>
           </div>
         </div>
@@ -678,21 +678,20 @@ const CostBreakdown = ({
           </div>
         )}
       </>
-      {order.commission_value && (
-        <Cost
-          label={"Commission"}
-          value={getLocaleAmount(
-            order.commission_value.amount,
-            order.commission_value.currency_code
-          )}
-        />
-      )}
     </div>
   )
 }
 
-const Total = ({ order }: { order: AdminOrder }) => {
+const Total = ({ order }: { order: AdminOrder & { split_order_payment?: any } }) => {
   const { t } = useTranslation()
+
+  const paidTotal =
+    (order.payment_collections || []).length > 0
+      ? getTotalCaptured(order.payment_collections!)
+      : order.split_order_payment
+        ? (order.split_order_payment.captured_amount || 0) -
+          (order.split_order_payment.refunded_amount || 0)
+        : 0
 
   return (
     <div className=" flex flex-col gap-y-2 px-6 py-4">
@@ -730,10 +729,7 @@ const Total = ({ order }: { order: AdminOrder }) => {
           size="small"
           leading="compact"
         >
-          {getStylizedAmount(
-            getTotalCaptured(order.payment_collections || []),
-            order.currency_code
-          )}
+          {getStylizedAmount(paidTotal, order.currency_code)}
         </Text>
       </div>
     </div>

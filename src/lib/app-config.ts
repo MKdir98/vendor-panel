@@ -35,10 +35,10 @@ export function getAppBase(): string {
 export function getBackendUrl(): string {
   if (import.meta.env.DEV) {
     return (
-      import.meta.env.VITE_MEDUSA_BACKEND_URL || "http://localhost:9000"
+      import.meta.env.VITE_MEDUSA_BACKEND_URL || "https://core.doorfestival.com"
     ).replace(/\/$/, "")
   }
-  return (fromWindow()?.backendUrl || "").replace(/\/$/, "")
+  return (fromWindow()?.backendUrl || "https://core.doorfestival.com").replace(/\/$/, "")
 }
 
 export function getPublishableApiKey(): string {

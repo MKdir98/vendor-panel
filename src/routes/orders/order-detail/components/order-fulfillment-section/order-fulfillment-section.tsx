@@ -240,7 +240,7 @@ const PrintLabelButton = ({
 type FulfillmentWithItems = AdminOrderFulfillment & {
   items?: Array<{ line_item_id: string; quantity: number; title: string }>
   fulfillment_items?: Array<{ line_item_id: string; quantity: number; title: string }>
-  labels?: Array<{ url?: string; label_url?: string; tracking_number: string }>
+  labels?: Array<{ url?: string; label_url?: string; tracking_url?: string; tracking_number: string }>
 }
 
 const Fulfillment = ({
@@ -472,40 +472,13 @@ const Fulfillment = ({
         <div className="flex flex-col gap-2">
           {fulfillmentLabels.length > 0 ? (
             <ul>
-              {fulfillmentLabels.map((tlink) => {
-                const trackingUrl =
-                  (tlink as { tracking_url?: string }).tracking_url ||
-                  tlink.url
-                const hasTrackingUrl =
-                  trackingUrl &&
-                  trackingUrl.length > 0 &&
-                  trackingUrl !== "#"
-
-                if (hasTrackingUrl) {
-                  return (
-                    <li key={tlink.tracking_number}>
-                      <a
-                        href={trackingUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-ui-fg-interactive hover:text-ui-fg-interactive-hover transition-fg"
-                      >
-                        <Text size="small" leading="compact">
-                          {tlink.tracking_number}
-                        </Text>
-                      </a>
-                    </li>
-                  )
-                }
-
-                return (
-                  <li key={tlink.tracking_number}>
-                    <Text size="small" leading="compact">
-                      {tlink.tracking_number}
-                    </Text>
-                  </li>
-                )
-              })}
+              {fulfillmentLabels.map((tlink) => (
+                <li key={tlink.tracking_number}>
+                  <Text size="small" leading="compact">
+                    {tlink.tracking_number}
+                  </Text>
+                </li>
+              ))}
             </ul>
           ) : (
             <Text size="small" leading="compact">
