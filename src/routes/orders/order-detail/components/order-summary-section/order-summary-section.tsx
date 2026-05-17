@@ -685,13 +685,6 @@ const CostBreakdown = ({
 const Total = ({ order }: { order: AdminOrder & { split_order_payment?: any } }) => {
   const { t } = useTranslation()
 
-  const paidTotal =
-    (order.payment_collections || []).length > 0
-      ? getTotalCaptured(order.payment_collections!)
-      : order.split_order_payment
-        ? (order.split_order_payment.captured_amount || 0) -
-          (order.split_order_payment.refunded_amount || 0)
-        : 0
 
   return (
     <div className=" flex flex-col gap-y-2 px-6 py-4">
@@ -711,25 +704,6 @@ const Total = ({ order }: { order: AdminOrder & { split_order_payment?: any } })
           leading="compact"
         >
           {getStylizedAmount(order.total, order.currency_code)}
-        </Text>
-      </div>
-
-      <div className="text-ui-fg-base flex items-center justify-between">
-        <Text
-          weight="plus"
-          className="text-ui-fg-subtle"
-          size="small"
-          leading="compact"
-        >
-          {t("fields.paidTotal")}
-        </Text>
-        <Text
-          weight="plus"
-          className="text-ui-fg-subtle"
-          size="small"
-          leading="compact"
-        >
-          {getStylizedAmount(paidTotal, order.currency_code)}
         </Text>
       </div>
     </div>
