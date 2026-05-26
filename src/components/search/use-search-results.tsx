@@ -26,6 +26,7 @@ import {
   useVariants,
 } from "../../hooks/api"
 import { useReturnReasons } from "../../hooks/api/return-reasons"
+import { orderCode } from "../../lib/order-helpers"
 import { Shortcut, ShortcutType } from "../../providers/keybind-provider"
 import { useGlobalShortcuts } from "../../providers/keybind-provider/hooks"
 import { DynamicSearchResult, SearchArea } from "./types"
@@ -511,7 +512,7 @@ const transformMap: TransformMap = {
     dataKey: "orders",
     transform: (order: HttpTypes.AdminOrder) => ({
       id: order.id,
-      title: `#${order.display_id}`,
+      title: order.display_id ? orderCode(order.display_id) : order.id,
       subtitle: order.email ?? undefined,
       to: `/orders/${order.id}`,
       value: `order:${order.id}`,

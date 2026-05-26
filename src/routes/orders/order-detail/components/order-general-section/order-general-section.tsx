@@ -20,6 +20,7 @@ import {
   getCanceledOrderStatus,
   getOrderFulfillmentStatus,
   hasUnfulfilledItems,
+  orderCode,
 } from "../../../../../lib/order-helpers"
 
 type OrderGeneralSectionProps = {
@@ -49,7 +50,7 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
     const res = await prompt({
       title: t("general.areYouSure"),
       description: t("orders.cancelWarning", {
-        id: `#${order.display_id}`,
+        id: order.display_id ? orderCode(order.display_id) : order.id,
       }),
       confirmText: t("actions.continue"),
       cancelText: t("actions.cancel"),
@@ -73,8 +74,13 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
     <Container className="flex items-center justify-between px-6 py-4">
       <div>
         <div className="flex items-center gap-x-1">
-          <Heading>#{order.display_id}</Heading>
-          <Copy content={`#${order.display_id}`} className="text-ui-fg-muted" />
+          <Heading>
+            {order.display_id ? orderCode(order.display_id) : order.id}
+          </Heading>
+          <Copy
+            content={order.display_id ? orderCode(order.display_id) : order.id}
+            className="text-ui-fg-muted"
+          />
         </div>
         <Text size="small" className="text-ui-fg-subtle">
           {t("orders.onDateFromSalesChannel", {
@@ -83,11 +89,11 @@ export const OrderGeneralSection = ({ order }: OrderGeneralSectionProps) => {
           })}
         </Text>
       </div>
-        <div className="flex items-center gap-x-4">
-          <div className="flex items-center gap-x-1.5">
-            <OrderBadge order={order} />
-            <FulfillmentBadge order={order} />
-          </div>
+      <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-1.5">
+          <OrderBadge order={order} />
+          <FulfillmentBadge order={order} />
+        </div>
         <ActionMenu
           groups={[
             {

@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next"
+import { orderCode } from "../../../../../lib/order-helpers"
 import { PlaceholderCell } from "../../common/placeholder-cell"
 
 export const DisplayIdCell = ({ displayId }: { displayId?: number | null }) => {
@@ -8,7 +9,7 @@ export const DisplayIdCell = ({ displayId }: { displayId?: number | null }) => {
 
   return (
     <div className="text-ui-fg-subtle txt-compact-small flex h-full w-full items-center overflow-hidden">
-      <span className="truncate">#{displayId}</span>
+      <span className="truncate">{orderCode(displayId)}</span>
     </div>
   )
 }

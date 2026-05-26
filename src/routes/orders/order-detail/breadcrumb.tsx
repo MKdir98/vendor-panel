@@ -1,6 +1,7 @@
 import { HttpTypes } from "@medusajs/types"
 import { UIMatch } from "react-router-dom"
 import { useOrder } from "../../../hooks/api"
+import { orderCode } from "../../../lib/order-helpers"
 import { DEFAULT_FIELDS } from "./constants"
 
 type OrderDetailBreadcrumbProps = UIMatch<HttpTypes.AdminOrderResponse>
@@ -23,5 +24,7 @@ export const OrderDetailBreadcrumb = (props: OrderDetailBreadcrumbProps) => {
     return null
   }
 
-  return <span>#{order.display_id}</span>
+  return (
+    <span>{order.display_id ? orderCode(order.display_id) : order.id}</span>
+  )
 }

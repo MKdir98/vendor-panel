@@ -1,5 +1,19 @@
 import { TFunction } from "i18next"
 
+function scrambleDisplayId(n: number): number {
+  n = (n ^ (n >>> 16)) >>> 0
+  n = Math.imul(n, 0x45d9f3b) >>> 0
+  n = (n ^ (n >>> 16)) >>> 0
+  n = Math.imul(n, 0x45d9f3b) >>> 0
+  n = (n ^ (n >>> 16)) >>> 0
+  return n
+}
+
+export function orderCode(displayId: number): string {
+  const scrambled = scrambleDisplayId(displayId)
+  return `DF-${scrambled.toString(36).toUpperCase().padStart(7, "0")}`
+}
+
 export const getCanceledOrderStatus = (
   t: TFunction<"translation">,
   status: string
@@ -52,8 +66,10 @@ export const getOrderPaymentStatus = (
     canceled: [t("orders.payment.status.canceled"), "red"],
     requires_action: [t("orders.payment.status.requiresAction"), "orange"],
   }
-  const [label = "-", color = "orange"] =
-    (status && statusMap[status]) ?? ["-", "orange"]
+  const [label = "-", color = "orange"] = (status && statusMap[status]) ?? [
+    "-",
+    "orange",
+  ]
   return { label, color }
 }
 
@@ -61,13 +77,18 @@ export const hasUnfulfilledItems = (order: {
   items?: Array<{
     quantity?: number
     raw_quantity?: number | string
-    detail?: { fulfilled_quantity?: number; raw_fulfilled_quantity?: number | string }
+    detail?: {
+      fulfilled_quantity?: number
+      raw_fulfilled_quantity?: number | string
+    }
   }>
 }) => {
   const items = order.items ?? []
   return items.some((item) => {
     const fulfilled =
-      item.detail?.fulfilled_quantity ?? item.detail?.raw_fulfilled_quantity ?? 0
+      item.detail?.fulfilled_quantity ??
+      item.detail?.raw_fulfilled_quantity ??
+      0
     const quantity = item.quantity ?? item.raw_quantity ?? 0
     return Number(fulfilled) < Number(quantity)
   })
@@ -102,7 +123,9 @@ export const getOrderFulfillmentStatus = (
     canceled: [t("orders.fulfillment.status.canceled"), "red"],
     requires_action: [t("orders.fulfillment.status.requiresAction"), "orange"],
   }
-  const [label = "-", color = "orange"] =
-    (status && statusMap[status]) ?? ["-", "orange"]
+  const [label = "-", color = "orange"] = (status && statusMap[status]) ?? [
+    "-",
+    "orange",
+  ]
   return { label, color }
 }
