@@ -37,44 +37,6 @@ export const ProductOrganizationSection = ({
       </div>
 
       <SectionRow
-        title={t("fields.tags")}
-        value={
-          product.tags?.length
-            ? product.tags.map((tag) => (
-                <OrganizationTag
-                  key={tag.id}
-                  label={tag.value}
-                  to={`/settings/product-tags/${tag.id}`}
-                />
-              ))
-            : undefined
-        }
-      />
-      <SectionRow
-        title={t("fields.type")}
-        value={
-          product.type ? (
-            <OrganizationTag
-              label={product.type.value}
-              to={`/settings/product-types/${product.type_id}`}
-            />
-          ) : undefined
-        }
-      />
-
-      <SectionRow
-        title={t("fields.collection")}
-        value={
-          product.collection ? (
-            <OrganizationTag
-              label={product.collection.title}
-              to={`/collections/${product.collection.id}`}
-            />
-          ) : undefined
-        }
-      />
-
-      <SectionRow
         title={t("fields.categories")}
         value={
           product.categories?.length

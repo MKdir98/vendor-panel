@@ -3,7 +3,6 @@ import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { Form } from "../../../../../../../components/common/form"
-import { CountrySelect } from "../../../../../../../components/inputs/country-select"
 import { ProductCreateSchemaType } from "../../../../types"
 
 type ProductCreateAttributeSectionProps = {
@@ -21,49 +20,19 @@ export const ProductCreateAttributeSection = ({
       <div className="grid grid-cols-2 gap-x-4 gap-y-8">
         <Form.Field
           control={form.control}
-          name="origin_country"
-          render={({ field }) => {
-            return (
-              <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.countryOrigin.label")}
-                </Form.Label>
-                <Form.Control>
-                  <CountrySelect {...field} />
-                </Form.Control>
-              </Form.Item>
-            )
-          }}
-        />
-        <Form.Field
-          control={form.control}
-          name="material"
-          render={({ field }) => {
-            return (
-              <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.material.label")}
-                </Form.Label>
-                <Form.Control>
-                  <Input {...field} />
-                </Form.Control>
-              </Form.Item>
-            )
-          }}
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-8">
-        <Form.Field
-          control={form.control}
           name="width"
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label>
-                  {t("products.fields.width.label")} (cm)
-                </Form.Label>
+                <Form.Label>{t("products.fields.width.label")} (cm)</Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} step="0.1" placeholder="0" />
+                  <Input
+                    {...field}
+                    type="number"
+                    min={0}
+                    step="0.1"
+                    placeholder="0"
+                  />
                 </Form.Control>
                 <Form.ErrorMessage />
               </Form.Item>
@@ -80,7 +49,13 @@ export const ProductCreateAttributeSection = ({
                   {t("products.fields.length.label")} (cm)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} step="0.1" placeholder="0" />
+                  <Input
+                    {...field}
+                    type="number"
+                    min={0}
+                    step="0.1"
+                    placeholder="0"
+                  />
                 </Form.Control>
                 <Form.ErrorMessage />
               </Form.Item>
@@ -97,7 +72,13 @@ export const ProductCreateAttributeSection = ({
                   {t("products.fields.height.label")} (cm)
                 </Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} step="0.1" placeholder="0" />
+                  <Input
+                    {...field}
+                    type="number"
+                    min={0}
+                    step="0.1"
+                    placeholder="0"
+                  />
                 </Form.Control>
                 <Form.ErrorMessage />
               </Form.Item>
@@ -110,45 +91,17 @@ export const ProductCreateAttributeSection = ({
           render={({ field }) => {
             return (
               <Form.Item>
-                <Form.Label>
-                  {t("products.fields.weight.label")} (g)
-                </Form.Label>
+                <Form.Label>{t("products.fields.weight.label")} (g)</Form.Label>
                 <Form.Control>
-                  <Input {...field} type="number" min={0} step="0.001" placeholder="0" />
+                  <Input
+                    {...field}
+                    type="number"
+                    min={0}
+                    step="0.001"
+                    placeholder="0"
+                  />
                 </Form.Control>
                 <Form.ErrorMessage />
-              </Form.Item>
-            )
-          }}
-        />
-        <Form.Field
-          control={form.control}
-          name="mid_code"
-          render={({ field }) => {
-            return (
-              <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.mid_code.label")}
-                </Form.Label>
-                <Form.Control>
-                  <Input {...field} />
-                </Form.Control>
-              </Form.Item>
-            )
-          }}
-        />
-        <Form.Field
-          control={form.control}
-          name="hs_code"
-          render={({ field }) => {
-            return (
-              <Form.Item>
-                <Form.Label optional>
-                  {t("products.fields.hs_code.label")}
-                </Form.Label>
-                <Form.Control>
-                  <Input {...field} />
-                </Form.Control>
               </Form.Item>
             )
           }}

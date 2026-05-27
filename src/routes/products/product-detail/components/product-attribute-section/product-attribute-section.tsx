@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDashboardExtension } from "../../../../../extensions"
-import { getFormattedCountry } from "../../../../../lib/addresses"
 
 type ProductAttributeSectionProps = {
   product: HttpTypes.AdminProduct
@@ -39,12 +38,6 @@ export const ProductAttributeSection = ({
       <SectionRow title={`${t("fields.width")} (cm)`} value={product.width} />
       <SectionRow title={`${t("fields.length")} (cm)`} value={product.length} />
       <SectionRow title={`${t("fields.weight")} (g)`} value={product.weight} />
-      <SectionRow title={t("fields.midCode")} value={product.mid_code} />
-      <SectionRow title={t("fields.hsCode")} value={product.hs_code} />
-      <SectionRow
-        title={t("fields.countryOfOrigin")}
-        value={getFormattedCountry(product.origin_country)}
-      />
       {getDisplays("product", "attributes").map((Component, i) => {
         return <Component key={i} data={product} />
       })}
