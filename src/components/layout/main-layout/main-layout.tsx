@@ -104,6 +104,10 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
       label: t("orders.domain"),
       to: "/orders",
       items: [
+        {
+          label: t("orders.postexCollection.title"),
+          to: "/orders/postex-collection",
+        },
         // TODO: Enable when domin is introduced
         // {
         //   label: t("draftOrders.domain"),
