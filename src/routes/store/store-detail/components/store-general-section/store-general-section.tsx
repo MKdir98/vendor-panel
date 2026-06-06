@@ -6,7 +6,13 @@ import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Pencil } from "@medusajs/icons"
 import { ImageAvatar } from "../../../../../components/common/image-avatar"
 
-export const StoreGeneralSection = ({ seller }: { seller: StoreVendor }) => {
+export const StoreGeneralSection = ({
+  seller,
+  memberPhoto,
+}: {
+  seller: StoreVendor
+  memberPhoto?: string
+}) => {
   const { t } = useTranslation()
 
   return (
@@ -33,7 +39,11 @@ export const StoreGeneralSection = ({ seller }: { seller: StoreVendor }) => {
         <Text size="small" leading="compact" weight="plus">
           Image
         </Text>
-        <ImageAvatar src={seller.photo || "/logo.svg"} size={8} rounded />
+        <ImageAvatar
+          src={memberPhoto || seller.photo || "/logo.svg"}
+          size={8}
+          rounded
+        />
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">

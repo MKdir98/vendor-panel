@@ -8,7 +8,7 @@ import { SingleColumnPageSkeleton } from "../../../components/common/skeleton/sk
 import { SingleColumnPage } from "../../../components/layout/pages/index.ts"
 import { useDashboardExtension } from "../../../extensions/index.ts"
 import { CompanySection } from "./components/company-section/company-section.tsx"
-import { useMe } from "../../../hooks/api/users.tsx"
+import { useMe, useUserMe } from "../../../hooks/api/users.tsx"
 
 export const StoreDetail = () => {
   const initialData = useLoaderData() as Awaited<ReturnType<typeof storeLoader>>
@@ -18,6 +18,7 @@ export const StoreDetail = () => {
   })
 
   const { seller, isPending: sellerPending, isError: sellerError } = useMe()
+  const { member } = useUserMe()
 
   const { getWidgets } = useDashboardExtension()
 
@@ -38,7 +39,7 @@ export const StoreDetail = () => {
       data={store}
       hasOutlet
     >
-      <StoreGeneralSection seller={seller} />
+      <StoreGeneralSection seller={seller} memberPhoto={member?.photo} />
       <CompanySection seller={seller} />
     </SingleColumnPage>
   )
