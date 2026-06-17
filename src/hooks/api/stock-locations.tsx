@@ -220,6 +220,53 @@ export const useCreateStockLocationFulfillmentSet = (
   })
 }
 
+export const useSetupPostex = (
+  locationId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminStockLocationResponse,
+    FetchError,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () =>
+      fetchQuery(`/vendor/stock-locations/${locationId}/postex`, {
+        method: "POST",
+        body: {},
+      }),
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.details(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
+export const useDisablePostex = (
+  locationId: string,
+  options?: UseMutationOptions<
+    HttpTypes.AdminStockLocationResponse,
+    FetchError,
+    void
+  >
+) => {
+  return useMutation({
+    mutationFn: () =>
+      fetchQuery(`/vendor/stock-locations/${locationId}/postex`, {
+        method: "DELETE",
+      }),
+    onSuccess: async (data, variables, context) => {
+      await queryClient.invalidateQueries({
+        queryKey: stockLocationsQueryKeys.details(),
+      })
+      options?.onSuccess?.(data, variables, context)
+    },
+    ...options,
+  })
+}
+
 export const useUpdateStockLocationFulfillmentProviders = (
   id: string,
   options?: UseMutationOptions<

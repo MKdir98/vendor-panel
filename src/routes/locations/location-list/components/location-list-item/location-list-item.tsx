@@ -4,77 +4,15 @@ import { Container, StatusBadge, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
-// import { BadgeListSummary } from "../../../../../components/common/badge-list-summary"
 import { LinkButton } from "../../../../../components/common/link-button"
 import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations"
 import { getFormattedAddress } from "../../../../../lib/addresses"
-import { FulfillmentSetType } from "../../../common/constants"
 
-// type SalesChannelsProps = {
-//   salesChannels?: HttpTypes.AdminSalesChannel[] | null
-// }
-
-// function SalesChannels(props: SalesChannelsProps) {
-//   const { t } = useTranslation()
-//   const { salesChannels } = props
-
-//   return (
-//     <div className="flex flex-col px-6 py-4">
-//       <div className="flex items-center justify-between">
-//         <Text
-//           size="small"
-//           weight="plus"
-//           className="text-ui-fg-subtle flex-1"
-//           as="div"
-//         >
-//           {t(`stockLocations.salesChannels.label`)}
-//         </Text>
-//         <div className="flex-1 text-left">
-//           {salesChannels?.length ? (
-//             <BadgeListSummary
-//               rounded
-//               inline
-//               n={3}
-//               list={salesChannels.map((s) => s.name)}
-//             />
-//           ) : (
-//             "-"
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-type FulfillmentSetProps = {
-  fulfillmentSet?: HttpTypes.AdminFulfillmentSet
-  type: FulfillmentSetType
-}
-
-function FulfillmentSet(props: FulfillmentSetProps) {
-  const { t } = useTranslation()
-  const { fulfillmentSet, type } = props
-
-  const fulfillmentSetExists = !!fulfillmentSet
-
-  return (
-    <div className="flex flex-col px-6 py-4">
-      <div className="flex items-center justify-between">
-        <Text
-          size="small"
-          weight="plus"
-          className="text-ui-fg-subtle flex-1"
-          as="div"
-        >
-          {t(`stockLocations.fulfillmentSets.${type}.header`)}
-        </Text>
-        <div className="flex-1 text-left">
-          <StatusBadge color={fulfillmentSetExists ? "green" : "grey"}>
-            {t(fulfillmentSetExists ? "statuses.enabled" : "statuses.disabled")}
-          </StatusBadge>
-        </div>
-      </div>
-    </div>
+function hasPostex(location: HttpTypes.AdminStockLocation): boolean {
+  return !!location.fulfillment_sets?.some((fs) =>
+    fs.service_zones?.some((sz) =>
+      sz.shipping_options?.some((so) => so.provider_id?.includes("postex"))
+    )
   )
 }
 
@@ -167,20 +105,23 @@ function LocationListItem(props: LocationProps) {
         </div>
       </div>
 
-      {/* <SalesChannels salesChannels={location.sales_channels} /> */}
-
-      <FulfillmentSet
-        type={FulfillmentSetType.Pickup}
-        fulfillmentSet={location.fulfillment_sets?.find(
-          (f) => f.type === FulfillmentSetType.Pickup
-        )}
-      />
-      <FulfillmentSet
-        type={FulfillmentSetType.Shipping}
-        fulfillmentSet={location.fulfillment_sets?.find(
-          (f) => f.type === FulfillmentSetType.Shipping
-        )}
-      />
+      <div className="flex flex-col px-6 py-4">
+        <div className="flex items-center justify-between">
+          <Text
+            size="small"
+            weight="plus"
+            className="text-ui-fg-subtle flex-1"
+            as="div"
+          >
+            ارسال پستکس
+          </Text>
+          <div className="flex-1 text-left">
+            <StatusBadge color={hasPostex(location) ? "green" : "grey"}>
+              {hasPostex(location) ? "فعال" : "غیرفعال"}
+            </StatusBadge>
+          </div>
+        </div>
+      </div>
     </Container>
   )
 }

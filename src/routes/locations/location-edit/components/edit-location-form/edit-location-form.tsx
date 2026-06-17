@@ -7,8 +7,10 @@ import * as zod from "zod"
 import { useEffect } from "react"
 
 import { Form } from "../../../../../components/common/form"
-import { CountrySelect } from "../../../../../components/inputs/country-select"
-import { StateSelect, CitySelect } from "../../../../../components/inputs/location-select"
+import {
+  StateSelect,
+  CitySelect,
+} from "../../../../../components/inputs/location-select"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import { useUpdateStockLocation } from "../../../../../hooks/api/stock-locations"
@@ -57,7 +59,7 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
   })
 
   const { mutateAsync, isPending } = useUpdateStockLocation(location.id)
-  
+
   const stateId = form.watch("address.state_id")
   const { states } = useStates("ir")
   const { cities } = useCities(stateId)
@@ -76,8 +78,8 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
 
   const handleSubmit = form.handleSubmit(async (values) => {
     const { name, address } = values
-    const selectedState = states.find(s => s.id === address.state_id)
-    const selectedCity = cities.find(c => c.id === address.city_id)
+    const selectedState = states.find((s) => s.id === address.state_id)
+    const selectedCity = cities.find((c) => c.id === address.city_id)
 
     const { state_id, ...addressWithoutStateId } = address
 
@@ -194,21 +196,6 @@ export const EditLocationForm = ({ location }: EditLocationFormProps) => {
                     <Form.Label>{t("fields.city")}</Form.Label>
                     <Form.Control>
                       <CitySelect {...field} stateId={stateId} />
-                    </Form.Control>
-                    <Form.ErrorMessage />
-                  </Form.Item>
-                )
-              }}
-            />
-            <Form.Field
-              control={form.control}
-              name="address.country_code"
-              render={({ field }) => {
-                return (
-                  <Form.Item>
-                    <Form.Label>{t("fields.country")}</Form.Label>
-                    <Form.Control>
-                      <CountrySelect {...field} />
                     </Form.Control>
                     <Form.ErrorMessage />
                   </Form.Item>

@@ -1,6 +1,7 @@
 import { Select } from "@medusajs/ui"
-import { forwardRef, useEffect, useState } from "react"
+import { forwardRef } from "react"
 import { useStates, useCities } from "../../hooks/api/cities"
+import { Combobox } from "./combobox"
 
 interface StateSelectProps {
   value?: string
@@ -10,7 +11,10 @@ interface StateSelectProps {
 }
 
 export const StateSelect = forwardRef<HTMLButtonElement, StateSelectProps>(
-  ({ value, onChange, countryCode = "ir", placeholder = "انتخاب استان" }, ref) => {
+  (
+    { value, onChange, countryCode = "ir", placeholder = "انتخاب استان" },
+    ref
+  ) => {
     const { states, isLoading } = useStates(countryCode)
 
     return (
@@ -40,27 +44,24 @@ interface CitySelectProps {
   disabled?: boolean
 }
 
-export const CitySelect = forwardRef<HTMLButtonElement, CitySelectProps>(
+export const CitySelect = forwardRef<HTMLInputElement, CitySelectProps>(
   ({ value, onChange, stateId, placeholder = "انتخاب شهر", disabled }, ref) => {
     const { cities, isLoading } = useCities(stateId || "")
     const isDisabled = disabled || !stateId || isLoading
 
+    const options = cities.map((city) => ({ value: city.id, label: city.name }))
+
     return (
-      <Select value={value} onValueChange={onChange} disabled={isDisabled}>
-        <Select.Trigger ref={ref}>
-          <Select.Value placeholder={placeholder} />
-        </Select.Trigger>
-        <Select.Content className="max-h-[300px] overflow-y-auto">
-          {cities.map((city) => (
-            <Select.Item key={city.id} value={city.id}>
-              {city.name}
-            </Select.Item>
-          ))}
-        </Select.Content>
-      </Select>
+      <Combobox
+        ref={ref}
+        value={value}
+        onChange={(v) => onChange((v as string) || "")}
+        options={options}
+        placeholder={placeholder}
+        disabled={isDisabled}
+      />
     )
   }
 )
 
 CitySelect.displayName = "CitySelect"
-

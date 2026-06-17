@@ -2,12 +2,12 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { LocationGeneralSection } from "./components/location-general-section"
+import { LocationPostexSection } from "./components/location-postex-section/location-postex-section"
 import { locationLoader } from "./loader"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
 import { TwoColumnPage } from "../../../components/layout/pages"
 import { useDashboardExtension } from "../../../extensions"
-import LocationsFulfillmentProvidersSection from "./components/location-fulfillment-providers-section/location-fulfillment-providers-section"
 import { LOCATION_DETAILS_FIELD } from "./constants"
 
 export const LocationDetail = () => {
@@ -31,7 +31,7 @@ export const LocationDetail = () => {
 
   if (isLoading || !location) {
     return (
-      <TwoColumnPageSkeleton mainSections={3} sidebarSections={2} showJSON />
+      <TwoColumnPageSkeleton mainSections={2} sidebarSections={0} showJSON />
     )
   }
 
@@ -52,9 +52,10 @@ export const LocationDetail = () => {
     >
       <TwoColumnPage.Main>
         <LocationGeneralSection location={location} />
+        <LocationPostexSection location={location} />
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
-        <LocationsFulfillmentProvidersSection location={location} />
+        <div />
       </TwoColumnPage.Sidebar>
     </TwoColumnPage>
   )

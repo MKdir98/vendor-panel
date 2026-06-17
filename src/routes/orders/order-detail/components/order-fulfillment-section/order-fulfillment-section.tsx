@@ -1,4 +1,3 @@
-import { XCircle } from "@medusajs/icons"
 import {
   AdminOrder,
   AdminOrderFulfillment,
@@ -21,17 +20,11 @@ import { useState } from "react"
 import { format } from "date-fns"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
-import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Skeleton } from "../../../../../components/common/skeleton"
 import { Thumbnail } from "../../../../../components/common/thumbnail"
-import {
-  useCancelOrderFulfillment,
-  useMarkOrderFulfillmentAsDelivered,
-} from "../../../../../hooks/api/orders"
+import { useMarkOrderFulfillmentAsDelivered } from "../../../../../hooks/api/orders"
 import { useStockLocation } from "../../../../../hooks/api/stock-locations"
-import {
-  fetchPdfWithAuth,
-} from "../../../../../lib/client/client"
+import { fetchPdfWithAuth } from "../../../../../lib/client/client"
 import { formatProvider } from "../../../../../lib/format-provider"
 import { getLocaleAmount } from "../../../../../lib/money-amount-helpers"
 
@@ -239,8 +232,17 @@ const PrintLabelButton = ({
 
 type FulfillmentWithItems = AdminOrderFulfillment & {
   items?: Array<{ line_item_id: string; quantity: number; title: string }>
-  fulfillment_items?: Array<{ line_item_id: string; quantity: number; title: string }>
-  labels?: Array<{ url?: string; label_url?: string; tracking_url?: string; tracking_number: string }>
+  fulfillment_items?: Array<{
+    line_item_id: string
+    quantity: number
+    title: string
+  }>
+  labels?: Array<{
+    url?: string
+    label_url?: string
+    tracking_url?: string
+    tracking_number: string
+  }>
 }
 
 const Fulfillment = ({
@@ -254,7 +256,11 @@ const Fulfillment = ({
 }) => {
   const { t } = useTranslation()
   const f = fulfillment as FulfillmentWithItems
-  const fulfillmentItems = Array.isArray(f.items) ? f.items : Array.isArray(f.fulfillment_items) ? f.fulfillment_items : []
+  const fulfillmentItems = Array.isArray(f.items)
+    ? f.items
+    : Array.isArray(f.fulfillment_items)
+      ? f.fulfillment_items
+      : []
   const fulfillmentLabels = Array.isArray(f.labels) ? f.labels : []
   const prompt = usePrompt()
   const navigate = useNavigate()
@@ -316,13 +322,15 @@ const Fulfillment = ({
     statusTimestamp = fulfillment.shipped_at
   }
 
-  const { mutateAsync } = useCancelOrderFulfillment(order.id, fulfillment.id)
   const { mutateAsync: markAsDelivered } = useMarkOrderFulfillmentAsDelivered(
     order.id,
     fulfillment.id
   )
 
+  const isPostExFulfillment = !!fulfillment.provider_id?.includes("postex")
+
   const showShippingButton =
+    !isPostExFulfillment &&
     !fulfillment.canceled_at &&
     !fulfillment.shipped_at &&
     !fulfillment.delivered_at &&
@@ -330,7 +338,9 @@ const Fulfillment = ({
     !isPickUpFulfillment
 
   const showDeliveryButton =
-    !fulfillment.canceled_at && !fulfillment.delivered_at
+    !isPostExFulfillment &&
+    !fulfillment.canceled_at &&
+    !fulfillment.delivered_at
 
   const handleMarkAsDelivered = async () => {
     const res = await prompt({
@@ -351,31 +361,6 @@ const Fulfillment = ({
                 : "orders.fulfillment.toast.fulfillmentDelivered"
             )
           )
-        },
-        onError: (e) => {
-          toast.error(e.message)
-        },
-      })
-    }
-  }
-
-  const handleCancel = async () => {
-    if (fulfillment.shipped_at) {
-      toast.warning(t("orders.fulfillment.toast.fulfillmentShipped"))
-      return
-    }
-
-    const res = await prompt({
-      title: t("general.areYouSure"),
-      description: t("orders.fulfillment.cancelWarning"),
-      confirmText: t("actions.continue"),
-      cancelText: t("actions.cancel"),
-    })
-
-    if (res) {
-      await mutateAsync(undefined, {
-        onSuccess: () => {
-          toast.success(t("orders.fulfillment.toast.canceled"))
         },
         onError: (e) => {
           toast.error(e.message)
@@ -407,20 +392,6 @@ const Fulfillment = ({
               {t(statusKey)}
             </StatusBadge>
           </Tooltip>
-          <ActionMenu
-            groups={[
-              {
-                actions: [
-                  {
-                    label: t("actions.cancel"),
-                    icon: <XCircle />,
-                    onClick: handleCancel,
-                    disabled: !!fulfillment.canceled_at,
-                  },
-                ],
-              },
-            ]}
-          />
         </div>
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 items-start px-6 py-4">
@@ -486,15 +457,25 @@ const Fulfillment = ({
             </Text>
           )}
           {fulfillment.provider_id?.includes("postex") && (
-              <PrintLabelButton
-                orderId={order.id}
-                fulfillmentId={fulfillment.id}
-                label={t("orders.fulfillment.printLabel")}
-              />
-            )}
+            <PrintLabelButton
+              orderId={order.id}
+              fulfillmentId={fulfillment.id}
+              label={t("orders.fulfillment.printLabel")}
+            />
+          )}
         </div>
       </div>
 
+      {isPostExFulfillment && !fulfillment.canceled_at && (
+        <div className="bg-ui-bg-subtle flex items-center justify-end rounded-b-xl px-4 py-4">
+          <Text size="small" className="text-ui-fg-subtle">
+            {t(
+              "orders.fulfillment.managedByPostEx",
+              "Shipment managed by PostEx"
+            )}
+          </Text>
+        </div>
+      )}
       {(showShippingButton || showDeliveryButton) && (
         <div className="bg-ui-bg-subtle flex items-center justify-end gap-x-2 rounded-b-xl px-4 py-4">
           {showDeliveryButton && (

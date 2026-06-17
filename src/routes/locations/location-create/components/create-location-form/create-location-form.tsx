@@ -6,7 +6,10 @@ import * as zod from "zod"
 import { useEffect } from "react"
 import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
-import { StateSelect, CitySelect } from "../../../../../components/inputs/location-select"
+import {
+  StateSelect,
+  CitySelect,
+} from "../../../../../components/inputs/location-select"
 import {
   RouteFocusModal,
   useRouteModal,
@@ -16,7 +19,7 @@ import { useCreateStockLocation } from "../../../../../hooks/api/stock-locations
 import { useStates, useCities } from "../../../../../hooks/api/cities"
 
 const CreateLocationSchema = zod.object({
-  name: zod.string().min(1),
+  name: zod.string().optional(),
   address: zod.object({
     address_1: zod.string().min(1),
     address_2: zod.string().optional(),
@@ -35,7 +38,7 @@ export const CreateLocationForm = () => {
 
   const form = useForm<zod.infer<typeof CreateLocationSchema>>({
     defaultValues: {
-      name: "",
+      name: "انبار اصلی",
       address: {
         address_1: "",
         address_2: "",
@@ -51,7 +54,7 @@ export const CreateLocationForm = () => {
   })
 
   const { mutateAsync, isPending } = useCreateStockLocation()
-  
+
   const stateId = form.watch("address.state_id")
   const { states } = useStates("ir")
   const { cities } = useCities(stateId)
@@ -63,14 +66,14 @@ export const CreateLocationForm = () => {
   }, [stateId, form])
 
   const handleSubmit = form.handleSubmit(async (values) => {
-    const selectedState = states.find(s => s.id === values.address.state_id)
-    const selectedCity = cities.find(c => c.id === values.address.city_id)
-    
+    const selectedState = states.find((s) => s.id === values.address.state_id)
+    const selectedCity = cities.find((c) => c.id === values.address.city_id)
+
     const { state_id, ...addressWithoutStateId } = values.address
-    
+
     await mutateAsync(
       {
-        name: values.name,
+        name: values.name || "انبار اصلی",
         address: {
           ...addressWithoutStateId,
           province: selectedState?.name,
