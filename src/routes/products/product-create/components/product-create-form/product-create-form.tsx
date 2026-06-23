@@ -12,7 +12,9 @@ import {
   useDashboardExtension,
   useExtendableForm,
 } from "../../../../../extensions"
+import { useBatchInventoryItemsLocationLevels } from "../../../../../hooks/api/inventory"
 import { useCreateProduct } from "../../../../../hooks/api/products"
+import { useStockLocations } from "../../../../../hooks/api/stock-locations"
 import { uploadFilesQuery } from "../../../../../lib/client"
 import {
   PRODUCT_CREATE_FORM_DEFAULTS,
@@ -81,6 +83,9 @@ export const ProductCreateForm = ({
   })
 
   const { mutateAsync, isPending } = useCreateProduct()
+  const { mutateAsync: batchInventoryLevels } =
+    useBatchInventoryItemsLocationLevels()
+  const { stock_locations } = useStockLocations()
 
   /**
    * TODO: Important to revisit this - use variants watch so high in the tree can cause needless rerenders of the entire page
@@ -176,6 +181,7 @@ export const ProductCreateForm = ({
           is_default: undefined,
           inventory_kit: undefined,
           inventory: undefined,
+          quantity: undefined,
           prices: Object.keys(variant.prices || {}).map((key) => ({
             currency_code: key,
             amount: parseFloat(variant.prices?.[key] as string),
@@ -183,7 +189,35 @@ export const ProductCreateForm = ({
         })),
       },
       {
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
+          const locationId = stock_locations?.[0]?.id
+          if (locationId) {
+            const creates = values.variants
+              .filter((v) => v.should_create)
+              .map((v, i) => {
+                const qty = parseInt(v.quantity as string)
+                const variant = data.product.variants?.[i]
+                const inventoryItemId =
+                  (variant as any).inventory_items?.[0]?.inventory_item_id ??
+                  (variant as any).inventory?.[0]?.id
+                if (!inventoryItemId || !qty || qty <= 0) return null
+                return {
+                  inventory_item_id: inventoryItemId,
+                  location_id: locationId,
+                  stocked_quantity: qty,
+                }
+              })
+              .filter(Boolean) as {
+              inventory_item_id: string
+              location_id: string
+              stocked_quantity: number
+            }[]
+
+            if (creates.length > 0) {
+              await batchInventoryLevels({ create: creates }).catch(() => {})
+            }
+          }
+
           toast.success(
             t("products.create.successToast", {
               title: data.product.title,

@@ -1,20 +1,12 @@
 import { Buildings, PencilSquare, Trash } from "@medusajs/icons"
 import { HttpTypes } from "@medusajs/types"
-import { Container, StatusBadge, Text, toast, usePrompt } from "@medusajs/ui"
+import { Container, Text, toast, usePrompt } from "@medusajs/ui"
 import { useTranslation } from "react-i18next"
 
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { LinkButton } from "../../../../../components/common/link-button"
 import { useDeleteStockLocation } from "../../../../../hooks/api/stock-locations"
 import { getFormattedAddress } from "../../../../../lib/addresses"
-
-function hasPostex(location: HttpTypes.AdminStockLocation): boolean {
-  return !!location.fulfillment_sets?.some((fs) =>
-    fs.service_zones?.some((sz) =>
-      sz.shipping_options?.some((so) => so.provider_id?.includes("postex"))
-    )
-  )
-}
 
 type LocationProps = {
   location: HttpTypes.AdminStockLocation
@@ -101,24 +93,6 @@ function LocationListItem(props: LocationProps) {
             <LinkButton to={`/settings/locations/${location.id}`}>
               {t("actions.viewDetails")}
             </LinkButton>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col px-6 py-4">
-        <div className="flex items-center justify-between">
-          <Text
-            size="small"
-            weight="plus"
-            className="text-ui-fg-subtle flex-1"
-            as="div"
-          >
-            ارسال پستکس
-          </Text>
-          <div className="flex-1 text-left">
-            <StatusBadge color={hasPostex(location) ? "green" : "grey"}>
-              {hasPostex(location) ? "فعال" : "غیرفعال"}
-            </StatusBadge>
           </div>
         </div>
       </div>

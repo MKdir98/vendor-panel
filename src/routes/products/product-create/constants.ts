@@ -26,6 +26,7 @@ const ProductCreateVariantSchema = z.object({
   material: z.string().optional(),
   origin_country: z.string().optional(),
   sku: z.string().optional(),
+  quantity: optionalInt,
   manage_inventory: z.boolean().optional(),
   allow_backorder: z.boolean().optional(),
   inventory_kit: z.boolean().optional(),
@@ -77,18 +78,26 @@ export const ProductCreateSchema = z
       .optional(),
     origin_country: z.string().optional(),
     material: z.string().optional(),
-    width: z.string().refine((val) => val !== "" && val !== undefined && val !== null, {
-      message: "Width is required",
-    }),
-    length: z.string().refine((val) => val !== "" && val !== undefined && val !== null, {
-      message: "Length is required",
-    }),
-    height: z.string().refine((val) => val !== "" && val !== undefined && val !== null, {
-      message: "Height is required",
-    }),
-    weight: z.string().refine((val) => val !== "" && val !== undefined && val !== null, {
-      message: "Weight is required",
-    }),
+    width: z
+      .string()
+      .refine((val) => val !== "" && val !== undefined && val !== null, {
+        message: "Width is required",
+      }),
+    length: z
+      .string()
+      .refine((val) => val !== "" && val !== undefined && val !== null, {
+        message: "Length is required",
+      }),
+    height: z
+      .string()
+      .refine((val) => val !== "" && val !== undefined && val !== null, {
+        message: "Height is required",
+      }),
+    weight: z
+      .string()
+      .refine((val) => val !== "" && val !== undefined && val !== null, {
+        message: "Weight is required",
+      }),
     mid_code: z.string().optional(),
     hs_code: z.string().optional(),
     options: z.array(ProductCreateOptionSchema).min(1),
@@ -147,6 +156,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
         "Default option": "Default option value",
       },
       inventory: [{ inventory_item_id: "", required_quantity: "" }],
+      quantity: "",
       is_default: true,
     },
   ]),

@@ -133,14 +133,14 @@ const useColumns = ({
         },
       }),
       columnHelper.column({
-        id: "sku",
-        name: t("fields.sku"),
-        header: t("fields.sku"),
+        id: "quantity",
+        name: t("fields.quantity"),
+        header: t("fields.quantity"),
         field: (context) =>
-          `variants.${context.row.original.originalIndex}.sku`,
-        type: "text",
+          `variants.${context.row.original.originalIndex}.quantity`,
+        type: "number",
         cell: (context) => {
-          return <DataGrid.TextCell context={context} />
+          return <DataGrid.NumberCell context={context} />
         },
       }),
 

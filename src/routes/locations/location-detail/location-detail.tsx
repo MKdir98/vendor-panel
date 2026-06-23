@@ -2,7 +2,6 @@ import { useLoaderData, useParams } from "react-router-dom"
 
 import { useStockLocation } from "../../../hooks/api/stock-locations"
 import { LocationGeneralSection } from "./components/location-general-section"
-import { LocationPostexSection } from "./components/location-postex-section/location-postex-section"
 import { locationLoader } from "./loader"
 
 import { TwoColumnPageSkeleton } from "../../../components/common/skeleton"
@@ -52,7 +51,6 @@ export const LocationDetail = () => {
     >
       <TwoColumnPage.Main>
         <LocationGeneralSection location={location} />
-        <LocationPostexSection location={location} />
       </TwoColumnPage.Main>
       <TwoColumnPage.Sidebar>
         <div />

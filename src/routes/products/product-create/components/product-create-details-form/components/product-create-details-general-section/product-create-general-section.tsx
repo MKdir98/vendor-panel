@@ -3,7 +3,6 @@ import { UseFormReturn } from "react-hook-form"
 import { useTranslation } from "react-i18next"
 
 import { Form } from "../../../../../../../components/common/form"
-import { HandleInput } from "../../../../../../../components/inputs/handle-input"
 import { ProductCreateSchemaType } from "../../../../types"
 
 type ProductCreateGeneralSectionProps = {
@@ -18,7 +17,7 @@ export const ProductCreateGeneralSection = ({
   return (
     <div id="general" className="flex flex-col gap-y-6">
       <div className="flex flex-col gap-y-2">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Form.Field
             control={form.control}
             name="title"
@@ -44,25 +43,6 @@ export const ProductCreateGeneralSection = ({
                   </Form.Label>
                   <Form.Control>
                     <Input {...field} placeholder="Warm and cosy" />
-                  </Form.Control>
-                </Form.Item>
-              )
-            }}
-          />
-          <Form.Field
-            control={form.control}
-            name="handle"
-            render={({ field }) => {
-              return (
-                <Form.Item>
-                  <Form.Label
-                    tooltip={t("products.fields.handle.tooltip")}
-                    optional
-                  >
-                    {t("fields.handle")}
-                  </Form.Label>
-                  <Form.Control>
-                    <HandleInput {...field} placeholder="winter-jacket" />
                   </Form.Control>
                 </Form.Item>
               )
