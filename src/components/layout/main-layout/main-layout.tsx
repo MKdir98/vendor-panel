@@ -17,7 +17,7 @@ import { Skeleton } from "../../common/skeleton"
 import { INavItem, NavItem } from "../../layout/nav-item"
 import { Shell } from "../../layout/shell"
 
-import { Link, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { useMe } from "../../../hooks/api"
 
 import { useSearch } from "../../../providers/search-provider"
@@ -279,16 +279,6 @@ const UserSection = () => {
         <Divider variant="dashed" />
       </div>
       <UserMenu />
-      <div className="px-3 py-2">
-        <Link
-          to="/terms"
-          className="text-ui-fg-subtle hover:text-ui-fg-base flex items-center justify-center gap-x-2 transition-colors"
-        >
-          <Text size="xsmall" className="text-center">
-            Terms & Conditions
-          </Text>
-        </Link>
-      </div>
     </div>
   )
 }

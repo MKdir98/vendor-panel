@@ -1,6 +1,5 @@
 import {
   CircleHalfSolid,
-  DocumentText,
   EllipsisHorizontal,
   Keyboard,
   OpenRectArrowOut,
@@ -52,13 +51,6 @@ export const UserMenu = () => {
             <Link to="/settings/profile" state={{ from: location.pathname }}>
               <UserIcon className="text-ui-fg-subtle mr-2" />
               {t("app.menus.user.profileSettings")}
-            </Link>
-          </DropdownMenu.Item>
-          <DropdownMenu.Separator />
-          <DropdownMenu.Item asChild>
-            <Link to="/terms" state={{ from: location.pathname }}>
-              <DocumentText className="text-ui-fg-subtle mr-2" />
-              Terms & Conditions
             </Link>
           </DropdownMenu.Item>
           <DropdownMenu.Item onClick={toggleModal}>

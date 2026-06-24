@@ -240,14 +240,6 @@ export const Register = () => {
             ]}
           />
         </span>
-        <span className="text-ui-fg-muted txt-small">
-          <Link
-            to="/terms"
-            className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
-          >
-            {t("register.termsAndConditions")}
-          </Link>
-        </span>
       </div>
     </div>
   )

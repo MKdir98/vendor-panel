@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next"
 import {
   useDisablePostex,
   useSetupPostex,
-  useStockLocations,
 } from "../../../../../hooks/api/stock-locations"
 
 type LocationPostexSectionProps = {
@@ -33,13 +32,7 @@ export const LocationPostexSection = ({
   const { t } = useTranslation()
   const prompt = usePrompt()
 
-  const { stock_locations: allLocations } = useStockLocations()
-
   const isPostexActive = hasPostexShippingOption(location)
-
-  const conflictingLocation = allLocations?.find(
-    (loc) => loc.id !== location.id && hasPostexShippingOption(loc)
-  )
 
   const { mutateAsync: setupPostex, isPending: isEnabling } = useSetupPostex(
     location.id
@@ -92,23 +85,15 @@ export const LocationPostexSection = ({
             variant="primary"
             onClick={handleEnable}
             isLoading={isEnabling}
-            disabled={!!conflictingLocation}
-            title={
-              conflictingLocation
-                ? `انبار "${conflictingLocation.name}" هم‌اکنون پستکس فعال دارد`
-                : undefined
-            }
           >
             فعال‌سازی پستکس
           </Button>
         )}
       </div>
-      {(isPostexActive || conflictingLocation) && (
+      {isPostexActive && (
         <div className="border-ui-border-base border-t px-6 py-4">
           <Text size="small" className="text-ui-fg-subtle">
-            {isPostexActive
-              ? "ارسال مرسوله از طریق پستکس فعال است. هزینه ارسال بر اساس مبدأ و مقصد محاسبه می‌شود."
-              : `پستکس در حال حاضر برای انبار "${conflictingLocation!.name}" فعال است. ابتدا آن را غیرفعال کنید.`}
+            ارسال مرسوله از طریق پستکس فعال است. هزینه ارسال بر اساس مبدأ و مقصد محاسبه می‌شود.
           </Text>
         </div>
       )}
