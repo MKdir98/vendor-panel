@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Input } from "@medusajs/ui"
+import { Button, Input, Select } from "@medusajs/ui"
+import { useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
@@ -12,6 +13,7 @@ import {
   useExtendableForm,
 } from "../../../../../extensions"
 import { useUpdateProduct } from "../../../../../hooks/api/products"
+import { useProductSizes } from "../../../../../hooks/api/product-sizes"
 
 type ProductAttributesFormProps = {
   product: HttpTypes.AdminProduct
@@ -29,6 +31,7 @@ const dimension = zod
   .nullable()
 
 const ProductAttributesSchema = zod.object({
+  product_size_id: zod.string().min(1, { message: "Size is required" }),
   weight: dimension,
   length: dimension,
   width: dimension,
@@ -44,12 +47,14 @@ export const ProductAttributesForm = ({
   const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const { getFormConfigs, getFormFields } = useDashboardExtension()
+  const { product_sizes } = useProductSizes()
 
   const configs = getFormConfigs("product", "attributes")
   const fields = getFormFields("product", "attributes")
 
   const form = useExtendableForm({
     defaultValues: {
+      product_size_id: "",
       height: product.height ? product.height : null,
       width: product.width ? product.width : null,
       length: product.length ? product.length : null,
@@ -62,6 +67,19 @@ export const ProductAttributesForm = ({
     configs: configs,
     data: product,
   })
+
+  useEffect(() => {
+    if (!product_sizes.length) return
+    const match = product_sizes.find(
+      (s) =>
+        s.width === product.width &&
+        s.height === product.height &&
+        s.length === product.length
+    )
+    if (match) {
+      form.setValue("product_size_id", match.id)
+    }
+  }, [product_sizes, product.width, product.height, product.length])
 
   const { mutateAsync, isPending } = useUpdateProduct(product.id)
 
@@ -92,85 +110,37 @@ export const ProductAttributesForm = ({
             <div className="flex flex-col gap-y-4">
               <Form.Field
                 control={form.control}
-                name="width"
-                render={({ field: { onChange, value, ...field } }) => {
+                name="product_size_id"
+                render={({ field: { onChange, value, ref } }) => {
                   return (
                     <Form.Item>
-                      <Form.Label>{t("fields.width")} (cm)</Form.Label>
+                      <Form.Label>سایز</Form.Label>
                       <Form.Control>
-                        <Input
-                          type="number"
-                          min={0}
+                        <Select
                           value={value || ""}
-                          onChange={(e) => {
-                            const value = e.target.value
-
-                            if (value === "") {
-                              onChange(null)
-                            } else {
-                              onChange(parseFloat(value))
+                          onValueChange={(selectedId) => {
+                            const size = product_sizes.find(
+                              (s) => s.id === selectedId
+                            )
+                            if (size) {
+                              onChange(selectedId)
+                              form.setValue("width", size.width)
+                              form.setValue("height", size.height)
+                              form.setValue("length", size.length)
                             }
                           }}
-                          {...field}
-                        />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-              <Form.Field
-                control={form.control}
-                name="height"
-                render={({ field: { onChange, value, ...field } }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.height")} (cm)</Form.Label>
-                      <Form.Control>
-                        <Input
-                          type="number"
-                          min={0}
-                          value={value || ""}
-                          onChange={(e) => {
-                            const value = e.target.value
-
-                            if (value === "") {
-                              onChange(null)
-                            } else {
-                              onChange(Number(value))
-                            }
-                          }}
-                          {...field}
-                        />
-                      </Form.Control>
-                      <Form.ErrorMessage />
-                    </Form.Item>
-                  )
-                }}
-              />
-              <Form.Field
-                control={form.control}
-                name="length"
-                render={({ field: { onChange, value, ...field } }) => {
-                  return (
-                    <Form.Item>
-                      <Form.Label>{t("fields.length")} (cm)</Form.Label>
-                      <Form.Control>
-                        <Input
-                          type="number"
-                          min={0}
-                          value={value || ""}
-                          onChange={(e) => {
-                            const value = e.target.value
-
-                            if (value === "") {
-                              onChange(null)
-                            } else {
-                              onChange(Number(value))
-                            }
-                          }}
-                          {...field}
-                        />
+                        >
+                          <Select.Trigger ref={ref}>
+                            <Select.Value placeholder="انتخاب سایز" />
+                          </Select.Trigger>
+                          <Select.Content>
+                            {product_sizes.map((size) => (
+                              <Select.Item key={size.id} value={size.id}>
+                                {size.name}
+                              </Select.Item>
+                            ))}
+                          </Select.Content>
+                        </Select>
                       </Form.Control>
                       <Form.ErrorMessage />
                     </Form.Item>
@@ -192,7 +162,6 @@ export const ProductAttributesForm = ({
                           value={value || ""}
                           onChange={(e) => {
                             const value = e.target.value
-
                             if (value === "") {
                               onChange(null)
                             } else {

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { SectionRow } from "../../../../../components/common/section"
 import { useDashboardExtension } from "../../../../../extensions"
+import { useProductSizes } from "../../../../../hooks/api/product-sizes"
 
 type ProductAttributeSectionProps = {
   product: HttpTypes.AdminProduct
@@ -15,6 +16,20 @@ export const ProductAttributeSection = ({
 }: ProductAttributeSectionProps) => {
   const { t } = useTranslation()
   const { getDisplays } = useDashboardExtension()
+  const { product_sizes } = useProductSizes()
+
+  const matchedSize = product_sizes.find(
+    (s) =>
+      s.width === product.width &&
+      s.height === product.height &&
+      s.length === product.length
+  )
+
+  const sizeDisplay = matchedSize
+    ? matchedSize.name
+    : product.width != null && product.height != null && product.length != null
+      ? `${product.width} × ${product.height} × ${product.length}`
+      : "-"
 
   return (
     <Container className="divide-y p-0">
@@ -34,9 +49,7 @@ export const ProductAttributeSection = ({
           ]}
         />
       </div>
-      <SectionRow title={`${t("fields.height")} (cm)`} value={product.height} />
-      <SectionRow title={`${t("fields.width")} (cm)`} value={product.width} />
-      <SectionRow title={`${t("fields.length")} (cm)`} value={product.length} />
+      <SectionRow title="سایز" value={sizeDisplay} />
       <SectionRow title={`${t("fields.weight")} (g)`} value={product.weight} />
       {getDisplays("product", "attributes").map((Component, i) => {
         return <Component key={i} data={product} />

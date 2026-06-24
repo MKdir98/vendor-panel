@@ -209,7 +209,12 @@ export const CategoryCombobox = forwardRef<
 
         const index = showLevelUp ? focusedIndex - 1 : focusedIndex
 
-        handleSelect(options[index])
+        if (options[index]?.has_children && !searchValue) {
+          setLevel([...level, { id: options[index].value, label: options[index].label }])
+          setFocusedIndex(0)
+        } else {
+          handleSelect(options[index])
+        }
       }
     },
     [open, focusedIndex, options, level, handleSelect, searchValue, showLevelUp]
@@ -364,9 +369,13 @@ export const CategoryCombobox = forwardRef<
                   }
                   type="button"
                   role="option"
+                  disabled={option.has_children && !searchValue}
                   className={clx(
                     "grid h-full w-full appearance-none grid-cols-[20px_1fr] items-center gap-2 overflow-hidden rounded-md px-2 py-1.5 text-left outline-none",
-                    "data-[active=true]:bg-ui-bg-field-hover"
+                    "data-[active=true]:bg-ui-bg-field-hover",
+                    {
+                      "text-ui-fg-muted cursor-default": option.has_children && !searchValue,
+                    }
                   )}
                   onClick={() => handleSelect(option)}
                   onMouseEnter={() =>

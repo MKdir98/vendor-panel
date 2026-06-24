@@ -111,7 +111,8 @@ export const ProductCreateForm = ({
     }
 
     const media = values.media || []
-    const payload = { ...values, media: undefined }
+    const { product_size_id: _sizeId, ...rest } = values
+    const payload = { ...rest, media: undefined }
 
     let uploadedMedia: (HttpTypes.AdminFile & {
       isThumbnail: boolean
@@ -254,9 +255,7 @@ export const ProductCreateForm = ({
         "type_id",
         "collection_id",
         "discountable",
-        "width",
-        "length",
-        "height",
+        "product_size_id",
         "weight",
       ])
       if (valid) {

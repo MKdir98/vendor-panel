@@ -43,13 +43,15 @@ export const ProductOrganizationForm = ({
     queryFn: (params) =>
       fetchQuery("/vendor/product-categories", {
         method: "GET",
-        query: params as Record<string, string | number>,
+        query: { ...params, include_descendants_tree: true } as Record<string, string | number>,
       }),
     getOptions: (data) =>
-      data.product_categories.map((category: any) => ({
-        label: category.name!,
-        value: category.id!,
-      })),
+      data.product_categories
+        .filter((category: any) => !category.category_children || category.category_children.length === 0)
+        .map((category: any) => ({
+          label: category.name!,
+          value: category.id!,
+        })),
   })
 
   const collections = useComboboxData({

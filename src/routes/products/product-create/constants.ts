@@ -78,21 +78,12 @@ export const ProductCreateSchema = z
       .optional(),
     origin_country: z.string().optional(),
     material: z.string().optional(),
-    width: z
+    product_size_id: z
       .string()
-      .refine((val) => val !== "" && val !== undefined && val !== null, {
-        message: "Width is required",
-      }),
-    length: z
-      .string()
-      .refine((val) => val !== "" && val !== undefined && val !== null, {
-        message: "Length is required",
-      }),
-    height: z
-      .string()
-      .refine((val) => val !== "" && val !== undefined && val !== null, {
-        message: "Height is required",
-      }),
+      .min(1, { message: "Size is required" }),
+    width: z.string().optional(),
+    length: z.string().optional(),
+    height: z.string().optional(),
     weight: z
       .string()
       .refine((val) => val !== "" && val !== undefined && val !== null, {
@@ -167,6 +158,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
   shipping_profile_id: "",
   description: "",
   handle: "",
+  product_size_id: "",
   height: "",
   hs_code: "",
   length: "",
