@@ -1,7 +1,6 @@
 import {
   ArrowUturnLeft,
   EllipseMiniSolid,
-  TriangleRightMini,
   TrianglesMini,
 } from "@medusajs/icons"
 import { AdminProductCategoryResponse } from "@medusajs/types"
@@ -209,12 +208,7 @@ export const CategoryCombobox = forwardRef<
 
         const index = showLevelUp ? focusedIndex - 1 : focusedIndex
 
-        if (options[index]?.has_children && !searchValue) {
-          setLevel([...level, { id: options[index].value, label: options[index].label }])
-          setFocusedIndex(0)
-        } else {
-          handleSelect(options[index])
-        }
+        handleSelect(options[index])
       }
     },
     [open, focusedIndex, options, level, handleSelect, searchValue, showLevelUp]
@@ -354,12 +348,7 @@ export const CategoryCombobox = forwardRef<
             options.map((option, index) => (
               <div
                 key={option.value}
-                className={clx(
-                  "transition-fg bg-ui-bg-base grid cursor-pointer grid-cols-1 items-center gap-2 overflow-hidden",
-                  {
-                    "grid-cols-[1fr_32px]": option.has_children && !searchValue,
-                  }
-                )}
+                className="transition-fg bg-ui-bg-base grid cursor-pointer grid-cols-1 items-center gap-2 overflow-hidden"
               >
                 <button
                   data-active={
@@ -369,13 +358,9 @@ export const CategoryCombobox = forwardRef<
                   }
                   type="button"
                   role="option"
-                  disabled={option.has_children && !searchValue}
                   className={clx(
                     "grid h-full w-full appearance-none grid-cols-[20px_1fr] items-center gap-2 overflow-hidden rounded-md px-2 py-1.5 text-left outline-none",
-                    "data-[active=true]:bg-ui-bg-field-hover",
-                    {
-                      "text-ui-fg-muted cursor-default": option.has_children && !searchValue,
-                    }
+                    "data-[active=true]:bg-ui-bg-field-hover"
                   )}
                   onClick={() => handleSelect(option)}
                   onMouseEnter={() =>
@@ -396,19 +381,6 @@ export const CategoryCombobox = forwardRef<
                     {option.label}
                   </Text>
                 </button>
-                {option.has_children && !searchValue && (
-                  <button
-                    className={clx(
-                      "text-ui-fg-muted flex size-8 appearance-none items-center justify-center rounded-md outline-none",
-                      "hover:bg-ui-bg-base-hover active:bg-ui-bg-base-pressed"
-                    )}
-                    type="button"
-                    onClick={handleLevelDown(option)}
-                    tabIndex={-1}
-                  >
-                    <TriangleRightMini />
-                  </button>
-                )}
               </div>
             ))}
           {showLoading &&
