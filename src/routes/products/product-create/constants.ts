@@ -81,6 +81,7 @@ export const ProductCreateSchema = z
     product_size_id: z
       .string()
       .min(1, { message: "Size is required" }),
+    is_manual_size: z.boolean().optional(),
     width: z.string().optional(),
     length: z.string().optional(),
     height: z.string().optional(),
@@ -97,6 +98,18 @@ export const ProductCreateSchema = z
     media: z.array(MediaSchema).optional(),
   })
   .superRefine((data, ctx) => {
+    if (data.is_manual_size) {
+      if (!data.width) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["width"], message: "Required" })
+      }
+      if (!data.height) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["height"], message: "Required" })
+      }
+      if (!data.length) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["length"], message: "Required" })
+      }
+    }
+
     if (data.variants.every((v) => !v.should_create)) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -159,6 +172,7 @@ export const PRODUCT_CREATE_FORM_DEFAULTS: Partial<
   description: "",
   handle: "",
   product_size_id: "",
+  is_manual_size: false,
   height: "",
   hs_code: "",
   length: "",

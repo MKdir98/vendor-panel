@@ -5,6 +5,7 @@ import { StatusCell } from "../../../../components/table/table-cells/review/stat
 import { ActionMenu } from "../../../../components/common/action-menu"
 import { ExclamationCircle } from "@medusajs/icons"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export const ReviewGeneralSection = ({
   review,
@@ -13,10 +14,12 @@ export const ReviewGeneralSection = ({
   review: any
   isRequested?: boolean
 }) => {
+  const { t } = useTranslation()
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
-        <Heading>Review</Heading>
+        <Heading>{t("reviews.domain")}</Heading>
         <div className="flex items-center gap-4">
           <Badge>
             <StatusCell status={review.seller_note} />
@@ -24,7 +27,7 @@ export const ReviewGeneralSection = ({
           {isRequested ? (
             <Badge className="flex items-center gap-2">
               <ExclamationCircle />
-              Requested to remove
+              {t("reviews.requestedToRemove")}
             </Badge>
           ) : (
             <ActionMenu
@@ -32,7 +35,7 @@ export const ReviewGeneralSection = ({
                 {
                   actions: [
                     {
-                      label: "Report review",
+                      label: t("reviews.actions.report"),
                       to: `/reviews/${review.id}/report`,
                       icon: <ExclamationCircle />,
                       disabled: isRequested,
@@ -45,27 +48,27 @@ export const ReviewGeneralSection = ({
         </div>
       </div>
       <div className="px-6 py-4 grid grid-cols-2">
-        <div>Stars</div>
+        <div>{t("reviews.fields.stars")}</div>
         <div>
           <StarsRating rate={review.rating} />
         </div>
       </div>
       <div className="px-6 py-4 grid grid-cols-2">
-        <div>Review</div>
+        <div>{t("reviews.fields.review")}</div>
         <div>{review.customer_note}</div>
       </div>
       <div className="px-6 py-4 grid grid-cols-2">
-        <div>Reply</div>
+        <div>{t("reviews.fields.reply")}</div>
         <div>{review.seller_note || "-"}</div>
       </div>
       <div className="px-6 py-4 grid grid-cols-2">
-        <div>Added</div>
+        <div>{t("reviews.fields.added")}</div>
         <div>{format(review.created_at, "dd MMM yyyy")}</div>
       </div>
       <div className="px-6 py-4 flex justify-end">
         <Link to={`/reviews/${review.id}/reply`}>
           <Button className="px-6">
-            {review.seller_note ? "Edit Reply" : "Reply"}
+            {review.seller_note ? t("reviews.actions.editReply") : t("reviews.actions.reply")}
           </Button>
         </Link>
       </div>

@@ -2,15 +2,18 @@ import { Container, Heading, Text } from "@medusajs/ui"
 import { StoreVendor } from "../../../../../types/user"
 import { ActionMenu } from "../../../../../components/common/action-menu"
 import { Pencil } from "@medusajs/icons"
+import { useTranslation } from "react-i18next"
 
 export const CompanySection = ({ seller }: { seller: StoreVendor }) => {
+  const { t } = useTranslation()
+
   return (
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <div>
-          <Heading>Company</Heading>
+          <Heading>{t("store.company.heading")}</Heading>
           <Text size="small" className="text-ui-fg-subtle text-pretty">
-            Manage your company's details
+            {t("store.company.description")}
           </Text>
         </div>
         <ActionMenu
@@ -19,7 +22,7 @@ export const CompanySection = ({ seller }: { seller: StoreVendor }) => {
               actions: [
                 {
                   icon: <Pencil />,
-                  label: "Edit",
+                  label: t("actions.edit"),
                   to: "edit-company",
                 },
               ],
@@ -29,7 +32,7 @@ export const CompanySection = ({ seller }: { seller: StoreVendor }) => {
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          Address
+          {t("fields.address")}
         </Text>
         <Text size="small" leading="compact">
           {seller.address_line || "-"}
@@ -37,7 +40,7 @@ export const CompanySection = ({ seller }: { seller: StoreVendor }) => {
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          Postal Code
+          {t("fields.postalCode")}
         </Text>
         <Text size="small" leading="compact">
           {seller.postal_code || "-"}
@@ -45,7 +48,7 @@ export const CompanySection = ({ seller }: { seller: StoreVendor }) => {
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          City
+          {t("fields.city")}
         </Text>
         <Text size="small" leading="compact">
           {seller.city || "-"}
@@ -53,7 +56,7 @@ export const CompanySection = ({ seller }: { seller: StoreVendor }) => {
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          Country
+          {t("fields.country")}
         </Text>
         <Text size="small" leading="compact">
           {seller.country_code || "-"}
@@ -61,7 +64,7 @@ export const CompanySection = ({ seller }: { seller: StoreVendor }) => {
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          TaxID
+          {t("fields.taxId")}
         </Text>
         <Text size="small" leading="compact">
           {seller.tax_id || "-"}

@@ -1,10 +1,11 @@
 import { HttpTypes } from "@medusajs/types"
-import { Button, Input, Select } from "@medusajs/ui"
-import { useEffect } from "react"
+import { Button, Input } from "@medusajs/ui"
+import { useEffect, useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import * as zod from "zod"
 import { Form } from "../../../../../components/common/form"
 import { CountrySelect } from "../../../../../components/inputs/country-select"
+import { Combobox } from "../../../../../components/inputs/combobox"
 import { RouteDrawer, useRouteModal } from "../../../../../components/modals"
 import { KeyboundForm } from "../../../../../components/utilities/keybound-form"
 import {
@@ -30,16 +31,31 @@ const dimension = zod
   .optional()
   .nullable()
 
-const ProductAttributesSchema = zod.object({
-  product_size_id: zod.string().min(1, { message: "Size is required" }),
-  weight: dimension,
-  length: dimension,
-  width: dimension,
-  height: dimension,
-  mid_code: zod.string().optional(),
-  hs_code: zod.string().optional(),
-  origin_country: zod.string().optional(),
-})
+const ProductAttributesSchema = zod
+  .object({
+    product_size_id: zod.string().min(1, { message: "Size is required" }),
+    is_manual_size: zod.boolean().optional(),
+    weight: dimension,
+    length: dimension,
+    width: dimension,
+    height: dimension,
+    mid_code: zod.string().optional(),
+    hs_code: zod.string().optional(),
+    origin_country: zod.string().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.is_manual_size) {
+      if (data.width == null || data.width === 0) {
+        ctx.addIssue({ code: zod.ZodIssueCode.custom, path: ["width"], message: "Required" })
+      }
+      if (data.height == null || data.height === 0) {
+        ctx.addIssue({ code: zod.ZodIssueCode.custom, path: ["height"], message: "Required" })
+      }
+      if (data.length == null || data.length === 0) {
+        ctx.addIssue({ code: zod.ZodIssueCode.custom, path: ["length"], message: "Required" })
+      }
+    }
+  })
 
 export const ProductAttributesForm = ({
   product,
@@ -55,6 +71,7 @@ export const ProductAttributesForm = ({
   const form = useExtendableForm({
     defaultValues: {
       product_size_id: "",
+      is_manual_size: false,
       height: product.height ? product.height : null,
       width: product.width ? product.width : null,
       length: product.length ? product.length : null,
@@ -68,6 +85,17 @@ export const ProductAttributesForm = ({
     data: product,
   })
 
+  const isManualSize = form.watch("is_manual_size") || false
+
+  const [sizeSearch, setSizeSearch] = useState("")
+  const sizeOptions = useMemo(() => {
+    const q = sizeSearch.trim().toLowerCase()
+    return product_sizes
+      .filter((s) => !q || s.name.toLowerCase().includes(q))
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map((s) => ({ value: s.id, label: s.name }))
+  }, [product_sizes, sizeSearch])
+
   useEffect(() => {
     if (!product_sizes.length) return
     const match = product_sizes.find(
@@ -78,6 +106,15 @@ export const ProductAttributesForm = ({
     )
     if (match) {
       form.setValue("product_size_id", match.id)
+      form.setValue("is_manual_size", false)
+    } else {
+      const manualSize = product_sizes.find(
+        (s) => s.width === 0 && s.height === 0 && s.length === 0
+      )
+      if (manualSize && product.width != null) {
+        form.setValue("product_size_id", manualSize.id)
+        form.setValue("is_manual_size", true)
+      }
     }
   }, [product_sizes, product.width, product.height, product.length])
 
@@ -111,42 +148,119 @@ export const ProductAttributesForm = ({
               <Form.Field
                 control={form.control}
                 name="product_size_id"
-                render={({ field: { onChange, value, ref } }) => {
+                render={({ field: { onChange, value } }) => {
                   return (
                     <Form.Item>
                       <Form.Label>سایز</Form.Label>
                       <Form.Control>
-                        <Select
+                        <Combobox
                           value={value || ""}
-                          onValueChange={(selectedId) => {
+                          searchValue={sizeSearch}
+                          onSearchValueChange={setSizeSearch}
+                          onChange={(selectedId) => {
                             const size = product_sizes.find(
                               (s) => s.id === selectedId
                             )
                             if (size) {
                               onChange(selectedId)
-                              form.setValue("width", size.width)
-                              form.setValue("height", size.height)
-                              form.setValue("length", size.length)
+                              if (size.width === 0 && size.height === 0 && size.length === 0) {
+                                form.setValue("is_manual_size", true)
+                                form.setValue("width", null)
+                                form.setValue("height", null)
+                                form.setValue("length", null)
+                              } else {
+                                form.setValue("is_manual_size", false)
+                                form.setValue("width", size.width)
+                                form.setValue("height", size.height)
+                                form.setValue("length", size.length)
+                              }
+                            } else {
+                              onChange("")
+                              form.setValue("is_manual_size", false)
                             }
                           }}
-                        >
-                          <Select.Trigger ref={ref}>
-                            <Select.Value placeholder="انتخاب سایز" />
-                          </Select.Trigger>
-                          <Select.Content>
-                            {product_sizes.map((size) => (
-                              <Select.Item key={size.id} value={size.id}>
-                                {size.name}
-                              </Select.Item>
-                            ))}
-                          </Select.Content>
-                        </Select>
+                          options={sizeOptions}
+                          placeholder="انتخاب سایز"
+                        />
                       </Form.Control>
                       <Form.ErrorMessage />
                     </Form.Item>
                   )
                 }}
               />
+              {isManualSize && (
+                <div className="grid grid-cols-3 gap-x-4">
+                  <Form.Field
+                    control={form.control}
+                    name="length"
+                    render={({ field: { onChange, value, ...field } }) => (
+                      <Form.Item>
+                        <Form.Label>طول (cm)</Form.Label>
+                        <Form.Control>
+                          <Input
+                            type="number"
+                            min={1}
+                            step="any"
+                            value={value ?? ""}
+                            onChange={(e) => {
+                              const v = e.target.value
+                              onChange(v === "" ? null : parseFloat(v))
+                            }}
+                            {...field}
+                          />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="width"
+                    render={({ field: { onChange, value, ...field } }) => (
+                      <Form.Item>
+                        <Form.Label>عرض (cm)</Form.Label>
+                        <Form.Control>
+                          <Input
+                            type="number"
+                            min={1}
+                            step="any"
+                            value={value ?? ""}
+                            onChange={(e) => {
+                              const v = e.target.value
+                              onChange(v === "" ? null : parseFloat(v))
+                            }}
+                            {...field}
+                          />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )}
+                  />
+                  <Form.Field
+                    control={form.control}
+                    name="height"
+                    render={({ field: { onChange, value, ...field } }) => (
+                      <Form.Item>
+                        <Form.Label>ارتفاع (cm)</Form.Label>
+                        <Form.Control>
+                          <Input
+                            type="number"
+                            min={1}
+                            step="any"
+                            value={value ?? ""}
+                            onChange={(e) => {
+                              const v = e.target.value
+                              onChange(v === "" ? null : parseFloat(v))
+                            }}
+                            {...field}
+                          />
+                        </Form.Control>
+                        <Form.ErrorMessage />
+                      </Form.Item>
+                    )}
+                  />
+                </div>
+              )}
               <Form.Field
                 control={form.control}
                 name="weight"

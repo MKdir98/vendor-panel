@@ -3,6 +3,7 @@ import { Alert, Button, Heading, Hint, Input, Text } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import * as z from "zod"
+import { useTranslation } from "react-i18next"
 
 import { Form } from "../../components/common/form"
 import AvatarBox from "../../components/common/logo-box/avatar-box"
@@ -17,6 +18,7 @@ const LoginSchema = z.object({
 })
 
 export const Login = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
 
@@ -48,7 +50,7 @@ export const Login = () => {
             if (error.status === 401) {
               form.setError("email", {
                 type: "manual",
-                message: "Invalid email or password",
+                message: t("login.errors.invalidCredentials"),
               })
 
               return
@@ -57,7 +59,7 @@ export const Login = () => {
 
           form.setError("root.serverError", {
             type: "manual",
-            message: "Login error. Please try again.",
+            message: t("login.errors.serverError"),
           })
         },
         onSuccess: () => {
@@ -80,9 +82,9 @@ export const Login = () => {
       <div className="m-4 flex w-full max-w-[280px] flex-col items-center">
         <AvatarBox />
         <div className="mb-4 flex flex-col items-center">
-          <Heading>Welcome to DoorFestival</Heading>
+          <Heading>{t("login.heading")}</Heading>
           <Text size="small" className="text-ui-fg-subtle text-center">
-            Vendor Panel - Sign in to your account
+            {t("login.subheading")}
           </Text>
         </div>
         <div className="flex w-full flex-col gap-y-3">
@@ -107,7 +109,7 @@ export const Login = () => {
                             autoComplete="email"
                             {...field}
                             className="bg-ui-bg-field-component"
-                            placeholder="Email"
+                            placeholder={t("fields.email")}
                             dir="ltr"
                           />
                         </Form.Control>
@@ -127,7 +129,7 @@ export const Login = () => {
                             autoComplete="current-password"
                             {...field}
                             className="bg-ui-bg-field-component"
-                            placeholder="Password"
+                            placeholder={t("fields.password")}
                           />
                         </Form.Control>
                       </Form.Item>
@@ -152,7 +154,7 @@ export const Login = () => {
                 </Alert>
               )}
               <Button className="w-full" type="submit" isLoading={isPending}>
-                Sign In
+                {t("login.signIn")}
               </Button>
             </form>
           </Form>
@@ -163,12 +165,12 @@ export const Login = () => {
         </div>
         {getDisableSellersRegistration() === "false" && (
           <span className="text-ui-fg-muted txt-small my-6">
-            Don't have an account yet?{" "}
+            {t("login.noAccount")}{" "}
             <Link
               to="/register"
               className="text-ui-fg-interactive transition-fg hover:text-ui-fg-interactive-hover focus-visible:text-ui-fg-interactive-hover font-medium outline-none"
             >
-              Register
+              {t("login.register")}
             </Link>
           </span>
         )}

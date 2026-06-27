@@ -27,7 +27,7 @@ export const StoreGeneralSection = ({
               actions: [
                 {
                   icon: <Pencil />,
-                  label: "Edit",
+                  label: t("actions.edit"),
                   to: "edit",
                 },
               ],
@@ -37,7 +37,7 @@ export const StoreGeneralSection = ({
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4 items-center">
         <Text size="small" leading="compact" weight="plus">
-          Image
+          {t("store.fields.image")}
         </Text>
         <ImageAvatar
           src={memberPhoto || seller.photo || "/logo.svg"}
@@ -71,7 +71,7 @@ export const StoreGeneralSection = ({
       </div>
       <div className="text-ui-fg-subtle grid grid-cols-2 px-6 py-4">
         <Text size="small" leading="compact" weight="plus">
-          Description
+          {t("fields.description")}
         </Text>
         <Text size="small" leading="compact">
           {seller.description || "-"}

@@ -96,7 +96,7 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
   return [
     {
       icon: <Component />,
-      label: "Dashboard",
+      label: t("dashboard.domain"),
       to: "/dashboard",
     },
     {
@@ -148,23 +148,23 @@ const useCoreRoutes = (): Omit<INavItem, "pathname">[] => {
     },
     {
       icon: <ListCheckbox />,
-      label: "Requests",
+      label: t("requests.domain"),
       to: "/requests",
       items: [
         {
-          label: "Collections",
+          label: t("collections.domain"),
           to: "/requests/collections",
         },
         {
-          label: "Categories",
+          label: t("categories.domain"),
           to: "/requests/categories",
         },
         {
-          label: "Reviews",
+          label: t("reviews.domain"),
           to: "/requests/reviews",
         },
         {
-          label: "Orders returns",
+          label: t("requests.ordersReturns"),
           to: "/requests/orders",
         },
       ],

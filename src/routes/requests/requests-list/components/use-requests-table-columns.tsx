@@ -13,19 +13,19 @@ export const useRequestsTableColumns = () => {
   return useMemo(
     () => [
       columnHelper.accessor("data.name", {
-        header: "Title",
+        header: t("fields.title"),
         cell: ({ row }) => row.original.data.title || row.original.data.name,
       }),
       columnHelper.accessor("data.handle", {
-        header: "Handle",
+        header: t("fields.handle"),
         cell: ({ row }) => row.original.data.handle,
       }),
       columnHelper.accessor("created_at", {
-        header: "Date",
+        header: t("fields.date"),
         cell: ({ getValue }) => <DateCell date={getValue()} />,
       }),
       columnHelper.accessor("status", {
-        header: "Status",
+        header: t("fields.status"),
         cell: ({ getValue }) => <StatusCell status={getValue()} />,
       }),
       columnHelper.display({

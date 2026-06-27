@@ -111,7 +111,7 @@ export const ProductCreateForm = ({
     }
 
     const media = values.media || []
-    const { product_size_id: _sizeId, ...rest } = values
+    const { product_size_id: _sizeId, is_manual_size: _isManual, ...rest } = values
     const payload = { ...rest, media: undefined }
 
     let uploadedMedia: (HttpTypes.AdminFile & {
@@ -258,6 +258,12 @@ export const ProductCreateForm = ({
         "product_size_id",
         "weight",
       ])
+      if (valid && form.getValues("is_manual_size")) {
+        const values = form.getValues()
+        if (!values.width) { form.setError("width", { type: "manual", message: "Required" }); valid = false }
+        if (!values.height) { form.setError("height", { type: "manual", message: "Required" }); valid = false }
+        if (!values.length) { form.setError("length", { type: "manual", message: "Required" }); valid = false }
+      }
       if (valid) {
         setTab(Tab.VARIANTS)
       }

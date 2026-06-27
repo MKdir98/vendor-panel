@@ -1,4 +1,5 @@
 import { CalendarMini, TriangleRightMini } from "@medusajs/icons"
+import { useTranslation } from "react-i18next"
 import {
   CartesianGrid,
   Line,
@@ -88,6 +89,7 @@ export const DashboardCharts = ({
   notFulfilledOrders: number
   fulfilledOrders: number
 }) => {
+  const { t } = useTranslation()
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [filters, setFilters] = useState(["customers", "orders"])
@@ -139,9 +141,9 @@ export const DashboardCharts = ({
       <Container className="divide-y p-0">
         <div className="flex items-center justify-between px-6 py-4">
           <div>
-            <Heading>Actions</Heading>
+            <Heading>{t("dashboard.actions")}</Heading>
             <Text className="text-ui-fg-subtle" size="small">
-              Check out new events and manage your store
+              {t("dashboard.actionsDescription")}
             </Text>
           </div>
         </div>
@@ -153,7 +155,7 @@ export const DashboardCharts = ({
             >
               <div className="flex gap-4 items-center">
                 <Badge>{notFulfilledOrders}</Badge>
-                Orders to be fulfilled
+                {t("dashboard.ordersToFulfill")}
               </div>
               <TriangleRightMini color="grey" />
             </Button>
@@ -165,7 +167,7 @@ export const DashboardCharts = ({
             >
               <div className="flex gap-4 items-center">
                 <Badge>{fulfilledOrders}</Badge>
-                Orders to be shipped
+                {t("dashboard.ordersToShip")}
               </div>
               <TriangleRightMini color="grey" />
             </Button>
@@ -176,9 +178,9 @@ export const DashboardCharts = ({
       <Container className="divide-y p-0 mt-2">
         <div className="flex items-center justify-between px-6 py-4">
           <div>
-            <Heading>Analytics</Heading>
+            <Heading>{t("dashboard.analytics")}</Heading>
             <Text className="text-ui-fg-subtle" size="small">
-              See your store's progress
+              {t("dashboard.analyticsDescription")}
             </Text>
           </div>
           <div>
@@ -195,7 +197,7 @@ export const DashboardCharts = ({
                       format(from, "LLL dd, y")
                     )
                   ) : (
-                    <span>Pick a date</span>
+                    <span>{t("dashboard.pickDate")}</span>
                   )}
                 </Button>
               </Popover.Trigger>
@@ -246,7 +248,7 @@ export const DashboardCharts = ({
                   className="p-4 border rounded-lg w-full flex-col items-start my-2"
                   onClick={() => handleFilter("orders")}
                 >
-                  <Heading level="h3">Orders</Heading>
+                  <Heading level="h3">{t("orders.domain")}</Heading>
                   <div className="flex gap-2 items-center mt-2">
                     <div
                       className="h-8 w-1"
@@ -266,7 +268,7 @@ export const DashboardCharts = ({
                   className="p-4 border rounded-lg w-full flex-col items-start my-2"
                   onClick={() => handleFilter("customers")}
                 >
-                  <Heading level="h3">Customers</Heading>
+                  <Heading level="h3">{t("customers.domain")}</Heading>
                   <div className="flex gap-2 items-center mt-2">
                     <div
                       className="h-8 w-1"

@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom"
 import { RouteDrawer } from "../../../components/modals"
 import { EditCollectionForm } from "./components/edit-collection-form"
 import { useRequest } from "../../../hooks/api"
+import { useTranslation } from "react-i18next"
 
 export const CollectionEdit = () => {
   const { id } = useParams()
+  const { t } = useTranslation()
   const { request, isPending, isError, error } = useRequest(id!)
 
   const ready = !isPending && !!request
@@ -16,7 +18,7 @@ export const CollectionEdit = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading>Edit Product Collection Request</Heading>
+        <Heading>{t("requests.collections.editHeading")}</Heading>
       </RouteDrawer.Header>
       {ready && (
         <EditCollectionForm collection={request.data} requestId={id!} />

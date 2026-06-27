@@ -2,6 +2,7 @@
 
 import { Button, Heading, toast, Tooltip } from "@medusajs/ui"
 import { RouteDrawer } from "../../../components/modals"
+import { useTranslation } from "react-i18next"
 import {
   useProduct,
   useProductAttributes,
@@ -15,6 +16,7 @@ import { useNavigate } from "react-router-dom"
 import { InformationCircleSolid } from "@medusajs/icons"
 
 export const ProductAdditionalAttributesForm = () => {
+  const { t } = useTranslation()
   const { id } = useParams()
   const { product, isLoading: isProductLoading } = useProduct(id!)
 
@@ -73,7 +75,7 @@ export const ProductAdditionalAttributesForm = () => {
       },
       {
         onSuccess: () => {
-          toast.success("Product updated successfully")
+          toast.success(t("products.toast.updated"))
           navigate(`/products/${id}`)
         },
       }
@@ -83,7 +85,7 @@ export const ProductAdditionalAttributesForm = () => {
   return (
     <RouteDrawer>
       <RouteDrawer.Header>
-        <Heading level="h2">Additional Attributes</Heading>
+        <Heading level="h2">{t("products.additionalAttributes")}</Heading>
       </RouteDrawer.Header>
       <RouteDrawer.Body className="max-h-[calc(86vh)] overflow-y-auto py-2">
         <Form {...form}>
@@ -116,7 +118,7 @@ export const ProductAdditionalAttributesForm = () => {
               />
             ))}
             <div className="flex justify-end mt-4">
-              <Button>Save</Button>
+              <Button>{t("actions.save")}</Button>
             </div>
           </form>
         </Form>

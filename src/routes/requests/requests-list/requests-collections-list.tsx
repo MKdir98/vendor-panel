@@ -3,9 +3,11 @@ import { SingleColumnPage } from "../../../components/layout/pages"
 import { useDashboardExtension } from "../../../extensions"
 import { RequestListTable } from "./components/request-list-table"
 import { Link } from "react-router-dom"
+import { useTranslation } from "react-i18next"
 
 export const RequestsCollectionsList = () => {
   const { getWidgets } = useDashboardExtension()
+  const { t } = useTranslation()
 
   return (
     <SingleColumnPage
@@ -17,13 +19,13 @@ export const RequestsCollectionsList = () => {
       <Container className="divided-y p-0">
         <div className="flex items-center justify-between px-6 py-4">
           <div>
-            <Heading>Collection Requests</Heading>
+            <Heading>{t("requests.collections.heading")}</Heading>
             <Text className="text-ui-fg-subtle" size="small">
-              Your requests to add a new collection
+              {t("requests.collections.description")}
             </Text>
           </div>
           <Button variant="secondary" asChild>
-            <Link to="create">Request Collection</Link>
+            <Link to="create">{t("requests.collections.action")}</Link>
           </Button>
         </div>
         <div className="px-6 py-4">

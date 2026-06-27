@@ -2,6 +2,7 @@ import { Container, Heading, Text } from "@medusajs/ui"
 import { OnboardingRow } from "./onboarding-row"
 import { useUpdateOnboarding } from "../../../hooks/api"
 import { useEffect } from "react"
+import { useTranslation } from "react-i18next"
 
 type DashboardProps = {
   products: boolean
@@ -16,6 +17,7 @@ export const DashboardOnboarding = ({
   store_information,
   // stripe_connect,
 }: DashboardProps) => {
+  const { t } = useTranslation()
   const { mutateAsync } = useUpdateOnboarding()
 
   useEffect(() => {
@@ -26,19 +28,18 @@ export const DashboardOnboarding = ({
     <Container className="divide-y p-0">
       <div className="flex items-center justify-between px-6 py-4">
         <div>
-          <Heading>Welcome to Door Festiva</Heading>
+          <Heading>{t("dashboard.welcome")}</Heading>
           <Text className="text-ui-fg-subtle" size="small">
-            Please complete these steps so you can start selling on the
-            marketplace
+            {t("dashboard.welcomeDescription")}
           </Text>
         </div>
       </div>
       <div className="px-6 py-4">
         <OnboardingRow
-          label="Complete the store information"
+          label={t("dashboard.onboarding.storeInfo")}
           state={store_information}
           link="/settings/store"
-          buttonLabel="Manage"
+          buttonLabel={t("dashboard.onboarding.manage")}
         />
         {/* <OnboardingRow
           label='Setup Stripe Connect account'
@@ -47,16 +48,16 @@ export const DashboardOnboarding = ({
           buttonLabel='Setup'
         /> */}
         <OnboardingRow
-          label="Setup Locations & Shipping"
+          label={t("dashboard.onboarding.locations")}
           state={locations_shipping}
           link="/settings/locations"
-          buttonLabel="Setup"
+          buttonLabel={t("dashboard.onboarding.setup")}
         />
         <OnboardingRow
-          label="Add products and start selling"
+          label={t("dashboard.onboarding.products")}
           state={products}
           link="/products/create"
-          buttonLabel="Add"
+          buttonLabel={t("dashboard.onboarding.add")}
         />
       </div>
     </Container>

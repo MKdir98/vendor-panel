@@ -6,12 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button, Heading, Textarea, toast } from "@medusajs/ui"
 import { useParams } from "react-router-dom"
 import { useReview, useUpdateReview } from "../../../../hooks/api/review"
+import { useTranslation } from "react-i18next"
 
 const ReviewReplySchema = z.object({
   seller_note: z.string().min(1),
 })
 
 export const ReviewReplyForm = () => {
+  const { t } = useTranslation()
   const { handleSuccess } = useRouteModal()
   const { id } = useParams()
 
@@ -34,7 +36,7 @@ export const ReviewReplyForm = () => {
         },
         {
           onSuccess: () => {
-            toast.success("Reply has been deleted")
+            toast.success(t("reviews.toast.replyDeleted"))
             handleSuccess(`/reviews/${id}`)
           },
           onError: (error) => {
@@ -49,7 +51,7 @@ export const ReviewReplyForm = () => {
         },
         {
           onSuccess: () => {
-            toast.success("Reply has been sent")
+            toast.success(t("reviews.toast.replySent"))
             handleSuccess(`/reviews/${id}`)
           },
           onError: (error) => {
@@ -64,12 +66,12 @@ export const ReviewReplyForm = () => {
     <RouteDrawer>
       <RouteDrawer.Header>
         <RouteDrawer.Title asChild>
-          <Heading>{review.seller_note ? "Edit Reply" : "Reply"}</Heading>
+          <Heading>{review.seller_note ? t("reviews.form.editTitle") : t("reviews.form.replyTitle")}</Heading>
         </RouteDrawer.Title>
         <RouteDrawer.Description>
           {review.seller_note
-            ? "Edit your reply to customer review."
-            : "Reply to customer review."}
+            ? t("reviews.form.editDescription")
+            : t("reviews.form.replyDescription")}
         </RouteDrawer.Description>
       </RouteDrawer.Header>
       <RouteDrawer.Form form={form}>
@@ -80,7 +82,7 @@ export const ReviewReplyForm = () => {
             render={({ field }) => {
               return (
                 <Form.Item>
-                  <Form.Label>Comment</Form.Label>
+                  <Form.Label>{t("reviews.form.commentLabel")}</Form.Label>
                   <Form.Control>
                     <Textarea autoComplete="off" {...field} />
                   </Form.Control>
@@ -99,7 +101,7 @@ export const ReviewReplyForm = () => {
             //@ts-ignore
             onClick={() => handleSubmit({ deleting: true })}
           >
-            Delete reply
+            {t("reviews.actions.deleteReply")}
           </Button>
         )}
         <Button
@@ -108,7 +110,7 @@ export const ReviewReplyForm = () => {
           className="px-6"
           isLoading={isPending}
         >
-          {review.seller_note ? "Save" : "Reply"}
+          {review.seller_note ? t("actions.save") : t("reviews.actions.reply")}
         </Button>
       </RouteDrawer.Footer>
     </RouteDrawer>

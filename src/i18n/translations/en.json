@@ -714,6 +714,10 @@
           "header": "Failed to delete product"
         }
       }
+    },
+    "additionalAttributes": "Additional Attributes",
+    "toast": {
+      "updated": "Product updated successfully"
     }
   },
   "collections": {
@@ -2393,6 +2397,17 @@
       "currenciesUpdated": "Currencies updated successfully",
       "currenciesRemoved": "Removed currencies from the store successfully",
       "updatedTaxInclusivitySuccessfully": "Tax inclusive pricing updated successfully"
+    },
+    "company": {
+      "heading": "Company",
+      "description": "Manage your company's details",
+      "editHeading": "Edit Company"
+    },
+    "fields": {
+      "image": "Image",
+      "logo": "Logo",
+      "taxId": "TaxID",
+      "phoneNumber": "Phone Number"
     }
   },
   "regions": {
@@ -2665,7 +2680,10 @@
         "placeholder": "wrong_size",
         "tooltip": "The value should be a unique identifier for the return reason."
       },
-      "label": { "label": "Label", "placeholder": "Wrong size" },
+      "label": {
+        "label": "Label",
+        "placeholder": "Wrong size"
+      },
       "description": {
         "label": "Description",
         "placeholder": "Customer received the wrong size"
@@ -2676,7 +2694,16 @@
     "forgotPassword": "Forgot password? - <0>Reset</0>",
     "title": "Welcome to Door Festival Seller Panel",
     "hint": "Sign in to access the account area",
-    "notSellerYet": "Not a seller yet? - <0>Create an account</0>"
+    "notSellerYet": "Not a seller yet? - <0>Create an account</0>",
+    "heading": "Welcome to DoorFestival",
+    "subheading": "Vendor Panel - Sign in to your account",
+    "signIn": "Sign In",
+    "noAccount": "Don't have an account yet?",
+    "register": "Register",
+    "errors": {
+      "invalidCredentials": "Invalid email or password",
+      "serverError": "Login error. Please try again."
+    }
   },
   "register": {
     "title": "Join Door Festival Seller Panel",
@@ -3023,5 +3050,88 @@
     "minutes_other": "Minutes",
     "seconds_one": "Second",
     "seconds_other": "Seconds"
+  },
+  "dashboard": {
+    "domain": "Dashboard",
+    "actions": "Actions",
+    "actionsDescription": "Check out new events and manage your store",
+    "ordersToFulfill": "Orders to be fulfilled",
+    "ordersToShip": "Orders to be shipped",
+    "analytics": "Analytics",
+    "analyticsDescription": "See your store's progress",
+    "pickDate": "Pick a date",
+    "welcome": "Welcome to DoorFestival",
+    "welcomeDescription": "Please complete these steps so you can start selling on the marketplace",
+    "onboarding": {
+      "storeInfo": "Complete the store information",
+      "manage": "Manage",
+      "locations": "Setup Locations & Shipping",
+      "setup": "Setup",
+      "products": "Add products and start selling",
+      "add": "Add"
+    }
+  },
+  "requests": {
+    "domain": "Requests",
+    "ordersReturns": "Orders returns",
+    "list": {
+      "description": "Check the status of your requests and add new ones"
+    },
+    "collectionsCard": "Collections requests",
+    "categoriesCard": "Categories requests",
+    "reviewsCard": "Reviews requests",
+    "ordersCard": "Order return requests",
+    "collections": {
+      "heading": "Collection Requests",
+      "description": "Your requests to add a new collection",
+      "action": "Request Collection",
+      "editHeading": "Edit Product Collection Request"
+    },
+    "categories": {
+      "heading": "Categories Requests",
+      "description": "Your requests to add a new category",
+      "action": "Request Category",
+      "editHeading": "Edit Category Request"
+    },
+    "reviews": {
+      "heading": "Reviews Removal Requests",
+      "description": "Your requests to cancel a review"
+    },
+    "orders": {
+      "heading": "Orders Return Requests",
+      "description": "Your requests to return an order"
+    }
+  },
+  "reviews": {
+    "domain": "Reviews",
+    "actions": {
+      "report": "Report review",
+      "reply": "Reply",
+      "editReply": "Edit Reply",
+      "deleteReply": "Delete reply"
+    },
+    "fields": {
+      "stars": "Stars",
+      "review": "Review",
+      "reply": "Reply",
+      "added": "Added"
+    },
+    "toast": {
+      "replyDeleted": "Reply has been deleted",
+      "replySent": "Reply has been sent"
+    },
+    "list": {
+      "description": "Manage your reviews",
+      "count": "{{count}} reviews",
+      "noRecords": "Your reviews will show up here."
+    },
+    "requestedToRemove": "Requested to remove",
+    "form": {
+      "editTitle": "Edit Reply",
+      "replyTitle": "Reply",
+      "editDescription": "Edit your reply to customer review.",
+      "replyDescription": "Reply to customer review.",
+      "commentLabel": "Comment"
+    }
   }
 }

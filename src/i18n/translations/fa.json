@@ -696,6 +696,10 @@
           "header": "حذف محصول با شکست مواجه شد"
         }
       }
+    },
+    "additionalAttributes": "ویژگی‌های اضافی",
+    "toast": {
+      "updated": "محصول با موفقیت به‌روزرسانی شد"
     }
   },
   "collections": {
@@ -2346,6 +2350,17 @@
       "currenciesUpdated": "ارزها با موفقیت به‌روزرسانی شدند",
       "currenciesRemoved": "ارزها با موفقیت از فروشگاه حذف شدند",
       "updatedTaxInclusivitySuccessfully": "قیمت‌گذاری شامل مالیات با موفقیت به‌روزرسانی شد"
+    },
+    "company": {
+      "heading": "شرکت",
+      "description": "جزئیات شرکت خود را مدیریت کنید",
+      "editHeading": "ویرایش اطلاعات شرکت"
+    },
+    "fields": {
+      "image": "تصویر",
+      "logo": "لوگو",
+      "taxId": "شناسه مالیاتی",
+      "phoneNumber": "شماره تلفن"
     }
   },
   "regions": {
@@ -2608,7 +2623,10 @@
         "placeholder": "wrong_size",
         "tooltip": "مقدار باید یک شناسه منحصر به فرد برای دلیل بازگشت باشد."
       },
-      "label": { "label": "برچسب", "placeholder": "سایز اشتباه" },
+      "label": {
+        "label": "برچسب",
+        "placeholder": "سایز اشتباه"
+      },
       "description": {
         "label": "توضیحات",
         "placeholder": "مشتری سایز اشتباه دریافت کرده است"
@@ -2618,7 +2636,16 @@
   "login": {
     "forgotPassword": "رمز عبور را فراموش کرده‌اید؟ - <0>بازنشانی</0>",
     "title": "به مدوسا خوش آمدید",
-    "hint": "برای دسترسی به بخش حساب کاربری وارد شوید"
+    "hint": "برای دسترسی به بخش حساب کاربری وارد شوید",
+    "heading": "خوش آمدید به دورفستیوال",
+    "subheading": "پنل فروشنده - وارد حساب کاربری خود شوید",
+    "signIn": "ورود",
+    "noAccount": "حساب کاربری ندارید؟",
+    "register": "ثبت نام",
+    "errors": {
+      "invalidCredentials": "ایمیل یا رمز عبور نامعتبر است",
+      "serverError": "خطای ورود. لطفاً دوباره تلاش کنید."
+    }
   },
   "register": {
     "title": "ثبت‌نام در پنل فروشندگان",
@@ -2946,7 +2973,12 @@
     "startDate": "تاریخ شروع",
     "endDate": "تاریخ پایان",
     "draft": "پیش‌نویس",
-    "values": "مقادیر"
+    "values": "مقادیر",
+    "image": "تصویر",
+    "taxId": "شناسه مالیاتی",
+    "phoneNumber": "شماره تلفن",
+    "logo": "لوگو",
+    "comment": "نظر"
   },
   "dateTime": {
     "years_one": "سال",
@@ -2963,5 +2995,88 @@
     "minutes_other": "دقیقه",
     "seconds_one": "ثانیه",
     "seconds_other": "ثانیه"
+  },
+  "dashboard": {
+    "domain": "داشبورد",
+    "actions": "اقدامات",
+    "actionsDescription": "رویدادهای جدید را بررسی کنید و فروشگاه خود را مدیریت کنید",
+    "ordersToFulfill": "سفارشات برای پردازش",
+    "ordersToShip": "سفارشات برای ارسال",
+    "analytics": "آمار",
+    "analyticsDescription": "پیشرفت فروشگاه خود را ببینید",
+    "pickDate": "انتخاب تاریخ",
+    "welcome": "خوش آمدید به دورفستیوال",
+    "welcomeDescription": "لطفاً این مراحل را کامل کنید تا بتوانید در مارکت‌پلیس فروش شروع کنید",
+    "onboarding": {
+      "storeInfo": "اطلاعات فروشگاه را کامل کنید",
+      "manage": "مدیریت",
+      "locations": "تنظیم مکان‌ها و ارسال",
+      "setup": "تنظیم",
+      "products": "اضافه کردن محصولات و شروع فروش",
+      "add": "اضافه کردن"
+    }
+  },
+  "requests": {
+    "domain": "درخواست‌ها",
+    "ordersReturns": "بازگشت سفارشات",
+    "list": {
+      "description": "وضعیت درخواست‌های خود را بررسی کنید و موارد جدید اضافه کنید"
+    },
+    "collectionsCard": "درخواست‌های مجموعه",
+    "categoriesCard": "درخواست‌های دسته‌بندی",
+    "reviewsCard": "درخواست‌های نظرات",
+    "ordersCard": "درخواست‌های بازگشت سفارش",
+    "collections": {
+      "heading": "درخواست‌های مجموعه",
+      "description": "درخواست‌های شما برای افزودن مجموعه جدید",
+      "action": "درخواست مجموعه",
+      "editHeading": "ویرایش درخواست مجموعه محصول"
+    },
+    "categories": {
+      "heading": "درخواست‌های دسته‌بندی",
+      "description": "درخواست‌های شما برای افزودن دسته‌بندی جدید",
+      "action": "درخواست دسته‌بندی",
+      "editHeading": "ویرایش درخواست دسته‌بندی"
+    },
+    "reviews": {
+      "heading": "درخواست‌های حذف نظر",
+      "description": "درخواست‌های شما برای لغو یک نظر"
+    },
+    "orders": {
+      "heading": "درخواست‌های بازگشت سفارش",
+      "description": "درخواست‌های شما برای بازگشت یک سفارش"
+    }
+  },
+  "reviews": {
+    "domain": "نظرات",
+    "actions": {
+      "report": "گزارش نظر",
+      "reply": "پاسخ",
+      "editReply": "ویرایش پاسخ",
+      "deleteReply": "حذف پاسخ"
+    },
+    "fields": {
+      "stars": "ستاره‌ها",
+      "review": "نظر",
+      "reply": "پاسخ",
+      "added": "افزوده شده"
+    },
+    "toast": {
+      "replyDeleted": "پاسخ حذف شد",
+      "replySent": "پاسخ ارسال شد"
+    },
+    "list": {
+      "description": "نظرات خود را مدیریت کنید",
+      "count": "{{count}} نظر",
+      "noRecords": "نظرات شما اینجا نمایش داده می‌شوند."
+    },
+    "requestedToRemove": "درخواست حذف شده",
+    "form": {
+      "editTitle": "ویرایش پاسخ",
+      "replyTitle": "پاسخ",
+      "editDescription": "پاسخ خود را به نظر مشتری ویرایش کنید.",
+      "replyDescription": "به نظر مشتری پاسخ دهید.",
+      "commentLabel": "نظر"
+    }
   }
 }
