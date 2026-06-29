@@ -55,7 +55,8 @@
     "unsavedChangesDescription": "You have unsaved changes that will be lost if you exit this form.",
     "includesTaxTooltip": "Prices in this column are tax inclusive.",
     "excludesTaxTooltip": "Prices in this column are tax exclusive.",
-    "noMoreData": "No more data"
+    "noMoreData": "No more data",
+    "loading": "Loading..."
   },
   "json": {
     "header": "JSON",
@@ -2322,7 +2323,8 @@
     "manageYourProfileDetails": "Manage your profile details.",
     "fields": {
       "languageLabel": "Language",
-      "usageInsightsLabel": "Usage insights"
+      "usageInsightsLabel": "Usage insights",
+      "profilePicture": "Profile picture"
     },
     "edit": {
       "header": "Edit Profile",
@@ -2827,7 +2829,8 @@
     "create": {
       "header": "Create Product Tag",
       "subtitle": "Create a new product tag to categorize your products.",
-      "successToast": "Product tag {{value}} was successfully created."
+      "successToast": "Product tag {{value}} was successfully created.",
+      "requestHeader": "Request Product Tag"
     },
     "edit": {
       "header": "Edit Product Tag",
@@ -2840,6 +2843,12 @@
     },
     "fields": {
       "value": "Value"
+    },
+    "actions": {
+      "request": "Request Product Tag"
+    },
+    "toast": {
+      "requested": "Product Tag Requested"
     }
   },
   "notifications": {
@@ -2850,6 +2859,19 @@
     },
     "accessibility": {
       "description": "notifications about Medusa activities will be listed here."
+    },
+    "templates": {
+      "seller_product_collection_request_accepted_notification": "Your product collection request has been accepted",
+      "seller_product_collection_request_rejected_notification": "Your product collection request has been rejected",
+      "seller_new_order_notification": "You have a new order",
+      "seller_product_category_request_accepted_notification": "Your product category request has been accepted",
+      "seller_product_category_request_rejected_notification": "Your product category request has been rejected",
+      "seller_product_tag_request_accepted_notification": "Your product tag request has been accepted",
+      "seller_product_tag_request_rejected_notification": "Your product tag request has been rejected",
+      "seller_product_type_request_accepted_notification": "Your product type request has been accepted",
+      "seller_product_type_request_rejected_notification": "Your product type request has been rejected",
+      "seller_product_request_accepted_notification": "Your product request has been accepted",
+      "seller_product_request_rejected_notification": "Your product request has been rejected"
     }
   },
   "errors": {
@@ -3033,7 +3055,9 @@
     "startDate": "Start date",
     "endDate": "End date",
     "draft": "Draft",
-    "values": "Values"
+    "values": "Values",
+    "photo": "Photo",
+    "bio": "Bio"
   },
   "dateTime": {
     "years_one": "Year",
@@ -3100,6 +3124,22 @@
     "orders": {
       "heading": "Orders Return Requests",
       "description": "Your requests to return an order"
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "refunded": "Refunded",
+      "escalated": "Escalated",
+      "withdrawn": "Withdrawn"
+    },
+    "orderReturn": {
+      "title": "Request Return Order #{{id}}",
+      "vendorNote": "Vendor Reviewer Note",
+      "statusOptions": {
+        "refunded": "Refunded",
+        "escalated": "Escalated"
+      }
     }
   },
   "reviews": {

@@ -8,21 +8,26 @@ import { Button, Select, Textarea, toast } from "@medusajs/ui"
 import { useForm } from "react-hook-form"
 import { Form } from "../../../components/common/form"
 import { useStockLocations } from "../../../hooks/api"
-
-const STATUS_OPTIONS = ["refunded", "escalated"]
+import { useTranslation } from "react-i18next"
 
 export function RequestOrderReturn() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   const { order_return_request, isLoading } = useOrderReturnRequest(id!)
 
   const { stock_locations, isLoading: isStockLocationsLoading } =
     useStockLocations()
 
+  const STATUS_OPTIONS = [
+    { value: "refunded", label: t("requests.orderReturn.statusOptions.refunded") },
+    { value: "escalated", label: t("requests.orderReturn.statusOptions.escalated") },
+  ]
+
   const form = useForm({
     defaultValues: {
-      status: STATUS_OPTIONS[0],
+      status: STATUS_OPTIONS[0].value,
       vendor_reviewer_note: order_return_request?.vendor_reviewer_note || "",
       location_id: undefined,
     },
@@ -42,14 +47,14 @@ export function RequestOrderReturn() {
   }
 
   if (isLoading || isStockLocationsLoading) {
-    return <div>Loading...</div>
+    return <div>{t("general.loading")}</div>
   }
 
   return (
     <RouteDrawer prev="/requests/orders">
       <RouteDrawer.Header>
         <RouteDrawer.Title>
-          Request Return Order #{order_return_request.order.display_id}
+          {t("requests.orderReturn.title", { id: order_return_request.order.display_id })}
         </RouteDrawer.Title>
       </RouteDrawer.Header>
       <RouteDrawer.Body>
@@ -61,23 +66,23 @@ export function RequestOrderReturn() {
               render={({ field: { onChange, value, ...field } }) => {
                 return (
                   <Form.Item>
-                    <Form.Label>Status</Form.Label>
+                    <Form.Label>{t("fields.status")}</Form.Label>
                     <Form.Control>
                       <Select
                         {...field}
                         onValueChange={onChange}
-                        defaultValue={STATUS_OPTIONS[0]}
+                        defaultValue={STATUS_OPTIONS[0].value}
                       >
                         <Select.Trigger>
                           <Select.Value />
                         </Select.Trigger>
                         <Select.Content>
-                          {STATUS_OPTIONS.map((reason, index) => (
+                          {STATUS_OPTIONS.map((option) => (
                             <Select.Item
-                              key={`select-option-${index}`}
-                              value={reason}
+                              key={option.value}
+                              value={option.value}
                             >
-                              {reason}
+                              {option.label}
                             </Select.Item>
                           ))}
                         </Select.Content>
@@ -94,7 +99,7 @@ export function RequestOrderReturn() {
                   name="location_id"
                   render={({ field: { onChange, value, ...field } }) => (
                     <Form.Item className="mt-4">
-                      <Form.Label>Location</Form.Label>
+                      <Form.Label>{t("fields.location")}</Form.Label>
                       <Form.Control>
                         <Select {...field} onValueChange={onChange}>
                           <Select.Trigger>
@@ -122,7 +127,7 @@ export function RequestOrderReturn() {
               render={({ field }) => {
                 return (
                   <Form.Item className="mt-4">
-                    <Form.Label>Vendor Reviewer Note</Form.Label>
+                    <Form.Label>{t("requests.orderReturn.vendorNote")}</Form.Label>
                     <Form.Control>
                       <Textarea {...field} rows={4} />
                     </Form.Control>
@@ -131,7 +136,7 @@ export function RequestOrderReturn() {
               }}
             />
             <div className="flex justify-end mt-8">
-              <Button type="submit">Submit</Button>
+              <Button type="submit">{t("actions.confirm")}</Button>
             </div>
           </form>
         </Form>

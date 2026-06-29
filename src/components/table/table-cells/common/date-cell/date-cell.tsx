@@ -1,5 +1,5 @@
 import { Tooltip } from "@medusajs/ui"
-import { format } from "date-fns/format"
+import { format } from "date-fns-jalali/format"
 import { useTranslation } from "react-i18next"
 import { PlaceholderCell } from "../placeholder-cell"
 
@@ -16,7 +16,7 @@ export const DateCell = ({ date }: DateCellProps) => {
   value.setMinutes(value.getMinutes() - value.getTimezoneOffset())
 
   const hour12 = Intl.DateTimeFormat().resolvedOptions().hour12
-  const timestampFormat = hour12 ? "dd MMM yyyy hh:MM a" : "dd MMM yyyy HH:MM"
+  const timestampFormat = hour12 ? "yyyy/MM/dd hh:mm a" : "yyyy/MM/dd HH:mm"
 
   return (
     <div className="flex h-full w-full items-center overflow-hidden">
@@ -29,7 +29,7 @@ export const DateCell = ({ date }: DateCellProps) => {
           )}`}</span>
         }
       >
-        <span className="truncate">{format(value, "dd MMM yyyy")}</span>
+        <span className="truncate">{format(value, "yyyy/MM/dd")}</span>
       </Tooltip>
     </div>
   )

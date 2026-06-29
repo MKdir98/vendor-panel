@@ -37,7 +37,7 @@ export function getRouteMap(): RouteObject[] {
             path: "/requests",
             errorElement: <ErrorBoundary />,
             handle: {
-              breadcrumb: () => "Requests",
+              breadcrumb: () => t("requests.domain"),
             },
             children: [
               {
@@ -55,7 +55,7 @@ export function getRouteMap(): RouteObject[] {
               {
                 path: "categories",
                 handle: {
-                  breadcrumb: () => "Categories requests",
+                  breadcrumb: () => t("requests.categories.heading"),
                 },
                 lazy: async () => {
                   const { RequestsCategoriesList } = await import(
@@ -81,7 +81,7 @@ export function getRouteMap(): RouteObject[] {
               {
                 path: "collections",
                 handle: {
-                  breadcrumb: () => "Collection requests",
+                  breadcrumb: () => t("requests.collections.heading"),
                 },
                 lazy: async () => {
                   const { RequestsCollectionsList } = await import(
@@ -108,7 +108,7 @@ export function getRouteMap(): RouteObject[] {
               {
                 path: "reviews",
                 handle: {
-                  breadcrumb: () => "Reviews requests",
+                  breadcrumb: () => t("requests.reviews.heading"),
                 },
                 lazy: async () => {
                   const { RequestReviewsList } = await import(
@@ -129,7 +129,7 @@ export function getRouteMap(): RouteObject[] {
               {
                 path: "orders",
                 handle: {
-                  breadcrumb: () => "Orders requests",
+                  breadcrumb: () => t("requests.orders.heading"),
                 },
                 lazy: async () => {
                   const { RequestOrdersList } = await import(

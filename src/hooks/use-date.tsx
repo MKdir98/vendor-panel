@@ -1,16 +1,9 @@
-import { format, formatDistance, sub } from "date-fns"
-import { enUS } from "date-fns/locale"
+import { format, formatDistance, sub } from "date-fns-jalali"
+import { faIR } from "date-fns-jalali/locale"
 import { useTranslation } from "react-i18next"
 
-import { languages } from "../i18n/languages"
-
-// TODO: We rely on the current language to determine the date locale. This is not ideal, as we use en-US for the english translation.
-// We either need to also have an en-GB translation or we need to separate the date locale from the translation language.
 export const useDate = () => {
   const { i18n } = useTranslation()
-
-  const locale =
-    languages.find((l) => l.code === i18n.language)?.date_locale || enUS
 
   const getFullDate = ({
     date,
@@ -25,11 +18,9 @@ export const useDate = () => {
       return ""
     }
 
-    const timeFormat = includeTime ? "p" : ""
+    const dateFormat = includeTime ? "yyyy/MM/dd HH:mm" : "yyyy/MM/dd"
 
-    return format(ensuredDate, `PP ${timeFormat}`, {
-      locale,
-    })
+    return format(ensuredDate, dateFormat, { locale: faIR })
   }
 
   function getRelativeDate(date: string | Date): string {
@@ -37,7 +28,7 @@ export const useDate = () => {
 
     return formatDistance(sub(new Date(date), { minutes: 0 }), now, {
       addSuffix: true,
-      locale,
+      locale: faIR,
     })
   }
 

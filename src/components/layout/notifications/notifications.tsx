@@ -6,6 +6,7 @@ import {
 import { HttpTypes } from "@medusajs/types"
 import { clx, Drawer, Heading, IconButton, Text } from "@medusajs/ui"
 import { formatDistance } from "date-fns"
+import { faIR } from "date-fns/locale"
 import { TFunction } from "i18next"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -115,29 +116,21 @@ export const Notifications = () => {
   )
 }
 
-const NOTIFICATION_TEMPLATES = {
-  seller_product_collection_request_accepted_notification:
-    "Your product collection request has been accepted",
-  seller_product_collection_request_rejected_notification:
-    "Your product collection request has been rejected",
-  seller_new_order_notification: "You have a new order",
-  seller_product_category_request_accepted_notification:
-    "Your product category request has been accepted",
-  seller_product_category_request_rejected_notification:
-    "Your product category request has been rejected",
-  seller_product_tag_request_accepted_notification:
-    "Your product tag request has been accepted",
-  seller_product_tag_request_rejected_notification:
-    "Your product tag request has been rejected",
-  seller_product_type_request_accepted_notification:
-    "Your product type request has been accepted",
-  seller_product_type_request_rejected_notification:
-    "Your product type request has been rejected",
-  seller_product_request_accepted_notification:
-    "Your product request has been accepted",
-  seller_product_request_rejected_notification:
-    "Your product request has been rejected",
-}
+const NOTIFICATION_TEMPLATE_KEYS = [
+  "seller_product_collection_request_accepted_notification",
+  "seller_product_collection_request_rejected_notification",
+  "seller_new_order_notification",
+  "seller_product_category_request_accepted_notification",
+  "seller_product_category_request_rejected_notification",
+  "seller_product_tag_request_accepted_notification",
+  "seller_product_tag_request_rejected_notification",
+  "seller_product_type_request_accepted_notification",
+  "seller_product_type_request_rejected_notification",
+  "seller_product_request_accepted_notification",
+  "seller_product_request_rejected_notification",
+] as const
+
+type NotificationTemplateKey = (typeof NOTIFICATION_TEMPLATE_KEYS)[number]
 
 const Notification = ({
   notification,
@@ -146,12 +139,18 @@ const Notification = ({
   notification: HttpTypes.AdminNotification
   unread?: boolean
 }) => {
+  const { t } = useTranslation()
   const data = notification.data as unknown as NotificationData | undefined
 
-  // We need at least the title to render a notification in the feed
   if (!notification.template) {
     return null
   }
+
+  const templateKey = notification.template as NotificationTemplateKey
+  const isKnownTemplate = (NOTIFICATION_TEMPLATE_KEYS as readonly string[]).includes(templateKey)
+  const templateMessage = isKnownTemplate
+    ? t(`notifications.templates.${templateKey}`)
+    : undefined
 
   return (
     <>
@@ -163,11 +162,7 @@ const Notification = ({
           <div className="flex flex-col">
             <div className="flex items-center justify-between">
               <Text size="small" leading="compact" weight="plus">
-                {data?.title
-                  ? data.title
-                  : NOTIFICATION_TEMPLATES[
-                      notification.template as keyof typeof NOTIFICATION_TEMPLATES
-                    ]}
+                {data?.title ? data.title : templateMessage}
               </Text>
               <div className="align-center flex items-center justify-center gap-2">
                 <Text
@@ -181,6 +176,7 @@ const Notification = ({
                 >
                   {formatDistance(notification.created_at, new Date(), {
                     addSuffix: true,
+                    locale: faIR,
                   })}
                 </Text>
                 {unread && (
@@ -191,21 +187,14 @@ const Notification = ({
                 )}
               </div>
             </div>
-            {data?.title &&
-              !!NOTIFICATION_TEMPLATES[
-                notification.template as keyof typeof NOTIFICATION_TEMPLATES
-              ] && (
-                <Text
-                  className="text-ui-fg-subtle whitespace-pre-line"
-                  size="small"
-                >
-                  {
-                    NOTIFICATION_TEMPLATES[
-                      notification.template as keyof typeof NOTIFICATION_TEMPLATES
-                    ]
-                  }
-                </Text>
-              )}
+            {data?.title && !!templateMessage && (
+              <Text
+                className="text-ui-fg-subtle whitespace-pre-line"
+                size="small"
+              >
+                {templateMessage}
+              </Text>
+            )}
           </div>
           {!!data?.file?.url && (
             <FilePreview

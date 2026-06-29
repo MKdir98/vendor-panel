@@ -55,7 +55,8 @@
     "unsavedChangesDescription": "شما تغییرات ذخیره نشده دارید که در صورت خروج از فرم از دست خواهند رفت.",
     "includesTaxTooltip": "قیمت‌های این ستون شامل مالیات هستند.",
     "excludesTaxTooltip": "قیمت‌های این ستون بدون مالیات هستند.",
-    "noMoreData": "داده‌ی بیشتری وجود ندارد"
+    "noMoreData": "داده‌ی بیشتری وجود ندارد",
+    "loading": "در حال بارگذاری..."
   },
   "json": {
     "header": "JSON",
@@ -2277,7 +2278,8 @@
     "manageYourProfileDetails": "جزئیات پروفایل خود را مدیریت کنید.",
     "fields": {
       "languageLabel": "زبان",
-      "usageInsightsLabel": "تحلیل‌های مربوط به استفاده"
+      "usageInsightsLabel": "تحلیل‌های مربوط به استفاده",
+      "profilePicture": "عکس پروفایل"
     },
     "edit": {
       "header": "ویرایش پروفایل",
@@ -2769,7 +2771,8 @@
     "create": {
       "header": "ایجاد برچسب محصول",
       "subtitle": "یک برچسب محصول جدید ایجاد کنید تا محصولات خود را دسته‌بندی کنید.",
-      "successToast": "برچسب محصول {{value}} با موفقیت ایجاد شد."
+      "successToast": "برچسب محصول {{value}} با موفقیت ایجاد شد.",
+      "requestHeader": "درخواست برچسب محصول"
     },
     "edit": {
       "header": "ویرایش برچسب محصول",
@@ -2782,6 +2785,12 @@
     },
     "fields": {
       "value": "مقدار"
+    },
+    "actions": {
+      "request": "درخواست برچسب محصول"
+    },
+    "toast": {
+      "requested": "درخواست برچسب محصول ثبت شد"
     }
   },
   "notifications": {
@@ -2792,6 +2801,19 @@
     },
     "accessibility": {
       "description": "اعلان‌های مربوط به فعالیت‌های مدوسا در اینجا فهرست می‌شوند."
+    },
+    "templates": {
+      "seller_product_collection_request_accepted_notification": "درخواست مجموعه محصول شما پذیرفته شد",
+      "seller_product_collection_request_rejected_notification": "درخواست مجموعه محصول شما رد شد",
+      "seller_new_order_notification": "سفارش جدیدی دارید",
+      "seller_product_category_request_accepted_notification": "درخواست دسته‌بندی محصول شما پذیرفته شد",
+      "seller_product_category_request_rejected_notification": "درخواست دسته‌بندی محصول شما رد شد",
+      "seller_product_tag_request_accepted_notification": "درخواست برچسب محصول شما پذیرفته شد",
+      "seller_product_tag_request_rejected_notification": "درخواست برچسب محصول شما رد شد",
+      "seller_product_type_request_accepted_notification": "درخواست نوع محصول شما پذیرفته شد",
+      "seller_product_type_request_rejected_notification": "درخواست نوع محصول شما رد شد",
+      "seller_product_request_accepted_notification": "درخواست محصول شما پذیرفته شد",
+      "seller_product_request_rejected_notification": "درخواست محصول شما رد شد"
     }
   },
   "errors": {
@@ -2978,7 +3000,9 @@
     "taxId": "شناسه مالیاتی",
     "phoneNumber": "شماره تلفن",
     "logo": "لوگو",
-    "comment": "نظر"
+    "comment": "نظر",
+    "photo": "عکس",
+    "bio": "بیوگرافی"
   },
   "dateTime": {
     "years_one": "سال",
@@ -3045,6 +3069,22 @@
     "orders": {
       "heading": "درخواست‌های بازگشت سفارش",
       "description": "درخواست‌های شما برای بازگشت یک سفارش"
+    },
+    "status": {
+      "pending": "در انتظار",
+      "accepted": "پذیرفته شده",
+      "rejected": "رد شده",
+      "refunded": "بازپرداخت شده",
+      "escalated": "ارجاع داده شده",
+      "withdrawn": "لغو شده"
+    },
+    "orderReturn": {
+      "title": "بازگشت سفارش شماره #{{id}}",
+      "vendorNote": "یادداشت بررسی‌کننده",
+      "statusOptions": {
+        "refunded": "بازپرداخت شده",
+        "escalated": "ارجاع داده شده"
+      }
     }
   },
   "reviews": {

@@ -28,21 +28,85 @@
   }
 
   @font-face {
-    font-family: "Vazirmatn";
+    font-family: "Morabba";
+    font-weight: 200;
     font-style: normal;
-    font-weight: 100 900;
     font-display: swap;
-    src: url("https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable.woff2") format("woff2");
+    src: url("./assets/fonts/Morabba-UltraLight.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Morabba";
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Morabba-Light.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Morabba";
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Morabba-Regular.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Morabba";
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Morabba-Medium.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Morabba";
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Morabba-SemiBold.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Morabba";
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Morabba-Bold.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Morabba";
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Morabba-ExtraBold.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Morabba";
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Morabba-Heavy.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Morabba";
+    font-weight: 950;
+    font-style: normal;
+    font-display: swap;
+    src: url("./assets/fonts/Morabba-Black.ttf") format("truetype");
   }
 
   :root {
     @apply bg-ui-bg-subtle text-ui-fg-base antialiased;
     text-rendering: optimizeLegibility;
-    font-family: "Vazirmatn", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Morabba", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
-  
+
   * {
-    font-family: "Vazirmatn", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: "Morabba", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 }
 

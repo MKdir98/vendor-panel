@@ -17,7 +17,7 @@ import {
   usePrompt,
 } from "@medusajs/ui"
 import { useState } from "react"
-import { format } from "date-fns"
+import { format } from "date-fns-jalali"
 import { useTranslation } from "react-i18next"
 import { Link, useNavigate } from "react-router-dom"
 import { Skeleton } from "../../../../../components/common/skeleton"
@@ -385,7 +385,7 @@ const Fulfillment = ({
           <Tooltip
             content={format(
               new Date(statusTimestamp),
-              "dd MMM, yyyy, HH:mm:ss"
+              "yyyy/MM/dd HH:mm:ss"
             )}
           >
             <StatusBadge color={statusColor} className="text-nowrap">
